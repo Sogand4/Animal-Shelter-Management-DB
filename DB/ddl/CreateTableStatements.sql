@@ -1,4 +1,4 @@
 CREATE TABLE Test1(
-    id int PRIMARY KEY
-    name char[5]
+    id int PRIMARY KEY,
+    name char(5)
 );
