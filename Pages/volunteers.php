@@ -26,5 +26,20 @@
         <input type="submit" value="Insert" name="insertSubmit"></p>
     </form>
 
+    <h1>Volunteer Information</h1>
+
+    <table border="1" method="GET" action="volunteers.php">
+        <thead>
+            <tr>
+                <th>Volunteer ID</th>
+                <th>Name</th>
+                <th>Available Days</th>
+                <th>Phone Number</th>
+            </tr>
+        </thead>
+        <tbody id="volunteer-table">
+            <!-- Data will be inserted here -->
+        </tbody>
+    </table>
 </body>
 </html>
