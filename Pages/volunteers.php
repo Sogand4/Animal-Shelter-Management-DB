@@ -28,18 +28,37 @@
 
     <h1>Volunteer Information</h1>
 
-    <table border="1" method="GET" action="volunteers.php">
+    <?php
+        connectToDB();
+        $sql = 'SELECT * FROM test1 ORDER BY id DESC';
+        $result = executePlainSQL($sql);
+    ?>
+
+    <table border="1">
         <thead>
             <tr>
-                <th>Volunteer ID</th>
-                <th>Name</th>
-                <th>Available Days</th>
-                <th>Phone Number</th>
+                <th>id</th>
+                <th>name</th>
             </tr>
         </thead>
-        <tbody id="volunteer-table">
-            <!-- Data will be inserted here -->
+        <tbody>
+
+        <?php
+            while ($row = oci_fetch_assoc($result)) {
+                echo '<tr>';
+                echo '<td>' . $row['ID'] . '</td>';
+                echo '<td>' . $row['NAME'] . '</td>';
+                echo '</tr>';
+            }
+        ?>
+
         </tbody>
     </table>
+
+    <?php
+        oci_free_statement($result);
+        disconnectFromDB();
+    ?>
+
 </body>
 </html>
