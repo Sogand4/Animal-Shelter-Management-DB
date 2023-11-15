@@ -9,7 +9,7 @@
     // HANDLE ALL POST ROUTES
     function handlePOSTRequest() {
         if (connectToDB()) {
-            if (array_key_exists('insertQueryRequest', $_POST)) {
+            if (array_key_exists('insertVolunteerRequest', $_POST)) {
                 handleInsertVolunteerRequest();
             }
             else if (array_key_exists('resetTablesRequest', $_POST)) {
@@ -20,22 +20,64 @@
         }
     }
 
-    // SOGAND TODO: ADD ERROR HANDLING FOR INCORRECT INPUT TYPE. DISPLAY ERROR TO USER.
     function handleInsertVolunteerRequest() {
         global $db_conn;
 
-        //Getting the values from user and insert data into the table
-        $tuple = array (
-            ":bind1" => $_POST['insNo'],
-            ":bind2" => $_POST['insName']
-        );
+        // Only run the insert volunteer query if the primary key is not already being used
+        $volunteerID = $_POST['volID'];
+        
+        $checkExistingVol = "SELECT COUNT(*) AS count FROM Volunteer WHERE volunteerID = '$volunteerID'";
+        $numExistingVol = executePlainSQL($checkExistingVol);
+        $rowExistingVol = oci_fetch_assoc($numExistingVol);
+        $countExistingVol = $rowExistingVol['COUNT'];
 
-        $alltuples = array (
-            $tuple
-        );
+        if ($countExistingVol == 0) {
+            // Volunteer's available days is a foreign key so, if volunteer's availabilities
+            // is not already in AvailableDaysRegularVolunteer table, then add it to the table first
+            $volAvailabilities = $_POST['volDays'];
+            
+            if ($volAvailabilities != NULL) {
+                $checkExistingDays = "SELECT COUNT(*) AS count FROM AvailableDaysRegularVolunteer WHERE availableDays = '$volAvailabilities'";
+                $numExistingDays = executePlainSQL($checkExistingDays);
+                $rowExistingDays = oci_fetch_assoc($numExistingDays);
+                $countExistingDays = $rowExistingDays['COUNT'];
 
-        executeBoundSQL("insert into Test1 values (:bind1, :bind2)", $alltuples);
-        OCICommit($db_conn);
+                if ($countExistingDays == 0) {
+                    $regularVol = 1;
+                    if ($volAvailabilities == 'FFFFFFF') {
+                        $regularVol = 0;
+                    }
+
+                    $tuple = array (
+                        ":bind1" => $volAvailabilities,
+                        ":bind2" => $regularVol
+                    );
+        
+                    $alltuples = array (
+                        $tuple
+                    );
+        
+                    executeBoundSQL("insert into AvailableDaysRegularVolunteer values (:bind1, :bind2)", $alltuples);
+                }
+            }
+
+            // Add new volunteer
+            $tuple = array (
+                ":bind1" => $_POST['volID'],
+                ":bind2" => $_POST['volName'],
+                ":bind3" => $_POST['volDays'],
+                ":bind4" => $_POST['volNum']
+            );
+
+            $alltuples = array (
+                $tuple
+            );
+
+            executeBoundSQL("insert into Volunteer values (:bind1, :bind2, :bind3, :bind4)", $alltuples);
+            OCICommit($db_conn);
+        } else {
+            echo '<p style="color: red;">Invalid ID inserted. Please use an ID that is not already in use.</p>';
+        }
     }
 
     // TODO: Maybe have this reset button on the navigation bar? next to logout?

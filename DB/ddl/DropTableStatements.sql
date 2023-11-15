@@ -3,6 +3,5 @@
 -- Order matters for creating tables toos
 -- TODO: for the milestone we need to evenually put all drop and create tables into one file. I think keeping them seperate for now if better for debugging
 
-DROP TABLE Test1;
 DROP TABLE Volunteer;
 DROP TABLE AvailableDaysRegularVolunteer;
