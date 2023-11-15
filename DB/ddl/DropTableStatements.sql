@@ -6,3 +6,4 @@
 
 DROP TABLE Volunteer;
 DROP TABLE AvailableDaysRegularVolunteer;
+DROP TABLE Inspector;
