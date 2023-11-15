@@ -20,5 +20,7 @@ CREATE TABLE Inspector(
 CREATE TABLE Manager(
     manID char(4),
     manPassword char(12),
+    manName char(30) DEFAULT NULL,
+    kpi char(30) DEFAULT NULL,
     PRIMARY KEY (manID)
 );

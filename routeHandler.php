@@ -6,6 +6,10 @@
         handlePOSTRequest();
     }
 
+    if (isset($_POST['reset']) || isset($_POST['signupSubmit'])) {
+        handlePOSTRequest();
+    }
+
     // HANDLE ALL POST ROUTES
     function handlePOSTRequest() {
         if (connectToDB()) {
@@ -18,8 +22,42 @@
             else if (array_key_exists('insertInspectorRequest', $_POST)) {
                 handleInsertInspectorRequest();
             }
+            else if (array_key_exists('insertSignupRequest', $_POST)) {
+                handleInsertSignupRequest();
+            }
 
             disconnectFromDB();
+        }
+    }
+
+    function handleInsertSignupRequest() {
+        global $db_conn;
+
+        // Only run the insert manager query if the primary key is not already being used
+        $manID = $_POST['manID'];
+        
+        $checkExistingMan = "SELECT COUNT(*) AS count FROM Manager WHERE manID = '$manID'";
+        $numExistingMan = executePlainSQL($checkExistingMan);
+        $rowExistingMan = oci_fetch_assoc($numExistingMan);
+        $countExistingMan = $rowExistingMan['COUNT'];
+
+        if ($countExistingMan == 0) {
+            // Add new manager
+            $tuple = array (
+                ":bind1" => $_POST['manID'],
+                ":bind2" => $_POST['manPassword'],
+                ":bind3" => $_POST['manName'],  
+                ":bind4" => $_POST['kpi']
+            );
+
+            $alltuples = array (
+                $tuple
+            );
+
+            executeBoundSQL("insert into Manager values (:bind1, :bind2, :bind3, :bind4)", $alltuples);
+            OCICommit($db_conn);
+        } else {
+            echo '<p style="color: red;">Invalid ID inserted. Please use an ID that is not already in use.</p>';
         }
     }
 

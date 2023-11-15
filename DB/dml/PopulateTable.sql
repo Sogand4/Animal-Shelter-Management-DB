@@ -20,4 +20,5 @@ INSERT INTO Inspector(insName,insID) VALUES ('Sogand', 'I003');
 INSERT INTO Inspector(insName,insID) VALUES ('Tony', 'I004');
 INSERT INTO Inspector(insName,insID) VALUES ('Zed', 'I005');
 
-INSERT INTO Manager(manID,manPassword) VALUES ('Ali', 'mycat');
+INSERT INTO Manager(manID,manPassword) VALUES ('M002', 'myt');
+INSERT INTO Manager (manID, manPassword) VALUES ('M003', 'pass');
