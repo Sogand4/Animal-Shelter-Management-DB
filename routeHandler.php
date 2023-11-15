@@ -20,6 +20,7 @@
         }
     }
 
+    // TODO: ADD FILTERING FOR THE SHELTER WE ARE CURRENTLY WORKING IN
     function handleInsertVolunteerRequest() {
         global $db_conn;
 
@@ -81,7 +82,6 @@
     }
 
     // TODO: Maybe have this reset button on the navigation bar? next to logout?
-    // TODO: we should also have the basic populate tables run after the tables are created as well
     function handleResetRequest() {        
         global $db_conn;
 
@@ -95,6 +95,14 @@
 
         // Create all tables
         $sqlScript = file_get_contents(__DIR__ . '/DB/ddl/CreateTableStatements.sql');
+        $sqlStatements = explode(';', $sqlScript);
+        $sqlStatements = array_filter(array_map('trim', $sqlStatements));
+        foreach ($sqlStatements as $sqlStatement) {
+            executePlainSQL($sqlStatement);
+        }
+
+        // Populate all tables
+        $sqlScript = file_get_contents(__DIR__ . '/DB/dml/PopulateTable.sql');
         $sqlStatements = explode(';', $sqlScript);
         $sqlStatements = array_filter(array_map('trim', $sqlStatements));
         foreach ($sqlStatements as $sqlStatement) {

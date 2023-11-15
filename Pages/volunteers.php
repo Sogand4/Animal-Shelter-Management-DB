@@ -35,8 +35,9 @@
     <!-- TODO: ADD FILTERING FOR CURRENT SHELTER -->
     <?php
         connectToDB();
-        $sql = 'SELECT * FROM Volunteer v, AvailableDaysRegularVolunteer a
-                WHERE v.availableDays = a.availableDays
+        $sql = 'SELECT *
+                FROM Volunteer v
+                LEFT JOIN AvailableDaysRegularVolunteer a ON v.availableDays = a.availableDays
                 ORDER BY v.volunteerID DESC';
         $result = executePlainSQL($sql);
     ?>
