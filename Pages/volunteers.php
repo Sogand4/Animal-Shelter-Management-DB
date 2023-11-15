@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Volunteer</title>
+    <title>Volunteers</title>
 </head>
 <body>
     <!-- TODO: MOVE RESET BUTTON TO NAV BAR -->
@@ -31,6 +31,7 @@
     </form>
 
     <h1>List of volunteers</h1>
+    <p> Available volunteers have filled out their schedule and are consistently available at least once a week. </p>
 
     <!-- TODO: ADD FILTERING FOR CURRENT SHELTER -->
     <?php

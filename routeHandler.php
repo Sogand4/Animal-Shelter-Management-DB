@@ -15,8 +15,41 @@
             else if (array_key_exists('resetTablesRequest', $_POST)) {
                 handleResetRequest();
             }
+            else if (array_key_exists('insertInspectorRequest', $_POST)) {
+                handleInsertInspectorRequest();
+            }
 
             disconnectFromDB();
+        }
+    }
+
+    // TODO: ADD FILTERING FOR THE SHELTER WE ARE CURRENTLY WORKING IN
+    function handleInsertInspectorRequest() {
+        global $db_conn;
+
+        // Only run the insert inspector query if the primary key is not already being used
+        $insID = $_POST['insID'];
+        
+        $checkExistingIns = "SELECT COUNT(*) AS count FROM Inspector WHERE insID = '$insID'";
+        $numExistingIns = executePlainSQL($checkExistingIns);
+        $rowExistingIns = oci_fetch_assoc($numExistingIns);
+        $countExistingIns = $rowExistingIns['COUNT'];
+
+        if ($countExistingIns == 0) {
+            // Add new inspector
+            $tuple = array (
+                ":bind1" => $_POST['insID'],
+                ":bind2" => $_POST['insName']
+            );
+
+            $alltuples = array (
+                $tuple
+            );
+
+            executeBoundSQL("insert into Inspector values (:bind2, :bind1)", $alltuples);
+            OCICommit($db_conn);
+        } else {
+            echo '<p style="color: red;">Invalid ID inserted. Please use an ID that is not already in use.</p>';
         }
     }
 

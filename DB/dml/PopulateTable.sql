@@ -13,3 +13,9 @@ INSERT INTO Volunteer (volunteerID, name, availableDays, phoneNumber) VALUES ('V
 INSERT INTO Volunteer (volunteerID, name, availableDays, phoneNumber) VALUES ('V125', 'Anna Smith', 'TTTTFFF', 7781111111);
 INSERT INTO Volunteer (volunteerID, name, availableDays, phoneNumber) VALUES ('V126', 'Chase Jones', 'TTFFFFF', 1231231234);
 INSERT INTO Volunteer (volunteerID, name, availableDays, phoneNumber) VALUES ('V127', 'Larry Miller', 'FFFFFFF', 2220004444);
+
+INSERT INTO Inspector(insName,insID) VALUES ('Selina', 'I001');
+INSERT INTO Inspector(insName,insID) VALUES ('Ece', 'I002');
+INSERT INTO Inspector(insName,insID) VALUES ('Sogand', 'I003');
+INSERT INTO Inspector(insName,insID) VALUES ('Tony', 'I004');
+INSERT INTO Inspector(insName,insID) VALUES ('Zed', 'I005');

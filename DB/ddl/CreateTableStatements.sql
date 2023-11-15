@@ -10,3 +10,10 @@ CREATE TABLE Volunteer (
     phoneNumber int,
     FOREIGN KEY (availableDays) REFERENCES AvailableDaysRegularVolunteer(availableDays)
 );
+
+CREATE TABLE Inspector(
+    insName VARCHAR(225) NOT NULL,
+    insID CHAR(4),
+    PRIMARY KEY (insID)
+);
+
