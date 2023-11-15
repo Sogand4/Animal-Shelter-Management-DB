@@ -1,11 +1,6 @@
-CREATE TABLE Test1(
-    id int PRIMARY KEY,
-    name char(5)
-);
-
 CREATE TABLE AvailableDaysRegularVolunteer(
     availableDays char(7) PRIMARY KEY,
-    regularVolunteer NUMBER(1, 0)
+    regularVolunteer NUMBER(1, 0) NOT NULL
 );
 
 CREATE TABLE Volunteer (
