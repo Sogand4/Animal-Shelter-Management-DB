@@ -35,7 +35,9 @@
     <!-- TODO: ADD FILTERING FOR CURRENT SHELTER -->
     <?php
         connectToDB();
-        $sql = 'SELECT * FROM Volunteer ORDER BY volunteerID DESC';
+        $sql = 'SELECT * FROM Volunteer v, AvailableDaysRegularVolunteer a
+                WHERE v.availableDays = a.availableDays
+                ORDER BY v.volunteerID DESC';
         $result = executePlainSQL($sql);
     ?>
 
@@ -45,6 +47,7 @@
                 <th>Volunteer ID</th>
                 <th>Name</th>
                 <th>Days Available</th>
+                <th>Regular Volunteer</th>
                 <th>Phone Number</th>
             </tr>
         </thead>
@@ -56,6 +59,7 @@
                 echo '<td>' . $row['VOLUNTEERID'] . '</td>';
                 echo '<td>' . $row['NAME'] . '</td>';
                 echo '<td>' . $row['AVAILABLEDAYS'] . '</td>';
+                echo '<td>' . ($row['REGULARVOLUNTEER'] ? 'Yes' : 'No') . '</td>';
                 echo '<td>' . $row['PHONENUMBER'] . '</td>';
                 echo '</tr>';
             }
