@@ -1,4 +1,11 @@
 <?php
+
+	include("connection.php");
+	include("functions.php");
+
+?>
+
+<?php
     include_once('../routeHandler.php');
 ?>
 
@@ -8,23 +15,65 @@
     <title>Singup</title>
 </head>
 <body>
+
+
+	<style type="text/css">
+	
+	#text{
+
+		height: 25px;
+		border-radius: 5px;
+		padding: 4px;
+		border: solid thin #aaa;
+		width: 100%;
+	}
+
+	#button{
+
+		padding: 10px;
+		width: 100px;
+		color: white;
+		background-color: lightblue;
+		border: none;
+	}
+
+	#box{
+
+		background-color: grey;
+		margin: auto;
+		width: 300px;
+		padding: 20px;
+	}
+
+	</style>
+
+
+
+
     <!-- TODO: MOVE RESET BUTTON TO NAV BAR -->
     <h2>Reset</h2>
         <p>If you wish to reset the table press on the reset button. If this is the first time you're running this page, you MUST use reset</p>
 
         <form method="POST" action="signup.php">
-            <input type="hidden" id="resetTablesRequest" name="resetTablesRequest">
-            <p><input type="submit" value="Reset" name="reset"></p>
+                <input type="hidden" id="resetTablesRequest" name="resetTablesRequest">
+                <p><input type="submit" value="Reset" name="reset"></p>
+            </form>
+
+    <div id="box">
+        <div style="font-size: 20px;margin: 10px;color: white;">Sign up as a new manager below</div>
+            <p>ID's are in the format 'MXXX' where X are numbers.</p>
+            <form method="POST" action="signup.php">
+            
+                <input type="hidden" id="insertSignupRequest" name="insertSignupRequest">
+                Manager ID: <input id = "text" type="text" name="manID" pattern="M\d{3}" title="Invalid entry. Please follow the format above." required> <br /><br />
+                Password: <input id = "text" type="text" name="manPassword" maxlength="12" required> <br /><br />
+            <input id = "button" type="submit" value="Signup" name="signupSubmit"></p>
+
+            <a href="login.php">Click to Login</a><br><br>
         </form>
 
-    <h2>Sign up as a new manager below:</h2>
-        <p>ID's are in the format 'MXXX' where X are numbers.</p>
-        <form method="POST" action="signup.php">
-            <input type="hidden" id="insertSignupRequest" name="insertSignupRequest">
-            Id: <input type="text" name="manID" pattern="M\d{3}" title="Invalid entry. Please follow the format above." required> <br /><br />
-            Password: <input type="text" name="manPassword" maxlength="12" required> <br /><br />
-        <input type="submit" value="Signup" name="signupSubmit"></p>
-    </form>
+    </div>
+
 
     <h1>List of Managers</h1>
 
