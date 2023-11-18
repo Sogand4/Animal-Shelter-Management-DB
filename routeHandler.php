@@ -1,6 +1,5 @@
 <?php
 
-    session_start();
 
     require_once('connection.php');
 
@@ -9,6 +8,10 @@
     }
 
     if (isset($_POST['reset']) || isset($_POST['signupSubmit'])) {
+        handlePOSTRequest();
+    }
+
+    if (isset($_POST['reset']) || isset($_POST['loginSubmit'])) {
         handlePOSTRequest();
     }
 
@@ -27,10 +30,49 @@
             else if (array_key_exists('insertSignupRequest', $_POST)) {
                 handleInsertSignupRequest();
             }
+            else if (array_key_exists('insertLoginRequest', $_POST)) {
+                handleInsertLoginRequest();
+            }
 
             disconnectFromDB();
         }
     }
+
+    function handleInsertLoginRequest() {
+        global $db_conn;
+
+        // Only run the insert manager query if the primary key is not already being used
+        $manID = $_POST['manID'];
+		$manPassword = $_POST['manPassword'];
+        
+        $checkExistingMan = "SELECT COUNT(*) AS count FROM Manager WHERE manID = '$manID'";
+        $numExistingMan = executePlainSQL($checkExistingMan);
+        $rowExistingMan = oci_fetch_assoc($numExistingMan);
+        $countExistingMan = $rowExistingMan['COUNT'];
+
+        //if both manID and manPassword not empty
+        if($countExistingMan == 1)
+		{
+            $query = "SELECT * FROM Manager WHERE manID = '$manID'";
+            $result = executePlainSQL($query);
+            $user_data = oci_fetch_assoc($result);
+            $passInDB = trim($user_data['MANPASSWORD']);
+            
+
+
+            if($passInDB === $manPassword)
+            {
+                echo "it gets here";
+                $_SESSION['MANID'] = $user_data['MANID'];
+                header("Location: index.php");
+                die;
+            }
+                
+        echo "wrong username or password NO RESULT";
+        } else{
+        echo "wrong username or password! idk 2";
+        }
+}
 
     function handleInsertSignupRequest() {
         global $db_conn;

@@ -1,6 +1,7 @@
 <?php 
 
-include("connection.php");
+
+include("../connection.php");
 include("functions.php");
 
 $user_data = check_login($db_conn);

@@ -2,42 +2,8 @@
 
 	include("connection.php");
 	include("functions.php");
+	include_once('../routeHandler.php');
 
-	if(isset($_POST["submit"])){
-		$manID = $_POST['manID'];
-		$manPassword = $_POST['manPassword'];
-		$query = "select * from Manager where manID = '$manID'";
-		$result = executePlainSQL($query);
-
-        $query_nrow = "SELECT COUNT(*) FROM Manager";
-		$result2 = executePlainSQL($query_nrow);
-
-		$row = oci_fetch_assoc($result);
-
-		if($result2 > 0){
-			if($manPassword == $row["manPassword"]){
-				header("Location: index.php");
-			}
-
-			else{
-				echo "wrong username or password!";
-			}
-
-		}
-		else{
-			echo "Please enter some valid information!";
-		}
-		
-	}
-
-
-
-
-
-
-
-
-	
 
 ?>
 
@@ -79,18 +45,26 @@
 
 	</style>
 
+
 	<div id="box">
-		
-		<form method="post">
-			<div style="font-size: 20px; margin: 10px;color: white;">Login</div>
+        <div style="font-size: 20px;margin: 10px;color: white;">Log in below</div>
+            <p>Remember ID's are in the format 'MXXX' where X are numbers.</p>
+            <form method="POST" action="login.php">
+            
+                <input type="hidden" id="insertLoginRequest" name="insertLoginRequest">
+                Manager ID: <input id = "text" type="text" name="manID" pattern="M\d{3}" title="Invalid entry. Please follow the format above." required> <br /><br />
+                Password: <input id = "text" type="text" name="manPassword" maxlength="12" required> <br /><br />
+            <input id = "button" type="submit" value="Login" name="loginSubmit"></p>
 
-			Manager ID: <input id="text" type="text" name="manID"><br><br>
-			Password: <input id="text" type="text" name="manPassword"><br><br>
+            <a href="signup.php">Click to Signup</a><br><br>
+        </form>
 
-			<input id="button" type="submit" value="Login"><br><br>
+    </div>
 
-			<a href="signup.php">Click to Signup</a><br><br>
-		</form>
-	</div>
+
+
+
+
+
 </body>
 </html>
