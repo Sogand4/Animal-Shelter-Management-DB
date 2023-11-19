@@ -59,11 +59,8 @@
             $passInDB = trim($user_data['MANPASSWORD']);
             
 
-
             if($passInDB === $manPassword)
             {
-                echo "it gets here";
-                $_SESSION['MANID'] = $user_data['MANID'];
                 header("Location: index.php");
                 die;
             }

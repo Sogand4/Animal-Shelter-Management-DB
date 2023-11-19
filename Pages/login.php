@@ -1,9 +1,7 @@
 <?php 
 
 	include("connection.php");
-	include("functions.php");
 	include_once('../routeHandler.php');
-
 
 ?>
 
