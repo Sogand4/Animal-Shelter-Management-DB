@@ -24,3 +24,9 @@ CREATE TABLE Manager(
     kpi char(30) DEFAULT NULL,
     PRIMARY KEY (manID)
 );
+
+CREATE TABLE Vet(
+    vetID CHAR(4),
+    vetName VARCHAR(225) NOT NULL,
+    PRIMARY KEY (vetID)
+);
