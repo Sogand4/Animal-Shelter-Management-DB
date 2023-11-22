@@ -8,3 +8,4 @@ DROP TABLE Volunteer;
 DROP TABLE AvailableDaysRegularVolunteer;
 DROP TABLE Inspector;
 DROP TABLE Manager;
+DROP TABLE Vet;

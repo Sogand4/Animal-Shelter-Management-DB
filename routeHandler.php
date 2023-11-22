@@ -33,6 +33,9 @@
             else if (array_key_exists('insertLoginRequest', $_POST)) {
                 handleInsertLoginRequest();
             }
+            else if (array_key_exists('insertVetRequest', $_POST)) {
+                handleInsertVetRequest();
+            }
 
             disconnectFromDB();
         }
@@ -96,6 +99,35 @@
             );
 
             executeBoundSQL("insert into Manager values (:bind1, :bind2, :bind3, :bind4)", $alltuples);
+            OCICommit($db_conn);
+        } else {
+            echo '<p style="color: red;">Invalid ID inserted. Please use an ID that is not already in use.</p>';
+        }
+    }
+
+    function handleInsertVetRequest() {
+        global $db_conn;
+
+        // Only run the insert inspector query if the primary key is not already being used
+        $vetID = $_POST['vetID'];
+        
+        $checkExistingIns = "SELECT COUNT(*) AS count FROM Vet WHERE vetID = '$vetID'";
+        $numExistingIns = executePlainSQL($checkExistingIns);
+        $rowExistingIns = oci_fetch_assoc($numExistingIns);
+        $countExistingIns = $rowExistingIns['COUNT'];
+
+        if ($countExistingIns == 0) {
+            // Add new inspector
+            $tuple = array (
+                ":bind1" => $_POST['vetID'],
+                ":bind2" => $_POST['vetName']
+            );
+
+            $alltuples = array (
+                $tuple
+            );
+
+            executeBoundSQL("insert into Vet values (:bind1, :bind2)", $alltuples);
             OCICommit($db_conn);
         } else {
             echo '<p style="color: red;">Invalid ID inserted. Please use an ID that is not already in use.</p>';
