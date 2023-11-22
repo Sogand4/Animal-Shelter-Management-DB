@@ -1,8 +1,17 @@
 <?php
 
+
     require_once('connection.php');
 
     if (isset($_POST['reset']) || isset($_POST['insertSubmit'])) {
+        handlePOSTRequest();
+    }
+
+    if (isset($_POST['reset']) || isset($_POST['signupSubmit'])) {
+        handlePOSTRequest();
+    }
+
+    if (isset($_POST['reset']) || isset($_POST['loginSubmit'])) {
         handlePOSTRequest();
     }
 
@@ -18,8 +27,78 @@
             else if (array_key_exists('insertInspectorRequest', $_POST)) {
                 handleInsertInspectorRequest();
             }
+            else if (array_key_exists('insertSignupRequest', $_POST)) {
+                handleInsertSignupRequest();
+            }
+            else if (array_key_exists('insertLoginRequest', $_POST)) {
+                handleInsertLoginRequest();
+            }
 
             disconnectFromDB();
+        }
+    }
+
+    function handleInsertLoginRequest() {
+        global $db_conn;
+
+        // Only run the insert manager query if the primary key is not already being used
+        $manID = $_POST['manID'];
+		$manPassword = $_POST['manPassword'];
+        
+        $checkExistingMan = "SELECT COUNT(*) AS count FROM Manager WHERE manID = '$manID'";
+        $numExistingMan = executePlainSQL($checkExistingMan);
+        $rowExistingMan = oci_fetch_assoc($numExistingMan);
+        $countExistingMan = $rowExistingMan['COUNT'];
+
+        //if both manID and manPassword not empty
+        if($countExistingMan == 1)
+		{
+            $query = "SELECT * FROM Manager WHERE manID = '$manID'";
+            $result = executePlainSQL($query);
+            $user_data = oci_fetch_assoc($result);
+            $passInDB = trim($user_data['MANPASSWORD']);
+            
+
+            if($passInDB === $manPassword)
+            {
+                header("Location: index.php");
+                die;
+            }
+                
+        echo "wrong username or password NO RESULT";
+        } else{
+        echo "wrong username or password! idk 2";
+        }
+}
+
+    function handleInsertSignupRequest() {
+        global $db_conn;
+
+        // Only run the insert manager query if the primary key is not already being used
+        $manID = $_POST['manID'];
+        
+        $checkExistingMan = "SELECT COUNT(*) AS count FROM Manager WHERE manID = '$manID'";
+        $numExistingMan = executePlainSQL($checkExistingMan);
+        $rowExistingMan = oci_fetch_assoc($numExistingMan);
+        $countExistingMan = $rowExistingMan['COUNT'];
+
+        if ($countExistingMan == 0) {
+            // Add new manager
+            $tuple = array (
+                ":bind1" => $_POST['manID'],
+                ":bind2" => $_POST['manPassword'],
+                ":bind3" => $_POST['manName'],  
+                ":bind4" => $_POST['kpi']
+            );
+
+            $alltuples = array (
+                $tuple
+            );
+
+            executeBoundSQL("insert into Manager values (:bind1, :bind2, :bind3, :bind4)", $alltuples);
+            OCICommit($db_conn);
+        } else {
+            echo '<p style="color: red;">Invalid ID inserted. Please use an ID that is not already in use.</p>';
         }
     }
 
