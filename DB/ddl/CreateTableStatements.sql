@@ -57,7 +57,7 @@ CREATE TABLE Inspect(
   shelterName VARCHAR(225),
   standardsMet NUMBER(1, 0),
   PRIMARY KEY (insID, shelterLocation, shelterName),
-  FOREIGN KEY insID REFERENCES Inspector(insID),
+  FOREIGN KEY (insID) REFERENCES Inspector(insID),
   FOREIGN KEY (shelterLocation,shelterName) REFERENCES
   Shelter(shelterLocation,shelterName)
 );

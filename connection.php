@@ -1,4 +1,6 @@
 <?php
+    require_once('constants.php');
+
     $db_conn = NULL;
 
     function connectToDB() {

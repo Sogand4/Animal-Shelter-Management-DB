@@ -42,16 +42,16 @@ INSERT INTO AdoptersInfo (adopterID, nationalID, name, phoneNumber, email, posta
 
 INSERT INTO Shelter(shelterLocation,capacity,shelterName) VALUES ('270 Gerrard St E, Toronto, Ontario', 200, 'Lovely Pet Home');
 INSERT INTO Shelter(shelterLocation,capacity,shelterName) VALUES ('322 Dundas St W, Toronto,Ontario', 150, 'Loving Care Animal Shelter');
-INSERT INTO Shelter(shelterLocation,capacity,shelterName) VALUES ('101 Oak Street, Evacuationville, USA', 500, 'Lovely Pet Home'),
-INSERT INTO Shelter(shelterLocation,capacity,shelterName) VALUES ('10776 King George Boulevard, Surrey, British Columbia', 100, 'Paws and Claws Animal Shelter'),
-INSERT INTO Shelter(shelterLocation,capacity,shelterName) VALUES ('4455 110 Avenue SE, Calgary, Alberta', 300, 'The Animal Haven'),
+INSERT INTO Shelter(shelterLocation,capacity,shelterName) VALUES ('101 Oak Street, Evacuationville, USA', 500, 'Lovely Pet Home');
+INSERT INTO Shelter(shelterLocation,capacity,shelterName) VALUES ('10776 King George Boulevard, Surrey, British Columbia', 100, 'Paws and Claws Animal Shelter');
+INSERT INTO Shelter(shelterLocation,capacity,shelterName) VALUES ('4455 110 Avenue SE, Calgary, Alberta', 300, 'The Animal Haven');
 INSERT INTO Shelter(shelterLocation,capacity,shelterName) VALUES ('234 Willow Lane, Supportville, USA', 500, 'The Animal Haven');
 
-INSERT INTO Inspect(insID,shelterLocation,shelterName,standardsMet) VALUES ('I001', '234 Willow Lane, Supportville, USA', 'Lovely Pet Home', 1);
-INSERT INTO Inspect(insID,shelterLocation,shelterName,standardsMet) VALUES ('I002', '234 Willow Lane, Supportville, USA', 'Lovely Pet Home', 1),
-INSERT INTO Inspect(insID,shelterLocation,shelterName,standardsMet) VALUES ('I002', '101 Oak Street, Evacuationville, USA', 'The Animal Haven', 1),
-INSERT INTO Inspect(insID,shelterLocation,shelterName,standardsMet) VALUES ('I003', '10776 King George Boulevard, Surrey, British Columbia', 'Paws and  Claws Animal Shelter', 1),
-INSERT INTO Inspect(insID,shelterLocation,shelterName,standardsMet) VALUES ('I004', '270 Gerrard St E, Toronto, Ontario', 'Lovely Pet Home', 1),
+INSERT INTO Inspect(insID,shelterLocation,shelterName,standardsMet) VALUES ('I001', '234 Willow Lane, Supportville, USA', 'The Animal Haven', 1);
+INSERT INTO Inspect(insID,shelterLocation,shelterName,standardsMet) VALUES ('I002', '234 Willow Lane, Supportville, USA', 'The Animal Haven', 1);
+INSERT INTO Inspect(insID,shelterLocation,shelterName,standardsMet) VALUES ('I002', '4455 110 Avenue SE, Calgary, Alberta', 'The Animal Haven', 1);
+INSERT INTO Inspect(insID,shelterLocation,shelterName,standardsMet) VALUES ('I003', '10776 King George Boulevard, Surrey, British Columbia', 'Paws and Claws Animal Shelter', 1);
+INSERT INTO Inspect(insID,shelterLocation,shelterName,standardsMet) VALUES ('I004', '270 Gerrard St E, Toronto, Ontario', 'Lovely Pet Home', 1);
 INSERT INTO Inspect(insID,shelterLocation,shelterName,standardsMet) VALUES ('I004', '322 Dundas St W, Toronto,Ontario', 'Loving Care Animal Shelter', 0);
 
 INSERT INTO Manager(manID,manPassword) VALUES ('M001', 'myt');
