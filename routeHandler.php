@@ -1,7 +1,11 @@
 <?php
     require_once('connection.php');
-    global $currShelter;
-    $currShelter = null;
+    global $currShelterName;
+    global $currShelterLoc;
+    // EXAMPLE SETTING FOR TESTING PURPOSES.
+    // TODO: SET THIS TO NULL AND REASSIGN WHEN USER LOGS IN
+    $currShelterName = null;
+    $currShelterLoc = null;
 
     if (isset($_POST['reset']) || isset($_POST['insertSubmit']) || isset($_POST['signupSubmit']) || isset($_POST['loginSubmit']) || isset($_POST['updateSubmit'])) {
         handlePOSTRequest();
