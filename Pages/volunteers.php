@@ -37,8 +37,7 @@
     <?php
         connectToDB();
         $sql = 'SELECT *
-                FROM Volunteer v
-                LEFT JOIN AvailableDaysRegularVolunteer a ON v.availableDays = a.availableDays
+                FROM Volunteer v NATURAL LEFT OUTER JOIN AvailableDaysRegularVolunteer
                 ORDER BY v.volunteerID DESC';
         $result = executePlainSQL($sql);
     ?>
