@@ -11,7 +11,8 @@ include("../connection.php");
 </head>
 <body>
 	
-	<h1>This is the index page</h1>
+    <!-- TODO: SOGAND: HOME PAGE -->
+	<h1>This is the index page. This will be home page later</h1>
 
 	<br>
 	Hello, welcome.

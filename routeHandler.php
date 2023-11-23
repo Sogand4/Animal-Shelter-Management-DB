@@ -1,17 +1,9 @@
 <?php
-
-
     require_once('connection.php');
+    global $currShelter;
+    $currShelter = null;
 
-    if (isset($_POST['reset']) || isset($_POST['insertSubmit'])) {
-        handlePOSTRequest();
-    }
-
-    if (isset($_POST['reset']) || isset($_POST['signupSubmit'])) {
-        handlePOSTRequest();
-    }
-
-    if (isset($_POST['reset']) || isset($_POST['loginSubmit'])) {
+    if (isset($_POST['reset']) || isset($_POST['insertSubmit']) || isset($_POST['signupSubmit']) || isset($_POST['loginSubmit']) || isset($_POST['updateSubmit'])) {
         handlePOSTRequest();
     }
 
@@ -36,55 +28,227 @@
             else if (array_key_exists('insertVetRequest', $_POST)) {
                 handleInsertVetRequest();
             }
+            else if (array_key_exists('insertAdopterRequest', $_POST)) {
+                handleInsertAdopterRequest();
+            }
+            else if (array_key_exists('updateAdopterRequest', $_POST)) {
+                handleupdateAdopterRequest();
+            }
 
             disconnectFromDB();
         }
     }
 
+        // TODO: ADD FILTERING FOR THE SHELTER WE ARE CURRENTLY WORKING IN
+        function handleUpdateAdopterRequest() {
+            global $db_conn;
+    
+            // Only run the update adopter query if the ID exists and unique keys are not being used
+            $tuple = array (
+                ":bind1" => $_POST['adptID']
+            );
+    
+            $alltuples = array (
+                $tuple
+            );
+    
+            $numExisting = executeBoundSQL("SELECT COUNT(*) AS count FROM AdoptersInfo WHERE adopterID = :bind1", $alltuples);
+            $rowExisting = oci_fetch_assoc($numExisting);
+            $countExisting1 = $rowExisting['COUNT'];
+    
+            $tuple = array (
+                ":bind1" => $_POST['adptEmail']
+            );
+    
+            $alltuples3 = array (
+                $tuple
+            );
+    
+            $numExisting = executeBoundSQL("SELECT COUNT(*) AS count FROM AdoptersInfo WHERE email = :bind1", $alltuples3);
+            $rowExisting = oci_fetch_assoc($numExisting);
+            $countExisting2 = $rowExisting['COUNT'];
+    
+            if ($countExisting1 == 1 && $countExisting2 == 0) {
+                // Add new adopter
+                $tuple = array (
+                    ":bind1" => $_POST['adptID'],
+                    ":bind2" => $_POST['adptName'],
+                    ":bind3" => $_POST['adptEmail']
+                );
+    
+                $alltuples = array (
+                    $tuple
+                );
+    
+                executeBoundSQL("UPDATE AdoptersInfo SET name = :bind2, email = :bind3 WHERE adopterID = :bind1", $alltuples);
+                OCICommit($db_conn);
+            } else {
+                echo '<p style="color: red;">Invalid info inserted. Please use an already existing adopter ID and a unique email.</p>';
+            }
+        }
+    
+
+    // TODO: ADD FILTERING FOR THE SHELTER WE ARE CURRENTLY WORKING IN
+    function handleInsertAdopterRequest() {
+        global $db_conn;
+
+        // Only run the insert adopter query if the unique keys are not being used
+        $tuple = array (
+            ":bind1" => $_POST['adptID']
+        );
+
+        $alltuples = array (
+            $tuple
+        );
+
+        $numExisting = executeBoundSQL("SELECT COUNT(*) AS count FROM AdoptersInfo WHERE adopterID = :bind1", $alltuples);
+        $rowExisting = oci_fetch_assoc($numExisting);
+        $countExisting1 = $rowExisting['COUNT'];
+
+        $tuple = array (
+            ":bind1" => $_POST['natID']
+        );
+
+        $alltuples2 = array (
+            $tuple
+        );
+
+        $numExisting = executeBoundSQL("SELECT COUNT(*) AS count FROM AdoptersInfo WHERE nationalID = :bind1", $alltuples2);
+        $rowExisting = oci_fetch_assoc($numExisting);
+        $countExisting2 = $rowExisting['COUNT'];
+
+        $tuple = array (
+            ":bind1" => $_POST['adptEmail']
+        );
+
+        $alltuples3 = array (
+            $tuple
+        );
+
+        $numExisting = executeBoundSQL("SELECT COUNT(*) AS count FROM AdoptersInfo WHERE email = :bind1", $alltuples3);
+        $rowExisting = oci_fetch_assoc($numExisting);
+        $countExisting3 = $rowExisting['COUNT'];
+
+        if ($countExisting1 == 0 && $countExisting2 == 0 && $countExisting3 == 0) {
+            // Adopter's postal code is a foreign key, so if it does not already exsit in AdoptersLocation table, then add it to the table first
+            $postalCode = $_POST['adptPostalCode'];
+            if ($postalCode != NULL) {
+                $tuple = array (
+                    ":bind1" => $_POST['adptPostalCode']
+                );
+        
+                $alltuples = array (
+                    $tuple
+                );
+
+                $numExisting = executeBoundSQL("SELECT COUNT(*) AS count FROM AdoptersLocation WHERE postalCode = :bind1", $alltuples);
+                $rowExisting = oci_fetch_assoc($numExisting);
+                $countExisting = $rowExisting['COUNT'];
+
+                if ($countExisting == 0) {
+                    $tuple = array (
+                        ":bind1" => $_POST['adptPostalCode'],
+                        ":bind2" => $_POST['adptCity'],
+                        ":bind3" => $_POST['adptStreetName'],
+                        ":bind4" => $_POST['adptProvince']
+                    );
+        
+                    $alltuples = array (
+                        $tuple
+                    );
+        
+                    executeBoundSQL("insert into AdoptersLocation values (:bind1, :bind2, :bind3, :bind4)", $alltuples);
+                }
+            }
+
+            // Add new adopter
+            $tuple = array (
+                ":bind1" => $_POST['adptID'],
+                ":bind2" => $_POST['natID'],
+                ":bind3" => $_POST['adptName'],
+                ":bind4" => $_POST['adptNum'],
+                ":bind5" => $_POST['adptEmail'],
+                ":bind6" => $_POST['adptPostalCode'],
+                ":bind7" => $_POST['adptHouseNum']
+            );
+
+            $alltuples = array (
+                $tuple
+            );
+
+            executeBoundSQL("insert into AdoptersInfo values (:bind1, :bind2, :bind3, :bind4, :bind5, :bind6, :bind7)", $alltuples);
+            OCICommit($db_conn);
+        } else {
+            echo '<p style="color: red;">Invalid info inserted. Please use an adopter ID, national ID, and email that is not already in use.</p>';
+        }
+    }
+
+    // TODO: add logic to keep track of shelter name of the manager who logged in works at
     function handleInsertLoginRequest() {
         global $db_conn;
 
         // Only run the insert manager query if the primary key is not already being used
         $manID = $_POST['manID'];
 		$manPassword = $_POST['manPassword'];
-        
-        $checkExistingMan = "SELECT COUNT(*) AS count FROM Manager WHERE manID = '$manID'";
-        $numExistingMan = executePlainSQL($checkExistingMan);
+
+        $tuple = array (
+            ":bind1" => $_POST['manID']
+        );
+
+        $alltuples = array (
+            $tuple
+        );
+
+        $numExistingMan = executeBoundSQL("SELECT COUNT(*) AS count FROM Manager WHERE manID = :bind1", $alltuples);
         $rowExistingMan = oci_fetch_assoc($numExistingMan);
         $countExistingMan = $rowExistingMan['COUNT'];
 
         //if both manID and manPassword not empty
         if($countExistingMan == 1)
 		{
-            $query = "SELECT * FROM Manager WHERE manID = '$manID'";
-            $result = executePlainSQL($query);
+            $tuple = array (
+                ":bind1" => $_POST['manID']
+            );
+    
+            $alltuples = array (
+                $tuple
+            );
+    
+            $result = executeBoundSQL("SELECT * FROM Manager WHERE manID = :bind1", $alltuples);
             $user_data = oci_fetch_assoc($result);
             $passInDB = trim($user_data['MANPASSWORD']);
             
-
             if($passInDB === $manPassword)
             {
+                // login successful. Keep track of current shelter
+                // $currentshelter = (do query to set this value)
                 header("Location: index.php");
                 die;
             }
                 
-        echo "wrong username or password NO RESULT";
+        echo " wrong username or password NO RESULT";
         } else{
-        echo "wrong username or password! idk 2";
+        echo " wrong username or password!";
         }
 }
 
+    //  TODO: manager signs up name of shelter too 
     function handleInsertSignupRequest() {
         global $db_conn;
 
         // Only run the insert manager query if the primary key is not already being used
-        $manID = $_POST['manID'];
-        
-        $checkExistingMan = "SELECT COUNT(*) AS count FROM Manager WHERE manID = '$manID'";
-        $numExistingMan = executePlainSQL($checkExistingMan);
+        $tuple = array (
+            ":bind1" => $_POST['manID']
+        );
+
+        $alltuples = array (
+            $tuple
+        );
+
+        $numExistingMan = executeBoundSQL("SELECT COUNT(*) AS count FROM Manager WHERE manID = :bind1", $alltuples);
         $rowExistingMan = oci_fetch_assoc($numExistingMan);
         $countExistingMan = $rowExistingMan['COUNT'];
-
+        
         if ($countExistingMan == 0) {
             // Add new manager
             $tuple = array (
@@ -105,19 +269,25 @@
         }
     }
 
+    // TODO: ADD FILTERING FOR THE SHELTER WE ARE CURRENTLY WORKING IN
     function handleInsertVetRequest() {
         global $db_conn;
 
-        // Only run the insert inspector query if the primary key is not already being used
-        $vetID = $_POST['vetID'];
-        
-        $checkExistingIns = "SELECT COUNT(*) AS count FROM Vet WHERE vetID = '$vetID'";
-        $numExistingIns = executePlainSQL($checkExistingIns);
-        $rowExistingIns = oci_fetch_assoc($numExistingIns);
-        $countExistingIns = $rowExistingIns['COUNT'];
+        // Only run the insert vet query if the primary key is not already being used
+        $tuple = array (
+            ":bind1" => $_POST['vetID']
+        );
 
-        if ($countExistingIns == 0) {
-            // Add new inspector
+        $alltuples = array (
+            $tuple
+        );
+
+        $numExistingVet = executeBoundSQL("SELECT COUNT(*) AS count FROM Vet WHERE vetID = :bind1", $alltuples);
+        $rowExistingVet = oci_fetch_assoc($numExistingVet);
+        $countExistingVet = $rowExistingVet['COUNT'];
+
+        if ($countExistingVet == 0) {
+            // Add new vet
             $tuple = array (
                 ":bind1" => $_POST['vetID'],
                 ":bind2" => $_POST['vetName']
@@ -139,10 +309,15 @@
         global $db_conn;
 
         // Only run the insert inspector query if the primary key is not already being used
-        $insID = $_POST['insID'];
-        
-        $checkExistingIns = "SELECT COUNT(*) AS count FROM Inspector WHERE insID = '$insID'";
-        $numExistingIns = executePlainSQL($checkExistingIns);
+        $tuple = array (
+            ":bind1" => $_POST['insID']
+        );
+
+        $alltuples = array (
+            $tuple
+        );
+
+        $numExistingIns = executeBoundSQL("SELECT COUNT(*) AS count FROM Inspector WHERE insID = :bind1", $alltuples);
         $rowExistingIns = oci_fetch_assoc($numExistingIns);
         $countExistingIns = $rowExistingIns['COUNT'];
 
@@ -169,10 +344,15 @@
         global $db_conn;
 
         // Only run the insert volunteer query if the primary key is not already being used
-        $volunteerID = $_POST['volID'];
-        
-        $checkExistingVol = "SELECT COUNT(*) AS count FROM Volunteer WHERE volunteerID = '$volunteerID'";
-        $numExistingVol = executePlainSQL($checkExistingVol);
+        $tuple = array (
+            ":bind1" => $_POST['volID']
+        );
+
+        $alltuples = array (
+            $tuple
+        );
+
+        $numExistingVol = executeBoundSQL("SELECT COUNT(*) AS count FROM Volunteer WHERE volunteerID = :bind1", $alltuples);
         $rowExistingVol = oci_fetch_assoc($numExistingVol);
         $countExistingVol = $rowExistingVol['COUNT'];
 
@@ -182,8 +362,15 @@
             $volAvailabilities = $_POST['volDays'];
             
             if ($volAvailabilities != NULL) {
-                $checkExistingDays = "SELECT COUNT(*) AS count FROM AvailableDaysRegularVolunteer WHERE availableDays = '$volAvailabilities'";
-                $numExistingDays = executePlainSQL($checkExistingDays);
+                $tuple = array (
+                    ":bind1" => $_POST['volDays']
+                );
+        
+                $alltuples = array (
+                    $tuple
+                );
+        
+                $numExistingDays = executeBoundSQL("SELECT COUNT(*) AS count FROM AvailableDaysRegularVolunteer WHERE availableDays = :bind1", $alltuples);
                 $rowExistingDays = oci_fetch_assoc($numExistingDays);
                 $countExistingDays = $rowExistingDays['COUNT'];
 
@@ -314,6 +501,8 @@
                 $success = False;
             }
         }
+
+        return $statement;
     }
 
 ?>

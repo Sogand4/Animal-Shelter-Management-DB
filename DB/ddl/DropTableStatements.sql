@@ -9,3 +9,5 @@ DROP TABLE AvailableDaysRegularVolunteer;
 DROP TABLE Inspector;
 DROP TABLE Manager;
 DROP TABLE Vet;
+DROP TABLE AdoptersInfo;
+DROP TABLE AdoptersLocation;

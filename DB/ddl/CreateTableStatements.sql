@@ -30,3 +30,24 @@ CREATE TABLE Vet(
     vetName VARCHAR(225) NOT NULL,
     PRIMARY KEY (vetID)
 );
+
+CREATE TABLE AdoptersLocation(
+    postalCode VARCHAR(225),
+    city VARCHAR(225),
+    streetName VARCHAR(225),
+    province VARCHAR(225),
+    PRIMARY KEY (postalCode)
+);
+
+CREATE TABLE AdoptersInfo(
+    adopterID CHAR(4),
+    nationalID CHAR(10) UNIQUE,
+    name VARCHAR(225),
+    phoneNumber INT,
+    email VARCHAR(225) UNIQUE,
+    postalCode VARCHAR(225),
+    houseNumber VARCHAR(225),
+    PRIMARY KEY (adopterID),
+    FOREIGN KEY (postalCode) REFERENCES AdoptersLocation(postalCode)
+        ON DELETE SET NULL
+);
