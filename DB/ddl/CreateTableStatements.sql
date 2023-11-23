@@ -69,3 +69,14 @@ CREATE TABLE Manager(
     kpi char(30) DEFAULT NULL,
     PRIMARY KEY (manID)
 );
+
+CREATE TABLE VolunteersAtShelter(
+	volunteerID char(4),
+	shelterLocation varchar(225),
+	shelterName varchar(225),
+    since date,
+    PRIMARY KEY (volunteerID, shelterLocation, shelterName),
+    FOREIGN KEY (volunteerID) REFERENCES Volunteer(volunteerID),
+    FOREIGN KEY (shelterName, shelterLocation) REFERENCES
+    Shelter(shelterName, shelterLocation)
+);

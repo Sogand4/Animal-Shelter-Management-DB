@@ -59,3 +59,9 @@ INSERT INTO Manager(manID,manPassword) VALUES ('M002', 'myt');
 INSERT INTO Manager (manID, manPassword) VALUES ('M003', 'pass');
 INSERT INTO Manager(manID,manPassword) VALUES ('M004', 'pass4');
 INSERT INTO Manager (manID, manPassword) VALUES ('M005', 'pass5');
+
+INSERT INTO VolunteersAtShelter (volunteerID, shelterLocation, shelterName, since) VALUES ('V123', '270 Gerrard St E, Toronto, Ontario', 'Lovely Pet Home', TO_DATE('2023-11-11', 'YYYY-MM-DD'));
+INSERT INTO VolunteersAtShelter (volunteerID, shelterLocation, shelterName, since) VALUES ('V124', '270 Gerrard St E, Toronto, Ontario', 'Lovely Pet Home', TO_DATE('2023-10-27', 'YYYY-MM-DD'));
+INSERT INTO VolunteersAtShelter (volunteerID, shelterLocation, shelterName, since) VALUES ('V125', '101 Oak Street, Evacuationville, USA', 'Lovely Pet Home',TO_DATE('2023-11-11', 'YYYY-MM-DD'));
+INSERT INTO VolunteersAtShelter (volunteerID, shelterLocation, shelterName, since) VALUES ('V126', '10776 King George Boulevard, Surrey, British Columbia', 'Paws and Claws Animal Shelter', TO_DATE('2007-01-01', 'YYYY-MM-DD'));
+INSERT INTO VolunteersAtShelter (volunteerID, shelterLocation, shelterName, since) VALUES ('V126', '4455 110 Avenue SE, Calgary, Alberta', 'The Animal Haven', TO_DATE('2010-08-04', 'YYYY-MM-DD'));

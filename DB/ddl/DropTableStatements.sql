@@ -4,6 +4,7 @@
 -- TODO: for the milestone we need to evenually put all drop and create tables into one file (and maybe insert?).
 -- I think keeping them seperate for now is better for debugging
 
+DROP TABLE VolunteersAtShelter;
 DROP TABLE Volunteer;
 DROP TABLE AvailableDaysRegularVolunteer;
 DROP TABLE Vet;
