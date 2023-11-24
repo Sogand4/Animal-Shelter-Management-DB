@@ -64,4 +64,4 @@ INSERT INTO VolunteersAtShelter (volunteerID, shelterLocation, shelterName, sinc
 INSERT INTO VolunteersAtShelter (volunteerID, shelterLocation, shelterName, since) VALUES ('V124', '270 Gerrard St E, Toronto, Ontario', 'Lovely Pet Home', TO_DATE('2023-10-27', 'YYYY-MM-DD'));
 INSERT INTO VolunteersAtShelter (volunteerID, shelterLocation, shelterName, since) VALUES ('V125', '101 Oak Street, Evacuationville, USA', 'Lovely Pet Home',TO_DATE('2023-11-11', 'YYYY-MM-DD'));
 INSERT INTO VolunteersAtShelter (volunteerID, shelterLocation, shelterName, since) VALUES ('V126', '10776 King George Boulevard, Surrey, British Columbia', 'Paws and Claws Animal Shelter', TO_DATE('2007-01-01', 'YYYY-MM-DD'));
-INSERT INTO VolunteersAtShelter (volunteerID, shelterLocation, shelterName, since) VALUES ('V126', '4455 110 Avenue SE, Calgary, Alberta', 'The Animal Haven', TO_DATE('2010-08-04', 'YYYY-MM-DD'));
+INSERT INTO VolunteersAtShelter (volunteerID, shelterLocation, shelterName, since) VALUES ('V126', '234 Willow Lane, Supportville, USA', 'The Animal Haven', TO_DATE('2010-08-04', 'YYYY-MM-DD'));

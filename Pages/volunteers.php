@@ -36,10 +36,17 @@
     <!-- TODO: ADD FILTERING FOR CURRENT SHELTER -->
     <?php
         connectToDB();
-        $sql = 'SELECT *
-                FROM Volunteer v NATURAL LEFT OUTER JOIN AvailableDaysRegularVolunteer
-                ORDER BY v.volunteerID DESC';
+        $sql = "SELECT *
+                FROM VolunteersAtShelter s
+                INNER JOIN Volunteer v ON s.volunteerID = v.volunteerID
+                LEFT OUTER JOIN AvailableDaysRegularVolunteer a ON v.availableDays = a.availableDays
+                ORDER BY v.volunteerID DESC";
         $result = executePlainSQL($sql);
+
+        $sql2 = "SELECT volunteerID
+                FROM Volunteer
+                ORDER BY volunteerID DESC";
+        $result2 = executePlainSQL($sql2);
     ?>
 
     <table border="1">
@@ -50,6 +57,7 @@
                 <th>Days Available</th>
                 <th>Regular Volunteer</th>
                 <th>Phone Number</th>
+                <th>Start date</th>
             </tr>
         </thead>
         <tbody>
@@ -62,6 +70,28 @@
                 echo '<td>' . $row['AVAILABLEDAYS'] . '</td>';
                 echo '<td>' . ($row['REGULARVOLUNTEER'] ? 'Yes' : 'No') . '</td>';
                 echo '<td>' . $row['PHONENUMBER'] . '</td>';
+                echo '<td>' . $row['SINCE'] . '</td>';
+                echo '</tr>';
+            }
+        ?>
+
+        </tbody>
+    </table>
+
+    <h1>Volunteer IDs already in use:</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Volunteer ID</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        <?php
+            while ($row = oci_fetch_assoc($result2)) {
+                echo '<tr>';
+                echo '<td>' . $row['VOLUNTEERID'] . '</td>';
                 echo '</tr>';
             }
         ?>

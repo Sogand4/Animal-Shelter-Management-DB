@@ -37,7 +37,7 @@
         }
     }
 
-    // TODO: ADD FILTERING FOR THE SHELTER WE ARE CURRENTLY WORKING IN
+    // SOGAND TODO: ADD FILTERING FOR THE SHELTER WE ARE CURRENTLY WORKING + ANIMALS
     function handleUpdateAdopterRequest() {
         global $db_conn;
 
@@ -86,7 +86,7 @@
     }
     
 
-    // TODO: ADD FILTERING FOR THE SHELTER WE ARE CURRENTLY WORKING IN
+    // SOGAND TODO: ADD FILTERING FOR THE SHELTER WE ARE CURRENTLY WORKING IN + ANIMALS
     function handleInsertAdopterRequest() {
         global $db_conn;
 
@@ -181,7 +181,7 @@
         }
     }
 
-    // TODO: add logic to keep track of shelter name of the manager who logged in works at
+    // ECE TODO: add logic to keep track of shelter name of the manager who logged in works at
     function handleInsertLoginRequest() {
         global $db_conn;
 
@@ -230,7 +230,7 @@
         }
 }
 
-    //  TODO: manager signs up name and location of shelter too 
+    // ECE TODO: manager signs up name and location of shelter too 
     function handleInsertSignupRequest() {
         global $db_conn;
 
@@ -267,7 +267,7 @@
         }
     }
 
-    // TODO: ADD FILTERING FOR THE SHELTER WE ARE CURRENTLY WORKING IN
+    // ECE TODO: ADD FILTERING FOR THE SHELTER WE ARE CURRENTLY WORKING IN
     function handleInsertVetRequest() {
         global $db_conn;
 
@@ -352,9 +352,10 @@
         }
     }
 
-    // TODO: ADD FILTERING FOR THE SHELTER WE ARE CURRENTLY WORKING IN
     function handleInsertVolunteerRequest() {
         global $db_conn;
+        global $currShelterName;
+        global $currShelterLoc;
 
         // Only run the insert volunteer query if the primary key is not already being used
         $tuple = array (
@@ -419,13 +420,28 @@
             );
 
             executeBoundSQL("insert into Volunteer values (:bind1, :bind2, :bind3, :bind4)", $alltuples);
+
+            $currentDate = date('Y-m-d');
+
+            $tuple = array (
+                ":bind1" => $_POST['volID'],
+                ":bind2" => $currShelterLoc,
+                ":bind3" => $currShelterName,
+                ":bind4" => $currentDate
+            );
+
+            $alltuples = array (
+                $tuple
+            );
+
+            executeBoundSQL("insert into VolunteersAtShelter values (:bind1, :bind2, :bind3, TO_DATE(:bind4, 'YYYY-MM-DD'))", $alltuples);
             OCICommit($db_conn);
         } else {
             echo '<p style="color: red;">Invalid ID inserted. Please use an ID that is not already in use.</p>';
         }
     }
 
-    // TODO: Maybe have this reset button on the navigation bar? next to logout?
+    // SELINA TODO: Maybe have this reset button on the navigation bar? next to logout?
     function handleResetRequest() {        
         global $db_conn;
 
