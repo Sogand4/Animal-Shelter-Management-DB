@@ -1,7 +1,5 @@
 <?php
     require_once('connection.php');
-    global $currShelter;
-    $currShelter = null;
 
     if (isset($_POST['reset']) || isset($_POST['insertSubmit']) || isset($_POST['signupSubmit']) || isset($_POST['loginSubmit']) || isset($_POST['updateSubmit'])) {
         handlePOSTRequest();
@@ -39,56 +37,56 @@
         }
     }
 
-        // TODO: ADD FILTERING FOR THE SHELTER WE ARE CURRENTLY WORKING IN
-        function handleUpdateAdopterRequest() {
-            global $db_conn;
-    
-            // Only run the update adopter query if the ID exists and unique keys are not being used
+    // SOGAND TODO: ADD FILTERING FOR THE SHELTER WE ARE CURRENTLY WORKING + ANIMALS
+    function handleUpdateAdopterRequest() {
+        global $db_conn;
+
+        // Only run the update adopter query if the ID exists and unique keys are not being used
+        $tuple = array (
+            ":bind1" => $_POST['adptID']
+        );
+
+        $alltuples = array (
+            $tuple
+        );
+
+        $numExisting = executeBoundSQL("SELECT COUNT(*) AS count FROM AdoptersInfo WHERE adopterID = :bind1", $alltuples);
+        $rowExisting = oci_fetch_assoc($numExisting);
+        $countExisting1 = $rowExisting['COUNT'];
+
+        $tuple = array (
+            ":bind1" => $_POST['adptEmail']
+        );
+
+        $alltuples3 = array (
+            $tuple
+        );
+
+        $numExisting = executeBoundSQL("SELECT COUNT(*) AS count FROM AdoptersInfo WHERE email = :bind1", $alltuples3);
+        $rowExisting = oci_fetch_assoc($numExisting);
+        $countExisting2 = $rowExisting['COUNT'];
+
+        if ($countExisting1 == 1 && $countExisting2 == 0) {
+            // Add new adopter
             $tuple = array (
-                ":bind1" => $_POST['adptID']
+                ":bind1" => $_POST['adptID'],
+                ":bind2" => $_POST['adptName'],
+                ":bind3" => $_POST['adptEmail']
             );
-    
+
             $alltuples = array (
                 $tuple
             );
-    
-            $numExisting = executeBoundSQL("SELECT COUNT(*) AS count FROM AdoptersInfo WHERE adopterID = :bind1", $alltuples);
-            $rowExisting = oci_fetch_assoc($numExisting);
-            $countExisting1 = $rowExisting['COUNT'];
-    
-            $tuple = array (
-                ":bind1" => $_POST['adptEmail']
-            );
-    
-            $alltuples3 = array (
-                $tuple
-            );
-    
-            $numExisting = executeBoundSQL("SELECT COUNT(*) AS count FROM AdoptersInfo WHERE email = :bind1", $alltuples3);
-            $rowExisting = oci_fetch_assoc($numExisting);
-            $countExisting2 = $rowExisting['COUNT'];
-    
-            if ($countExisting1 == 1 && $countExisting2 == 0) {
-                // Add new adopter
-                $tuple = array (
-                    ":bind1" => $_POST['adptID'],
-                    ":bind2" => $_POST['adptName'],
-                    ":bind3" => $_POST['adptEmail']
-                );
-    
-                $alltuples = array (
-                    $tuple
-                );
-    
-                executeBoundSQL("UPDATE AdoptersInfo SET name = :bind2, email = :bind3 WHERE adopterID = :bind1", $alltuples);
-                OCICommit($db_conn);
-            } else {
-                echo '<p style="color: red;">Invalid info inserted. Please use an already existing adopter ID and a unique email.</p>';
-            }
+
+            executeBoundSQL("UPDATE AdoptersInfo SET name = :bind2, email = :bind3 WHERE adopterID = :bind1", $alltuples);
+            OCICommit($db_conn);
+        } else {
+            echo '<p style="color: red;">Invalid info inserted. Please use an already existing adopter ID and a unique email.</p>';
         }
+    }
     
 
-    // TODO: ADD FILTERING FOR THE SHELTER WE ARE CURRENTLY WORKING IN
+    // SOGAND TODO: ADD FILTERING FOR THE SHELTER WE ARE CURRENTLY WORKING IN + ANIMALS
     function handleInsertAdopterRequest() {
         global $db_conn;
 
@@ -183,7 +181,7 @@
         }
     }
 
-    // TODO: add logic to keep track of shelter name of the manager who logged in works at
+    // ECE TODO: add logic to keep track of shelter name of the manager who logged in works at
     function handleInsertLoginRequest() {
         global $db_conn;
 
@@ -221,7 +219,7 @@
             if($passInDB === $manPassword)
             {
                 // login successful. Keep track of current shelter
-                // $currentshelter = (do query to set this value)
+                // $currShelterName, $currShelterLoc = (do query to set this value)
                 header("Location: index.php");
                 die;
             }
@@ -232,7 +230,7 @@
         }
 }
 
-    //  TODO: manager signs up name of shelter too 
+    // ECE TODO: manager signs up name and location of shelter too 
     function handleInsertSignupRequest() {
         global $db_conn;
 
@@ -269,7 +267,7 @@
         }
     }
 
-    // TODO: ADD FILTERING FOR THE SHELTER WE ARE CURRENTLY WORKING IN
+    // ECE TODO: ADD FILTERING FOR THE SHELTER WE ARE CURRENTLY WORKING IN
     function handleInsertVetRequest() {
         global $db_conn;
 
@@ -304,9 +302,10 @@
         }
     }
 
-    // TODO: ADD FILTERING FOR THE SHELTER WE ARE CURRENTLY WORKING IN
     function handleInsertInspectorRequest() {
         global $db_conn;
+        global $currShelterName;
+        global $currShelterLoc;
 
         // Only run the insert inspector query if the primary key is not already being used
         $tuple = array (
@@ -334,14 +333,29 @@
 
             executeBoundSQL("insert into Inspector values (:bind2, :bind1)", $alltuples);
             OCICommit($db_conn);
+
+            $tuple1 = array (
+                ":bind1" => $_POST['insID'],
+                ":bind2" => $currShelterName,
+                ":bind3" => $currShelterLoc,
+                ":bind4" => $_POST['standardsMet']
+            );
+
+            $alltuples1 = array (
+                $tuple1
+            );
+
+            executeBoundSQL("insert into Inspect values (:bind1, :bind3, :bind2, :bind4)", $alltuples1);
+            OCICommit($db_conn);
         } else {
             echo '<p style="color: red;">Invalid ID inserted. Please use an ID that is not already in use.</p>';
         }
     }
 
-    // TODO: ADD FILTERING FOR THE SHELTER WE ARE CURRENTLY WORKING IN
     function handleInsertVolunteerRequest() {
         global $db_conn;
+        global $currShelterName;
+        global $currShelterLoc;
 
         // Only run the insert volunteer query if the primary key is not already being used
         $tuple = array (
@@ -406,13 +420,28 @@
             );
 
             executeBoundSQL("insert into Volunteer values (:bind1, :bind2, :bind3, :bind4)", $alltuples);
+
+            $currentDate = date('Y-m-d');
+
+            $tuple = array (
+                ":bind1" => $_POST['volID'],
+                ":bind2" => $currShelterLoc,
+                ":bind3" => $currShelterName,
+                ":bind4" => $currentDate
+            );
+
+            $alltuples = array (
+                $tuple
+            );
+
+            executeBoundSQL("insert into VolunteersAtShelter values (:bind1, :bind2, :bind3, TO_DATE(:bind4, 'YYYY-MM-DD'))", $alltuples);
             OCICommit($db_conn);
         } else {
             echo '<p style="color: red;">Invalid ID inserted. Please use an ID that is not already in use.</p>';
         }
     }
 
-    // TODO: Maybe have this reset button on the navigation bar? next to logout?
+    // SELINA TODO: Maybe have this reset button on the navigation bar? next to logout?
     function handleResetRequest() {        
         global $db_conn;
 

@@ -17,14 +17,6 @@ CREATE TABLE Inspector(
     PRIMARY KEY (insID)
 );
 
-CREATE TABLE Manager(
-    manID char(4),
-    manPassword char(12),
-    manName char(30) DEFAULT NULL,
-    kpi char(30) DEFAULT NULL,
-    PRIMARY KEY (manID)
-);
-
 CREATE TABLE Vet(
     vetID CHAR(4),
     vetName VARCHAR(225) NOT NULL,
@@ -50,4 +42,41 @@ CREATE TABLE AdoptersInfo(
     PRIMARY KEY (adopterID),
     FOREIGN KEY (postalCode) REFERENCES AdoptersLocation(postalCode)
         ON DELETE SET NULL
+);
+
+CREATE TABLE Shelter(
+  shelterLocation VARCHAR(225),
+  capacity INT,
+  shelterName VARCHAR(225),
+  PRIMARY KEY (shelterLocation,shelterName)
+);
+
+CREATE TABLE Inspect(
+  insID CHAR(4),
+  shelterLocation VARCHAR(225),
+  shelterName VARCHAR(225),
+  standardsMet NUMBER(1, 0),
+  PRIMARY KEY (insID, shelterLocation, shelterName),
+  FOREIGN KEY (insID) REFERENCES Inspector(insID),
+  FOREIGN KEY (shelterLocation,shelterName) REFERENCES
+  Shelter(shelterLocation,shelterName)
+);
+
+CREATE TABLE Manager(
+    manID char(4),
+    manPassword char(12),
+    manName char(30) DEFAULT NULL,
+    kpi char(30) DEFAULT NULL,
+    PRIMARY KEY (manID)
+);
+
+CREATE TABLE VolunteersAtShelter(
+	volunteerID char(4),
+	shelterLocation varchar(225),
+	shelterName varchar(225),
+    since date,
+    PRIMARY KEY (volunteerID, shelterLocation, shelterName),
+    FOREIGN KEY (volunteerID) REFERENCES Volunteer(volunteerID),
+    FOREIGN KEY (shelterName, shelterLocation) REFERENCES
+    Shelter(shelterName, shelterLocation)
 );
