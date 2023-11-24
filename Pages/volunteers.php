@@ -33,13 +33,13 @@
     <h1>List of volunteers</h1>
     <p> Available volunteers have filled out their schedule and are consistently available at least once a week. </p>
 
-    <!-- TODO: ADD FILTERING FOR CURRENT SHELTER -->
     <?php
         connectToDB();
         $sql = "SELECT *
                 FROM VolunteersAtShelter s
                 INNER JOIN Volunteer v ON s.volunteerID = v.volunteerID
                 LEFT OUTER JOIN AvailableDaysRegularVolunteer a ON v.availableDays = a.availableDays
+                WHERE s.shelterName = '$currShelterName' AND s.shelterLocation = '$currShelterLoc'
                 ORDER BY v.volunteerID DESC";
         $result = executePlainSQL($sql);
 
