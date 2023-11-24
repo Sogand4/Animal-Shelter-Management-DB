@@ -40,6 +40,7 @@
                 FROM VolunteersAtShelter s
                 INNER JOIN Volunteer v ON s.volunteerID = v.volunteerID
                 LEFT OUTER JOIN AvailableDaysRegularVolunteer a ON v.availableDays = a.availableDays
+                WHERE s.shelterName = '$currShelterName' AND s.shelterLocation = '$currShelterLoc'
                 ORDER BY v.volunteerID DESC";
         $result = executePlainSQL($sql);
 
