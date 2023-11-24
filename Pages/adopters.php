@@ -57,7 +57,7 @@
 
     <br></br>
 
-    <!-- TODO: ADD FILTERING FOR CURRENT SHELTER -->
+    <!-- TODO: ADD FILTERING FOR CURRENT SHELTER AND ANIMALS -->
     <?php
         $view = isset($_GET['view']) ? $_GET['view'] : 'with_address';
         connectToDB();
