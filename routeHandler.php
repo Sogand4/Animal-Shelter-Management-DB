@@ -32,6 +32,12 @@
             else if (array_key_exists('updateAdopterRequest', $_POST)) {
                 handleupdateAdopterRequest();
             }
+            else if (array_key_exists('insertEventRequest', $_POST)) {
+                handleInsertEventRequest();
+            }
+            else if (array_key_exists('updateEventRequest', $_POST)) {
+                handleUpdateEventRequest();
+            }
 
             disconnectFromDB();
         }
@@ -301,6 +307,99 @@
             echo '<p style="color: red;">Invalid ID inserted. Please use an ID that is not already in use.</p>';
         }
     }
+
+    function handleInsertEventRequest() {
+        global $db_conn;
+
+        // Only run the insert event query if the primary key is not already being used
+        $tuple = array (
+            ":bind1" => $_POST['eventName'],
+            ":bind5" => $_POST['shelterLocation'],
+            ":bind6" => $_POST['shelterName']
+        );
+
+        $alltuples = array (
+            $tuple
+        );
+
+        $numExistingEvent = executeBoundSQL("SELECT COUNT(*) AS count FROM EventsHosted WHERE eventName = :bind1 AND shelterLocation = :bind5 AND shelterName = :bind6", $alltuples);
+        $rowExistingEvent = oci_fetch_assoc($numExistingEvent);
+        $countExistingEvent = $rowExistingEvent['COUNT'];
+
+        $eventDateFormatted = date('Y-m-d', strtotime($_POST['eventDate']));
+
+        if ($countExistingEvent == 0) {
+            // Add new event
+            $tuple = array (
+                ":bind1" => $_POST['eventName'],
+                ":bind2" => $_POST['eventDescription'],
+                ":bind3" => $_POST['cost'],
+                ":bind4" => $eventDateFormatted,
+                ":bind5" => $_POST['shelterLocation'],
+                ":bind6" => $_POST['shelterName']
+            );
+
+            $alltuples = array (
+                $tuple
+            );
+
+            executeBoundSQL("insert into EventsHosted values (:bind1, :bind2, :bind3, TO_DATE(:bind4, 'YYYY-MM-DD'), :bind5, :bind6)", $alltuples);
+            OCICommit($db_conn);
+        } else {
+            echo '<p style="color: red;">Invalid Event inserted. Please use event name, shelter name and location that is not already in use.</p>';
+        }
+    }
+
+
+    function handleUpdateEventRequest() {
+        global $db_conn;
+
+        // Only run the update query if these exist
+        $tuple = array (
+            ":bind1" => $_POST['eventName'],
+            ":bind5" => $_POST['shelterLocation'],
+            ":bind6" => $_POST['shelterName']
+        );
+
+
+        $alltuples = array (
+            $tuple
+        );
+
+        $numExisting = executeBoundSQL("SELECT COUNT(*) AS count FROM EventsHosted WHERE eventName = :bind1 AND shelterLocation = :bind5 AND shelterName = :bind6", $alltuples);
+        $rowExisting = oci_fetch_assoc($numExisting);
+        $countExisting1 = $rowExisting['COUNT'];
+
+        $eventDateFormatted = date('Y-m-d', strtotime($_POST['eventDate']));
+
+        if ($countExisting1 == 1) {
+            // Update Event
+            $tuple = array (
+                ":bind1" => $_POST['eventName'],
+                ":bind2" => $_POST['eventDescription'],
+                ":bind3" => $_POST['cost'],
+                ":bind4" => $eventDateFormatted,
+                ":bind5" => $_POST['shelterLocation'],
+                ":bind6" => $_POST['shelterName'],
+                ":bind7" => $_POST['eventNameNew'],
+                ":bind8" => $_POST['shelterLocationNew'],
+                ":bind9" => $_POST['shelterNameNew']
+            );
+
+            $alltuples = array (
+                $tuple
+            );
+
+            executeBoundSQL("UPDATE EventsHosted SET eventName = :bind7, eventDescription = :bind2, cost = :bind3, eventDate = :bind4, shelterLocation = :bind8, shelterName = :bind9 WHERE eventName = :bind1 AND shelterLocation = :bind5 AND shelterName = :bind6", $alltuples);
+            OCICommit($db_conn);
+        } else {
+            echo '<p style="color: red;">Invalid info inserted. Please use an already existing event name, shelter location and shelter name.</p>';
+        }
+    }
+
+
+
+
 
     function handleInsertInspectorRequest() {
         global $db_conn;

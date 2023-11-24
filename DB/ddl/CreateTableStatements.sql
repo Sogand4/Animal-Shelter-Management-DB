@@ -80,3 +80,15 @@ CREATE TABLE VolunteersAtShelter(
     FOREIGN KEY (shelterName, shelterLocation) REFERENCES
     Shelter(shelterName, shelterLocation)
 );
+
+CREATE TABLE EventsHosted(
+  eventName varchar(225),
+  eventDescription varchar(225),
+  cost varchar(225),
+  eventDate date,
+  shelterLocation varchar(225),
+  shelterName varchar(225),
+  PRIMARY KEY (eventName,shelterLocation,shelterName),
+  FOREIGN KEY (shelterLocation,shelterName) REFERENCES Shelter
+);
+
