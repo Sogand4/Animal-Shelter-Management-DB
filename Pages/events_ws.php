@@ -18,8 +18,8 @@
         </form>
 
   
-        <div style="display: flex;">
-    <form method="POST" action="events_ws.php" style="border: 1px solid #ccc; padding: 15px; border-radius: 10px; background-color: #cccccc; margin-right: 10px;">
+        <div style="display: flex; justify-content: center;">
+    <form method="POST" action="events_ws.php" style="border: 1px solid #ccc; padding: 15px; border-radius: 10px; background-color: #cccccc;">
         <h2 style="margin: 0; padding-bottom: 10px;">Add a new Event below:</h2>
         <input type="hidden" id="insertEventRequest" name="insertEventRequest">
         Event Name: <input type="text" name="eventName" maxlength="255" required> <br /><br />
@@ -55,7 +55,7 @@
 
 </div>
 
-    <h1>List of Events and Workshops</h1>
+    <h1 style="text-align: center;">List of Events and Workshops</h1>
 
     <?php
         connectToDB();
@@ -63,7 +63,7 @@
         $result = executePlainSQL($sql);
     ?>
 
-    <table border="1">
+    <table border="1" style="margin: auto;">
         <thead>
             <tr>
                 <th>Event Name</th>
