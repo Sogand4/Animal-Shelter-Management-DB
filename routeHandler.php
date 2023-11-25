@@ -368,29 +368,26 @@
 
         $numExisting = executeBoundSQL("SELECT COUNT(*) AS count FROM EventsHosted WHERE eventName = :bind1 AND shelterLocation = :bind5 AND shelterName = :bind6", $alltuples);
         $rowExisting = oci_fetch_assoc($numExisting);
-        $countExisting1 = $rowExisting['COUNT'];
+        $countExisting = $rowExisting['COUNT'];
 
         $eventDateFormatted = date('Y-m-d', strtotime($_POST['eventDate']));
 
-        if ($countExisting1 == 1) {
+        if ($countExisting == 1) {
             // Update Event
-            $tuple = array (
+            $tuple1 = array (
                 ":bind1" => $_POST['eventName'],
                 ":bind2" => $_POST['eventDescription'],
                 ":bind3" => $_POST['cost'],
                 ":bind4" => $eventDateFormatted,
                 ":bind5" => $_POST['shelterLocation'],
                 ":bind6" => $_POST['shelterName'],
-                ":bind7" => $_POST['eventNameNew'],
-                ":bind8" => $_POST['shelterLocationNew'],
-                ":bind9" => $_POST['shelterNameNew']
             );
 
-            $alltuples = array (
-                $tuple
+            $alltuples1 = array (
+                $tuple1
             );
 
-            executeBoundSQL("UPDATE EventsHosted SET eventName = :bind7, eventDescription = :bind2, cost = :bind3, eventDate = :bind4, shelterLocation = :bind8, shelterName = :bind9 WHERE eventName = :bind1 AND shelterLocation = :bind5 AND shelterName = :bind6", $alltuples);
+            executeBoundSQL("UPDATE EventsHosted SET eventDescription = :bind2, cost = :bind3, eventDate = TO_DATE(:bind4, 'YYYY-MM-DD') WHERE eventName = :bind1 AND shelterLocation = :bind5 AND shelterName = :bind6", $alltuples1);
             OCICommit($db_conn);
         } else {
             echo '<p style="color: red;">Invalid info inserted. Please use an already existing event name, shelter location and shelter name.</p>';

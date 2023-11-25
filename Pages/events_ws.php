@@ -31,12 +31,12 @@
         <input type="submit" value="Insert" name="insertSubmit">
     </form>
 
-    <form method="POST" action="event_ws.php" style="border: 1px solid #ccc; padding: 15px; border-radius: 10px; background-color: #cccccc; margin-left: 10px;">
+    <form method="POST" action="events_ws.php" style="border: 1px solid #ccc; padding: 15px; border-radius: 10px; background-color: #cccccc; margin-left: 10px;">
         <h2 style="margin: 0; padding-bottom: 10px;">Update Event Information:</h2>
         <input type="hidden" id="updateEventRequest" name="updateEventRequest">
-        Previous Event Name: <input type="text" name="eventName" maxlength="255" required> New Event Name: <input type="text" name="eventNameNew" maxlength="255" required> <br /><br />
-        Previous Shelter Name: <input type="text" name="shelterName" maxlength="255" required> New Shelter Name: <input type="text" name="shelterNameNew" maxlength="255" required><br /><br />
-        Previous Shelter Location: <input type="text" name="shelterLocation" maxlength="255" required>  New Shelter Location: <input type="text" name="shelterLocationNew" maxlength="255" required><br /><br />
+        Event Name: <input type="text" name="eventName" maxlength="255" required> <br /><br />
+        Shelter Name: <input type="text" name="shelterName" maxlength="255" required> <br /><br />
+        Shelter Location: <input type="text" name="shelterLocation" maxlength="255" required> <br /><br />
         Description: <input type="text" name="eventDescription" maxlength="255" required> <br /><br />
         Cost: <input type="text" name="cost" maxlength="255" required> <br /><br />
         Event Date: <input type="text" name="eventDate" maxlength="10" required pattern="\d{4}-\d{2}-\d{2}" title="Please enter a date in the format YYYY-MM-DD"> <br /><br />
@@ -54,15 +54,6 @@
     
 
 </div>
-
-
-
-
-
-
-
-
-
 
     <h1>List of Events and Workshops</h1>
 
