@@ -38,6 +38,8 @@
     }
 
     // SOGAND TODO: ADD FILTERING FOR THE SHELTER WE ARE CURRENTLY WORKING + ANIMALS
+    // add more options to meet rubric for update
+    // in adopter.php change filtering so user chooses what shows up in WHERE clause
     function handleUpdateAdopterRequest() {
         global $db_conn;
 
@@ -87,6 +89,7 @@
     
 
     // SOGAND TODO: ADD FILTERING FOR THE SHELTER WE ARE CURRENTLY WORKING IN + ANIMALS
+    // - adopt table
     function handleInsertAdopterRequest() {
         global $db_conn;
 
@@ -231,6 +234,8 @@
 }
 
     // ECE TODO: manager signs up name and location of shelter too 
+    // add all attributes to sheltermanagerinfo
+    // ShelterManagerPerformance table
     function handleInsertSignupRequest() {
         global $db_conn;
 
@@ -268,6 +273,8 @@
     }
 
     // ECE TODO: ADD FILTERING FOR THE SHELTER WE ARE CURRENTLY WORKING IN
+    // add all attributes
+    // - vet works at shelter table
     function handleInsertVetRequest() {
         global $db_conn;
 
@@ -455,6 +462,18 @@
 
         OCICommit($db_conn);
     }
+
+    /* SELINA TODO:
+        - because we only have "on delete CASCADE" in animals tables, we need to implement ability for user to delete a cat/dog/bird to meet the ruric requirement
+        - TABLES:
+            -registered animal table
+            - cats
+            - dogs
+            - birds
+            - getvaccination
+            - vaccination
+            - health record
+    */
 
     // Function from: https://www.students.cs.ubc.ca/~cs-304/resources/php-oracle-resources/php-setup.html
     // takes a plain (no bound variables) SQL command and executes it
