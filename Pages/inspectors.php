@@ -6,8 +6,23 @@
 <html>
 <head>
     <title>Inspectors</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
+
+    <nav class="navbar">
+		<ul>
+			<li><a href="index.php">Home</a></li>
+			<li><a href="volunteers.php">Volunteers</a></li>
+			<li><a href="adopters.php">Adopters</a></li>
+            <li><a href="vets.php">Vets</a></li>
+			<li><a href="inspectors.php">Inspectors</a></li>
+			<li><a href="events_ws.php">Events and Workshops</a></li>
+			<li><a href="login.php">Logout</a></li>
+		</ul>
+	</nav>
+
+    <main>
     <!-- TODO: MOVE RESET BUTTON TO NAV BAR -->
     <h2>Reset</h2>
         <p>If you wish to reset the table press on the reset button. If this is the first time you're running this page, you MUST use reset</p>
@@ -87,6 +102,8 @@
 
         </tbody>
     </table>
+
+    </main>
 
     <?php
         oci_free_statement($result);
