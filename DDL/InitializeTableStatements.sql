@@ -6,6 +6,8 @@ DROP TABLE AvailableDaysRegularVolunteer;
 
 DROP TABLE EventsHosted;
 
+DROP TABLE Adopt;
+
 DROP TABLE AdoptersInfo;
 
 DROP TABLE AdoptersLocation;
@@ -221,6 +223,18 @@ CREATE TABLE
         FOREIGN KEY (animalID) REFERENCES RegisteredAnimal(animalID),
         FOREIGN KEY (vaccineName) REFERENCES Vaccination(vaccineName)
     );
+
+CREATE TABLE Adopt(
+    adopterID CHAR(4),
+    animalID CHAR(4),
+    dateOfAdoption DATE,
+    PRIMARY KEY (animalID, adopterID),
+    FOREIGN KEY (animalID) REFERENCES RegisteredAnimal(animalID),
+    FOREIGN KEY(AdopterID) REFERENCES AdoptersInfo(adopterID)    
+);
+
+
+
 
 INSERT INTO
     AvailableDaysRegularVolunteer (
@@ -910,6 +924,10 @@ INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('D0
 INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('D002', 'Feline Distemper Vaccine', TO_DATE('2023-02-09', 'YYYY-MM-DD'));
 INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('C002', 'Avian Influenza Vaccine', TO_DATE('2023-09-17', 'YYYY-MM-DD'));
 
+INSERT INTO Adopt(adopterID, animalID, dateOfAdoption) VALUES ('A000', 'C002', TO_DATE('2023-08-23', 'YYYY-MM-DD'));
+INSERT INTO Adopt(adopterID, animalID, dateOfAdoption) VALUES ('A001', 'D001', TO_DATE('2023-09-02', 'YYYY-MM-DD'));
+INSERT INTO Adopt(adopterID, animalID, dateOfAdoption) VALUES ('A002', 'B002', TO_DATE('2023-10-03', 'YYYY-MM-DD'));
+INSERT INTO Adopt(adopterID, animalID, dateOfAdoption) VALUES ('A003', 'B000', TO_DATE('2023-10-11', 'YYYY-MM-DD'));
+INSERT INTO Adopt(adopterID, animalID, dateOfAdoption) VALUES ('A003', 'C003', TO_DATE('2023-10-22', 'YYYY-MM-DD'));
 
- 
         
