@@ -1,5 +1,7 @@
 <?php
     require_once('connection.php');
+    global $findVolRequestResult;
+    $findVolRequestResult = null;
 
     if (isset($_POST['reset']) || isset($_POST['insertSubmit']) || isset($_POST['signupSubmit']) || isset($_POST['loginSubmit']) || isset($_POST['updateSubmit'])) {
         handlePOSTRequest();
@@ -32,8 +34,58 @@
             else if (array_key_exists('updateAdopterRequest', $_POST)) {
                 handleupdateAdopterRequest();
             }
+            else if (array_key_exists('findVolunteerRequest', $_POST)) {
+                handleFindVolunteerRequest();
+            }
 
             disconnectFromDB();
+        }
+    }
+
+    function handleFindVolunteerRequest() {
+        global $db_conn;
+        global $currShelterName;
+        global $currShelterLoc;
+        global $findVolRequestResult;
+
+        // Only run the find query if the ID exists
+        $volAvailabilities = $_POST['findVolDays'];
+            
+        if ($volAvailabilities != NULL) {
+            $tuple = array (
+                ":bind1" => $_POST['findVolDays']
+            );
+    
+            $alltuples = array (
+                $tuple
+            );
+    
+            $numExistingDays = executeBoundSQL("SELECT COUNT(*) AS count FROM AvailableDaysRegularVolunteer WHERE availableDays = :bind1", $alltuples);
+            $rowExistingDays = oci_fetch_assoc($numExistingDays);
+            $countExistingDays = $rowExistingDays['COUNT'];
+
+            if ($countExistingDays == 1) {
+                $tuple1 = array (
+                    ":bind1" => $_POST['findVolDays'],
+                    ":bind2" => $currShelterName,
+                    ":bind3" => $currShelterLoc
+                );
+        
+                $alltuples1 = array (
+                    $tuple1
+                );
+
+                $findVolRequestResult = executeBoundSQL("SELECT v.volunteerID FROM VolunteersAtShelter s
+                                INNER JOIN Volunteer v ON s.volunteerID = v.volunteerID
+                                INNER JOIN AvailableDaysRegularVolunteer a ON v.availableDays = a.availableDays
+                                WHERE s.shelterName = :bind2 AND s.shelterLocation = :bind3 AND a.availableDays = :bind1", $alltuples1);
+
+                echo '<p style="color: green;">Successfully recieved all volunteers with given availabilities</p>';
+            } else {
+                echo '<p style="color: red;">No volunteer has those availabilities</p>';
+            }
+        } else {
+            echo '<p style="color: red;">Cannot insert null value.</p>';
         }
     }
 
@@ -441,7 +493,7 @@
         }
     }
 
-    // SELINA TODO: Maybe have this reset button on the navigation bar? next to logout?
+    // ECE TODO: Maybe have this reset button on the navigation bar? next to logout?
     function handleResetRequest() {        
         global $db_conn;
 
