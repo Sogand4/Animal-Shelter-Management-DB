@@ -19,18 +19,18 @@
 			<li><a href="inspectors.php">Inspectors</a></li>
 			<li><a href="events_ws.php">Events and Workshops</a></li>
 			<li><a href="login.php">Logout</a></li>
+            <li>
+                <form method="POST" action="inspectors.php">
+                <input type="hidden" id="resetTablesRequest" name="resetTablesRequest">
+                <p><input type="submit" value="Reset" name="reset"></p>
+                </form>
+            </li>
 		</ul>
 	</nav>
 
     <main>
-    <!-- TODO: MOVE RESET BUTTON TO NAV BAR -->
-    <h2>Reset</h2>
-        <p>If you wish to reset the table press on the reset button. If this is the first time you're running this page, you MUST use reset</p>
 
-        <form method="POST" action="inspectors.php">
-            <input type="hidden" id="resetTablesRequest" name="resetTablesRequest">
-            <p><input type="submit" value="Reset" name="reset"></p>
-        </form>
+        <p>If you wish to reset the table press on the reset button on the navigation bar above. If this is the first time you're running this page, you MUST use reset</p>
 
     <h2>Add new inspector below:</h2>
         <p>ID's are in the format 'IXXX' where X are numbers. Put 1 if passed inspection, else put 0.</p>

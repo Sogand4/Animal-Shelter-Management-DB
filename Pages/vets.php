@@ -29,15 +29,7 @@
 	</nav>
 
     <main>
-
-    <!-- TODO: MOVE RESET BUTTON TO NAV BAR -->
-    <h2>Reset</h2>
-        <p>If you wish to reset the table press on the reset button. If this is the first time you're running this page, you MUST use reset</p>
-
-        <form method="POST" action="vets.php">
-            <input type="hidden" id="resetTablesRequest" name="resetTablesRequest">
-            <p><input type="submit" value="Reset" name="reset"></p>
-        </form>
+        <p>If you wish to reset the table press on the reset button on the navigation bar above. If this is the first time you're running this page, you MUST use reset</p>
 
     <h2>Add a new Vet below:</h2>
         <p>ID's are in the format 'VXXX' where V are numbers.</p>
