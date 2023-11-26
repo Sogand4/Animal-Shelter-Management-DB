@@ -7,9 +7,24 @@
 <html>
 <head>
 	<title>Home</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
 	
+	<nav class="navbar">
+		<ul>
+			<li><a href="index.php">Home</a></li>
+			<li><a href="volunteers.php">Volunteers</a></li>
+			<li><a href="adopters.php">Adopters</a></li>
+			<li><a href="vets.php">Vets</a></li>
+			<li><a href="inspectors.php">Inspectors</a></li>
+			<li><a href="events_ws.php">Events and Workshops</a></li>
+			<li><a href="login.php">Logout</a></li>
+		</ul>
+	</nav>
+
+	<main>
+
 	<h1>Welcome to your Animal Shelter Management System!</h1>
 
 	<h3>If you wish to reset the system press on the reset button on the navigation bar.
@@ -44,6 +59,8 @@
 	<p>Number of Volunteers: <?php echo $countExisting2; ?></p>
 	<p>Number of Adopters: <?php echo "SOGAND TODO. need animal table first"; ?></p>
 	<p>Upcoming Events: <?php echo "SOGAND TODO. need events table first"; ?></p>
+
+	</main>
 
 	<?php
         oci_free_statement($result);
