@@ -6,17 +6,31 @@
 <html>
 <head>
     <title>Events</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    <!-- TODO: MOVE RESET BUTTON TO NAV BAR -->
-    <h2>Reset</h2>
-        <p>If you wish to reset the table press on the reset button. If this is the first time you're running this page, you MUST use reset</p>
 
-        <form method="POST" action="events_ws.php">
-            <input type="hidden" id="resetTablesRequest" name="resetTablesRequest">
-            <p><input type="submit" value="Reset" name="reset"></p>
-        </form>
+    <nav class="navbar">
+		<ul>
+			<li><a href="index.php">Home</a></li>
+			<li><a href="volunteers.php">Volunteers</a></li>
+			<li><a href="adopters.php">Adopters</a></li>
+            <li><a href="vets.php">Vets</a></li>
+			<li><a href="inspectors.php">Inspectors</a></li>
+			<li><a href="events_ws.php">Events and Workshops</a></li>
+			<li><a href="login.php">Logout</a></li>
+            <li>
+                <form method="POST" action="events_ws.php">
+                <input type="hidden" id="resetTablesRequest" name="resetTablesRequest">
+                <p><input type="submit" value="Reset" name="reset"></p>
+                </form>
+            </li>
+		</ul>
+	</nav>
 
+<main>
+
+        <p>If you wish to reset the table press on the reset button on the navigation bar above. If this is the first time you're running this page, you MUST use reset</p>
   
         <div style="display: flex; justify-content: center;">
     <form method="POST" action="events_ws.php" style="border: 1px solid #ccc; padding: 15px; border-radius: 10px; background-color: #cccccc;">
@@ -91,6 +105,7 @@
 
         </tbody>
     </table>
+</main>
 
     <?php
         oci_free_statement($result);
