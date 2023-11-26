@@ -7,6 +7,7 @@
 DROP TABLE VolunteersAtShelter;
 DROP TABLE Volunteer;
 DROP TABLE AvailableDaysRegularVolunteer;
+DROP TABLE EventsHosted;
 DROP TABLE Vet;
 DROP TABLE AdoptersInfo;
 DROP TABLE AdoptersLocation;
