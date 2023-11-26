@@ -445,24 +445,8 @@
     function handleResetRequest() {        
         global $db_conn;
 
-        // Drop all tables
-        $sqlScript = file_get_contents(__DIR__ . '/DB/ddl/DropTableStatements.sql');
-        $sqlStatements = explode(';', $sqlScript);
-        $sqlStatements = array_filter(array_map('trim', $sqlStatements));
-        foreach ($sqlStatements as $sqlStatement) {
-            executePlainSQL($sqlStatement);
-        }
-
-        // Create all tables
-        $sqlScript = file_get_contents(__DIR__ . '/DB/ddl/CreateTableStatements.sql');
-        $sqlStatements = explode(';', $sqlScript);
-        $sqlStatements = array_filter(array_map('trim', $sqlStatements));
-        foreach ($sqlStatements as $sqlStatement) {
-            executePlainSQL($sqlStatement);
-        }
-
-        // Populate all tables
-        $sqlScript = file_get_contents(__DIR__ . '/DB/dml/PopulateTable.sql');
+        // Drop, Create, and Populate all tables
+        $sqlScript = file_get_contents(__DIR__ . '/DDL/InitializeTableStatements.sql');
         $sqlStatements = explode(';', $sqlScript);
         $sqlStatements = array_filter(array_map('trim', $sqlStatements));
         foreach ($sqlStatements as $sqlStatement) {
