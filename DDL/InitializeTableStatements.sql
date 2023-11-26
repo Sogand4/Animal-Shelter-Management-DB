@@ -86,8 +86,7 @@ CREATE TABLE
         postalCode VARCHAR(225),
         houseNumber VARCHAR(225),
         PRIMARY KEY (adopterID),
-        FOREIGN KEY (postalCode) REFERENCES AdoptersLocation(postalCode) ON DELETE
-        SET NULL
+        FOREIGN KEY (postalCode) REFERENCES AdoptersLocation(postalCode) ON DELETE SET NULL
     );
 
 CREATE TABLE
@@ -485,7 +484,7 @@ VALUES (
         'A002',
         '7899234932',
         'Natalia Davis',
-        522 -342 -6189,
+        5223426189,
         'nattyisb32.davis@gmail.com',
         '34FS67',
         '912'
@@ -928,6 +927,6 @@ INSERT INTO Adopt(adopterID, animalID, dateOfAdoption) VALUES ('A000', 'C002', T
 INSERT INTO Adopt(adopterID, animalID, dateOfAdoption) VALUES ('A001', 'D001', TO_DATE('2023-09-02', 'YYYY-MM-DD'));
 INSERT INTO Adopt(adopterID, animalID, dateOfAdoption) VALUES ('A002', 'B002', TO_DATE('2023-10-03', 'YYYY-MM-DD'));
 INSERT INTO Adopt(adopterID, animalID, dateOfAdoption) VALUES ('A003', 'B000', TO_DATE('2023-10-11', 'YYYY-MM-DD'));
-INSERT INTO Adopt(adopterID, animalID, dateOfAdoption) VALUES ('A003', 'C003', TO_DATE('2023-10-22', 'YYYY-MM-DD'));
-
-        
+INSERT INTO Adopt(adopterID, animalID, dateOfAdoption) VALUES ('A005', 'C003', TO_DATE('2023-10-22', 'YYYY-MM-DD'));
+INSERT INTO Adopt(adopterID, animalID, dateOfAdoption) VALUES ('A006', 'C001', TO_DATE('2023-11-06', 'YYYY-MM-DD'));
+INSERT INTO Adopt(adopterID, animalID, dateOfAdoption) VALUES ('A007', 'D003', TO_DATE('2022-06-02', 'YYYY-MM-DD'));

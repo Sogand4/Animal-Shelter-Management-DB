@@ -653,6 +653,9 @@
             executePlainSQL($sqlStatement);
         }
 
+        $sqlScriptAssertions = file_get_contents(__DIR__ . '/DDL/Triggers.sql');
+        executePlainSQL($sqlScriptAssertions);
+        
         OCICommit($db_conn);
     }
 
