@@ -99,6 +99,35 @@
         </tbody>
     </table>
 
+    <!-- example of join query -->
+    <h2>Find all volunteers with the following days available:</h2>
+        <form method="POST" action="volunteers.php">
+            <input type="hidden" id="findVolunteerRequest" name="findVolunteerRequest">
+            Days Available: <input type="text" name="findVolDays" pattern="[TF]{7}" title="Invalid entry. Please follow the format above." required> <br /><br />
+        <input type="submit" value="Insert" name="insertSubmit"></p>
+    </form>
+
+    <?php 
+    global $findVolRequestResult;
+    if ($findVolRequestResult) { ?>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Volunteer ID</th>
+                </tr>
+            </thead>
+            <tbody>
+    <?php } ?>
+
+    <?php
+        while ($row = oci_fetch_assoc($findVolRequestResult)) {
+            echo '<tr>';
+            echo '<td>' . $row['VOLUNTEERID'] . '</td>';
+            echo '</tr>';
+        }
+    ?>
+
+
     <?php
         oci_free_statement($result);
         disconnectFromDB();
