@@ -1,6 +1,112 @@
---    Populates tables. Make sure tables are created first.
+DROP TABLE VolunteersAtShelter;
+DROP TABLE Volunteer;
+DROP TABLE AvailableDaysRegularVolunteer;
+DROP TABLE EventsHosted;
+DROP TABLE Vet;
+DROP TABLE AdoptersInfo;
+DROP TABLE AdoptersLocation;
+DROP TABLE Inspect;
+DROP TABLE Shelter;
+DROP TABLE Inspector;
+DROP TABLE Manager;
 
--- REMOVE THIS COMMENT LATER. dml is for insert, delete, update statements. ddl is for create, drop, alter table statements
+
+
+
+CREATE TABLE AvailableDaysRegularVolunteer(
+    availableDays char(7) PRIMARY KEY,
+    regularVolunteer NUMBER(1, 0) NOT NULL
+);
+
+CREATE TABLE Volunteer (
+    volunteerID char(4) PRIMARY KEY,
+    name varchar(255) NOT NULL,
+    availableDays char(7),
+    phoneNumber int,
+    FOREIGN KEY (availableDays) REFERENCES AvailableDaysRegularVolunteer(availableDays)
+);
+
+CREATE TABLE Inspector(
+    insName VARCHAR(225) NOT NULL,
+    insID CHAR(4),
+    PRIMARY KEY (insID)
+);
+
+CREATE TABLE Vet(
+    vetID CHAR(4),
+    vetName VARCHAR(225) NOT NULL,
+    PRIMARY KEY (vetID)
+);
+
+CREATE TABLE AdoptersLocation(
+    postalCode VARCHAR(225),
+    city VARCHAR(225),
+    streetName VARCHAR(225),
+    province VARCHAR(225),
+    PRIMARY KEY (postalCode)
+);
+
+CREATE TABLE AdoptersInfo(
+    adopterID CHAR(4),
+    nationalID CHAR(10) UNIQUE,
+    name VARCHAR(225),
+    phoneNumber INT,
+    email VARCHAR(225) UNIQUE,
+    postalCode VARCHAR(225),
+    houseNumber VARCHAR(225),
+    PRIMARY KEY (adopterID),
+    FOREIGN KEY (postalCode) REFERENCES AdoptersLocation(postalCode)
+        ON DELETE SET NULL
+);
+
+CREATE TABLE Shelter(
+  shelterLocation VARCHAR(225),
+  capacity INT,
+  shelterName VARCHAR(225),
+  PRIMARY KEY (shelterLocation,shelterName)
+);
+
+CREATE TABLE Inspect(
+  insID CHAR(4),
+  shelterLocation VARCHAR(225),
+  shelterName VARCHAR(225),
+  standardsMet NUMBER(1, 0),
+  PRIMARY KEY (insID, shelterLocation, shelterName),
+  FOREIGN KEY (insID) REFERENCES Inspector(insID),
+  FOREIGN KEY (shelterLocation,shelterName) REFERENCES
+  Shelter(shelterLocation,shelterName)
+);
+
+CREATE TABLE Manager(
+    manID char(4),
+    manPassword char(12),
+    manName char(30) DEFAULT NULL,
+    kpi char(30) DEFAULT NULL,
+    PRIMARY KEY (manID)
+);
+
+CREATE TABLE VolunteersAtShelter(
+	volunteerID char(4),
+	shelterLocation varchar(225),
+	shelterName varchar(225),
+    since date,
+    PRIMARY KEY (volunteerID, shelterLocation, shelterName),
+    FOREIGN KEY (volunteerID) REFERENCES Volunteer(volunteerID),
+    FOREIGN KEY (shelterName, shelterLocation) REFERENCES
+    Shelter(shelterName, shelterLocation)
+);
+
+CREATE TABLE EventsHosted(
+  eventName varchar(225),
+  eventDescription varchar(225),
+  cost varchar(225),
+  eventDate date,
+  shelterLocation varchar(225),
+  shelterName varchar(225),
+  PRIMARY KEY (eventName,shelterLocation,shelterName),
+  FOREIGN KEY (shelterLocation,shelterName) REFERENCES Shelter
+);
+
 
 INSERT INTO AvailableDaysRegularVolunteer (availableDays, regularVolunteer) VALUES ('TTTTTTT', 1);
 INSERT INTO AvailableDaysRegularVolunteer (availableDays, regularVolunteer) VALUES ('TTTTTTF', 1);
@@ -65,7 +171,6 @@ INSERT INTO VolunteersAtShelter (volunteerID, shelterLocation, shelterName, sinc
 INSERT INTO VolunteersAtShelter (volunteerID, shelterLocation, shelterName, since) VALUES ('V125', '101 Oak Street, Evacuationville, USA', 'Lovely Pet Home',TO_DATE('2023-11-11', 'YYYY-MM-DD'));
 INSERT INTO VolunteersAtShelter (volunteerID, shelterLocation, shelterName, since) VALUES ('V126', '10776 King George Boulevard, Surrey, British Columbia', 'Paws and Claws Animal Shelter', TO_DATE('2007-01-01', 'YYYY-MM-DD'));
 INSERT INTO VolunteersAtShelter (volunteerID, shelterLocation, shelterName, since) VALUES ('V126', '234 Willow Lane, Supportville, USA', 'The Animal Haven', TO_DATE('2010-08-04', 'YYYY-MM-DD'));
-
 
 INSERT INTO EventsHosted(eventName, eventDescription, cost, eventDate, shelterLocation, shelterName)
 VALUES ('Adoption Party', 'A fun event where you can meet and adopt adorable shelter pets', '$20 per person', TO_DATE('2022-05-20', 'YYYY-MM-DD'), '10776 King George Boulevard, Surrey, British Columbia', 'Paws and Claws Animal Shelter');
