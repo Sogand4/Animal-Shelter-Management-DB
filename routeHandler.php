@@ -98,9 +98,6 @@
         }
     }
 
-    // SOGAND TODO: ADD FILTERING FOR THE SHELTER WE ARE CURRENTLY WORKING + ANIMALS
-    // add more options to meet rubric for update
-    // in adopter.php change filtering so user chooses what shows up in WHERE clause
     function handleUpdateAdopterRequest() {
         global $db_conn;
 
@@ -150,9 +147,6 @@
         }
     }
     
-
-    // SOGAND TODO: ADD FILTERING FOR THE SHELTER WE ARE CURRENTLY WORKING IN + ANIMALS
-    // - adopt table
     function handleInsertAdopterRequest() {
         global $db_conn;
         global $currShelterName;
@@ -467,7 +461,6 @@
         }
     }
 
-
     function handleUpdateEventRequest() {
         global $db_conn;
 
@@ -696,7 +689,6 @@
         }
     }
 
-    // ECE TODO: Maybe have this reset button on the navigation bar? next to logout?
     function handleResetRequest() {        
         global $db_conn;
 
@@ -716,14 +708,6 @@
 
     /* SELINA TODO:
         - because we only have "on delete CASCADE" in animals tables, we need to implement ability for user to delete a cat/dog/bird to meet the ruric requirement
-        - TABLES:
-            -registered animal table
-            - cats
-            - dogs
-            - birds
-            - getvaccination
-            - vaccination
-            - health record
     */
 
     // Function from: https://www.students.cs.ubc.ca/~cs-304/resources/php-oracle-resources/php-setup.html

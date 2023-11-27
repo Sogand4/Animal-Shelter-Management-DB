@@ -57,8 +57,6 @@
 	<p>Shelter Location: <?php echo $currShelterLoc; ?></p>
 	<p>Shelter Capacity: <?php echo $countExisting1; ?></p>
 	<p>Number of Volunteers: <?php echo $countExisting2; ?></p>
-	<p>Number of Adopters: <?php echo "SOGAND TODO. need animal table first"; ?></p>
-	<p>Upcoming Events: <?php echo "SOGAND TODO. need events table first"; ?></p>
 
 	</main>
 
