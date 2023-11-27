@@ -1,6 +1,4 @@
 <?php
-    require_once('constants.php');
-
     $db_conn = NULL;
 
     // Function from: https://www.students.cs.ubc.ca/~cs-304/resources/php-oracle-resources/php-setup.html

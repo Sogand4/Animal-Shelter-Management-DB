@@ -150,8 +150,6 @@
     
     function handleInsertAdopterRequest() {
         global $db_conn;
-        global $currShelterName;
-        global $currShelterLoc;
 
         // Only run the insert adopter query if the unique keys are not being used
         $tuple = array (
@@ -194,8 +192,8 @@
 
         $tuple = array (
             ":bind1" => $_POST['adptAnimalID'],
-            ":bind2" => $currShelterName,
-            ":bind3" => $currShelterLoc
+            ":bind2" => $_SESSION["shelterName"],
+            ":bind3" => $_SESSION["shelterLocation"]
         );
 
         $alltuples4 = array (
@@ -329,9 +327,6 @@
             
             if($passInDB === $manPassword)
             {
-                // login successful. Keep track of current shelter
-                // $currShelterName, $currShelterLoc = (do query to set this value)
-
                 $result_shel_name = executeBoundSQL("SELECT shelterName AS shelterName FROM Manager WHERE manID = :bind1", $alltuples);
                 $shelName  = oci_fetch_assoc($result_shel_name);
                 $currShelterName = $shelName['SHELTERNAME'];
@@ -345,7 +340,7 @@
 
 
                 header("Location: index.php");
-                //die;
+                die;
             }
                 
         echo " wrong username or password NO RESULT";

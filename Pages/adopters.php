@@ -76,6 +76,9 @@
     <br></br>
 
     <?php
+        $currShelterName = $_SESSION["shelterName"];
+        $currShelterLoc = $_SESSION["shelterLocation"];
+
         $view = isset($_GET['view']) ? $_GET['view'] : 'with_address';
         connectToDB();
         $sql = '';
