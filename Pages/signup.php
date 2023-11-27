@@ -76,7 +76,6 @@
 
     <h1>List of Managers</h1>
 
-    <!-- TODO: ADD FILTERING FOR CURRENT SHELTER. MAKE IT SO THE USER CAN SEE THE RATING OF THE CURRENT SHELTER GIVEN BY THAT INSPECTOR -->
     <?php
         connectToDB();
         $sql = 'SELECT * FROM Manager

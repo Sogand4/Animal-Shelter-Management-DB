@@ -33,6 +33,9 @@
 	<h4>Below is some useful information about the shelter you manage: </h4>
 
 	<?php
+	error_reporting(E_ALL);
+	ini_set('display_errors', '1');
+
         connectToDB();
         $sql1 = "SELECT capacity
                 FROM Shelter
@@ -51,19 +54,42 @@
 
 		$rowExisting2 = oci_fetch_assoc($result2);
         $countExisting2 = $rowExisting2['COUNT'];
+
+		try {
+			// Projection
+			$tables = array();
+			$attributes = array();
+		
+			$allTablesSql = "SELECT table_name FROM user_tables";
+			$allTables = executePlainSQL($allTablesSql);
+		
+			while ($row = oci_fetch_assoc($allTables)) {
+				$tableName = $row['TABLE_NAME'];
+				$tables[] = $tableName;
+		
+				$attributes[$tableName] = array();
+		
+				$attrSql = "SELECT column_name FROM user_tab_cols WHERE table_name = '$tableName'";
+				$attrResult = executePlainSQL($attrSql);
+		
+				while ($attrRow = oci_fetch_assoc($attrResult)) {
+					$attributes[$tableName][] = $attrRow['COLUMN_NAME'];
+				}
+			}
+		} catch (Exception $e) {
+			// Log or display the error message
+			echo "Error: " . $e->getMessage();
+		}
     ?>
 
 	<p>Shelter Name: <?php echo $currShelterName; ?></p>
 	<p>Shelter Location: <?php echo $currShelterLoc; ?></p>
 	<p>Shelter Capacity: <?php echo $countExisting1; ?></p>
 	<p>Number of Volunteers: <?php echo $countExisting2; ?></p>
-	<p>Number of Adopters: <?php echo "SOGAND TODO. need animal table first"; ?></p>
-	<p>Upcoming Events: <?php echo "SOGAND TODO. need events table first"; ?></p>
 
 	</main>
 
 	<?php
-        oci_free_statement($result);
         disconnectFromDB();
     ?>
 </body>

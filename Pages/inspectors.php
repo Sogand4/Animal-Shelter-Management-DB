@@ -106,7 +106,6 @@
     </main>
 
     <?php
-        oci_free_statement($result);
         disconnectFromDB();
     ?>
 
