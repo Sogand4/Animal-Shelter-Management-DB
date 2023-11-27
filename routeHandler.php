@@ -243,8 +243,23 @@
                 }
             }
 
-            // Temporarily disable trigger to allow insertion on adopter first then adopt
-            executePlainSQL("ALTER TRIGGER CheckAdopterConstraint DISABLE");
+            // Insert into adopt relation
+            // We insert into adopt relation first to meet total participation constraint on adopters and adopt. We can achieve this through deferring:
+            executePlainSQL("SET CONSTRAINTS ALL DEFERRED");
+
+            $currentDate = date('Y-m-d');
+            
+            $tuple1 = array (
+                ":bind1" => $_POST['adptAnimalID'],
+                ":bind2" => $_POST['adptID'],
+                ":bind3" => $currentDate
+            );
+
+            $alltuples1 = array (
+                $tuple1
+            );
+
+            executeBoundSQL("insert into Adopt values (:bind2, :bind1, TO_DATE(:bind3, 'YYYY-MM-DD'))", $alltuples1);
 
             // Add new adopter
             $tuple = array (
@@ -263,22 +278,6 @@
 
             executeBoundSQL("insert into AdoptersInfo values (:bind1, :bind2, :bind3, :bind4, :bind5, :bind6, :bind7)", $alltuples);
 
-            // Insert into adopt relation
-
-            $currentDate = date('Y-m-d');
-
-            $tuple1 = array (
-                ":bind1" => $_POST['adptAnimalID'],
-                ":bind2" => $_POST['adptID'],
-                ":bind3" => $currentDate
-            );
-
-            $alltuples1 = array (
-                $tuple1
-            );
-
-            executeBoundSQL("insert into Adopt values (:bind2, :bind1, TO_DATE(:bind3, 'YYYY-MM-DD'))", $alltuples1);
-
             // Set animal to adopted
             $tuple2 = array (
                 ":bind1" => $_POST['adptAnimalID']
@@ -290,8 +289,6 @@
 
             executeBoundSQL("Update RegisteredAnimal SET adopted = 1 where animalID = :bind1", $alltuples2);
 
-            // Re-enaable trigger
-            executePlainSQL("ALTER TRIGGER CheckAdopterConstraint ENABLE");
 
             OCICommit($db_conn);
             echo '<p style="color: green;">Successfully inserted adopter</p>';

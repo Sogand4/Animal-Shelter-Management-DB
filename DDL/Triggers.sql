@@ -1,12 +1,12 @@
 CREATE OR REPLACE TRIGGER CheckAdopterConstraint
-AFTER INSERT ON AdoptersInfo
+BEFORE INSERT ON AdoptersInfo
 FOR EACH ROW
 DECLARE
-    v_count INTEGER;
+    v_count INT;
 BEGIN
-    SELECT COUNT(*) INTO v_count FROM Adopt a WHERE a.adopterID = :NEW.adopterID;
-    
+    SELECT COUNT(*) INTO v_count FROM Adopt WHERE adopterID = :new.adopterID;
+
     IF v_count = 0 THEN
-        raise_application_error(-20001, 'All adopters must be participating in an adopt relationship.');
+        RAISE_APPLICATION_ERROR(-20001, 'Every Adopter must be associated with at least one Animal.');
     END IF;
 END;

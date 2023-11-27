@@ -229,7 +229,7 @@ CREATE TABLE Adopt(
     dateOfAdoption DATE,
     PRIMARY KEY (animalID, adopterID),
     FOREIGN KEY (animalID) REFERENCES RegisteredAnimal(animalID),
-    FOREIGN KEY(AdopterID) REFERENCES AdoptersInfo(adopterID)    
+    FOREIGN KEY(AdopterID) REFERENCES AdoptersInfo(adopterID) DEFERRABLE
 );
 
 
