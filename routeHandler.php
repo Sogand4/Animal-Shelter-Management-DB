@@ -98,9 +98,6 @@
         }
     }
 
-    // SOGAND TODO: ADD FILTERING FOR THE SHELTER WE ARE CURRENTLY WORKING + ANIMALS
-    // add more options to meet rubric for update
-    // in adopter.php change filtering so user chooses what shows up in WHERE clause
     function handleUpdateAdopterRequest() {
         global $db_conn;
 
@@ -134,25 +131,26 @@
             $tuple = array (
                 ":bind1" => $_POST['adptID'],
                 ":bind2" => $_POST['adptName'],
-                ":bind3" => $_POST['adptEmail']
+                ":bind3" => $_POST['adptEmail'],
+                ":bind4" => $_POST['adptNum']
             );
 
             $alltuples = array (
                 $tuple
             );
 
-            executeBoundSQL("UPDATE AdoptersInfo SET name = :bind2, email = :bind3 WHERE adopterID = :bind1", $alltuples);
+            executeBoundSQL("UPDATE AdoptersInfo SET adopterName = :bind2, email = :bind3, phoneNumber = :bind4 WHERE adopterID = :bind1", $alltuples);
             OCICommit($db_conn);
+            echo '<p style="color: green;">Successfully updated adopter</p>';
         } else {
             echo '<p style="color: red;">Invalid info inserted. Please use an already existing adopter ID and a unique email.</p>';
         }
     }
     
-
-    // SOGAND TODO: ADD FILTERING FOR THE SHELTER WE ARE CURRENTLY WORKING IN + ANIMALS
-    // - adopt table
     function handleInsertAdopterRequest() {
         global $db_conn;
+        global $currShelterName;
+        global $currShelterLoc;
 
         // Only run the insert adopter query if the unique keys are not being used
         $tuple = array (
@@ -191,8 +189,24 @@
         $rowExisting = oci_fetch_assoc($numExisting);
         $countExisting3 = $rowExisting['COUNT'];
 
-        if ($countExisting1 == 0 && $countExisting2 == 0 && $countExisting3 == 0) {
-            // Adopter's postal code is a foreign key, so if it does not already exsit in AdoptersLocation table, then add it to the table first
+        // only insert if the animal they are adopting exists in this shelter
+
+        $tuple = array (
+            ":bind1" => $_POST['adptAnimalID'],
+            ":bind2" => $currShelterName,
+            ":bind3" => $currShelterLoc
+        );
+
+        $alltuples4 = array (
+            $tuple
+        );
+
+        $numExisting = executeBoundSQL("SELECT COUNT(*) AS count FROM RegisteredAnimal WHERE animalID = :bind1 AND shelterName = :bind2 AND shelterLocation = :bind3", $alltuples4);
+        $rowExisting = oci_fetch_assoc($numExisting);
+        $countExisting4 = $rowExisting['COUNT'];
+
+        if ($countExisting1 == 0 && $countExisting2 == 0 && $countExisting3 == 0 && $countExisting4 == 1) {
+            // Adopter's postal code is a foreign key, so if it does not already exist in AdoptersLocation table, then add it to the table first
             $postalCode = $_POST['adptPostalCode'];
             if ($postalCode != NULL) {
                 $tuple = array (
@@ -223,6 +237,24 @@
                 }
             }
 
+            // Insert into adopt relation
+            // We insert into adopt relation first to meet total participation constraint on adopters and adopt. We can achieve this through deferring:
+            executePlainSQL("SET CONSTRAINTS ALL DEFERRED");
+
+            $currentDate = date('Y-m-d');
+            
+            $tuple1 = array (
+                ":bind1" => $_POST['adptAnimalID'],
+                ":bind2" => $_POST['adptID'],
+                ":bind3" => $currentDate
+            );
+
+            $alltuples1 = array (
+                $tuple1
+            );
+
+            executeBoundSQL("insert into Adopt values (:bind2, :bind1, TO_DATE(:bind3, 'YYYY-MM-DD'))", $alltuples1);
+
             // Add new adopter
             $tuple = array (
                 ":bind1" => $_POST['adptID'],
@@ -239,9 +271,23 @@
             );
 
             executeBoundSQL("insert into AdoptersInfo values (:bind1, :bind2, :bind3, :bind4, :bind5, :bind6, :bind7)", $alltuples);
+
+            // Set animal to adopted
+            $tuple2 = array (
+                ":bind1" => $_POST['adptAnimalID']
+            );
+
+            $alltuples2 = array (
+                $tuple2
+            );
+
+            executeBoundSQL("Update RegisteredAnimal SET adopted = 1 where animalID = :bind1", $alltuples2);
+
+
             OCICommit($db_conn);
+            echo '<p style="color: green;">Successfully inserted adopter</p>';
         } else {
-            echo '<p style="color: red;">Invalid info inserted. Please use an adopter ID, national ID, and email that is not already in use.</p>';
+            echo '<p style="color: red;">Invalid info inserted. Please use an adopter ID, national ID, and email that is not already in use. Please make sure to use an animal ID that exists in this shelter.</p>';
         }
     }
 
@@ -328,6 +374,7 @@
 
             executeBoundSQL("insert into Manager values (:bind1, :bind2, :bind3, :bind4)", $alltuples);
             OCICommit($db_conn);
+            echo '<p style="color: green;">Signup successfull</p>';
         } else {
             echo '<p style="color: red;">Invalid ID inserted. Please use an ID that is not already in use.</p>';
         }
@@ -365,6 +412,7 @@
 
             executeBoundSQL("insert into Vet values (:bind1, :bind2)", $alltuples);
             OCICommit($db_conn);
+            echo '<p style="color: green;">Successfully inserted into vets</p>';
         } else {
             echo '<p style="color: red;">Invalid ID inserted. Please use an ID that is not already in use.</p>';
         }
@@ -407,11 +455,11 @@
 
             executeBoundSQL("insert into EventsHosted values (:bind1, :bind2, :bind3, TO_DATE(:bind4, 'YYYY-MM-DD'), :bind5, :bind6)", $alltuples);
             OCICommit($db_conn);
+            echo '<p style="color: green;">Successfully inserted into events</p>';
         } else {
             echo '<p style="color: red;">Invalid Event inserted. Please use event name, shelter name and location that is not already in use.</p>';
         }
     }
-
 
     function handleUpdateEventRequest() {
         global $db_conn;
@@ -451,6 +499,7 @@
 
             executeBoundSQL("UPDATE EventsHosted SET eventDescription = :bind2, cost = :bind3, eventDate = TO_DATE(:bind4, 'YYYY-MM-DD') WHERE eventName = :bind1 AND shelterLocation = :bind5 AND shelterName = :bind6", $alltuples1);
             OCICommit($db_conn);
+            echo '<p style="color: green;">Successfully updated event</p>';
         } else {
             echo '<p style="color: red;">Invalid info inserted. Please use an already existing event name, shelter location and shelter name.</p>';
         }
@@ -493,14 +542,11 @@
 
             executeBoundSQL("DELETE FROM EventsHosted WHERE eventName = :bind1 AND shelterLocation = :bind5 AND shelterName = :bind6", $alltuples);
             OCICommit($db_conn);
+            echo '<p style="color: green;">Successfully deleted event</p>';
         } else {
             echo '<p style="color: red;">This event does not exist. Please use an event name, shelter name and location that is already in use.</p>';
         }
     }
-
-
-
-
 
     function handleInsertInspectorRequest() {
         global $db_conn;
@@ -547,6 +593,7 @@
 
             executeBoundSQL("insert into Inspect values (:bind1, :bind3, :bind2, :bind4)", $alltuples1);
             OCICommit($db_conn);
+            echo '<p style="color: green;">Successfully inserted inspector</p>';
         } else {
             echo '<p style="color: red;">Invalid ID inserted. Please use an ID that is not already in use.</p>';
         }
@@ -636,12 +683,12 @@
 
             executeBoundSQL("insert into VolunteersAtShelter values (:bind1, :bind2, :bind3, TO_DATE(:bind4, 'YYYY-MM-DD'))", $alltuples);
             OCICommit($db_conn);
+            echo '<p style="color: green;">Successfully inserted new volunteer</p>';
         } else {
             echo '<p style="color: red;">Invalid ID inserted. Please use an ID that is not already in use.</p>';
         }
     }
 
-    // ECE TODO: Maybe have this reset button on the navigation bar? next to logout?
     function handleResetRequest() {        
         global $db_conn;
 
@@ -653,19 +700,14 @@
             executePlainSQL($sqlStatement);
         }
 
+        $sqlScriptAssertions = file_get_contents(__DIR__ . '/DDL/Triggers.sql');
+        executePlainSQL($sqlScriptAssertions);
+        
         OCICommit($db_conn);
     }
 
     /* SELINA TODO:
         - because we only have "on delete CASCADE" in animals tables, we need to implement ability for user to delete a cat/dog/bird to meet the ruric requirement
-        - TABLES:
-            -registered animal table
-            - cats
-            - dogs
-            - birds
-            - getvaccination
-            - vaccination
-            - health record
     */
 
     // Function from: https://www.students.cs.ubc.ca/~cs-304/resources/php-oracle-resources/php-setup.html
@@ -692,7 +734,6 @@
 
         return $statement;
     }
-
 
     // Function adapted from: https://www.students.cs.ubc.ca/~cs-304/resources/php-oracle-resources/php-setup.html
     function executeBoundSQL($cmdstr, $list) {
