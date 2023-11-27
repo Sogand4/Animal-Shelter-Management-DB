@@ -63,8 +63,8 @@
 
     function handleFindVolunteerRequest() {
         global $db_conn;
-        global $currShelterName;
-        global $currShelterLoc;
+        // global $currShelterName;
+        // global $currShelterLoc;
         global $findVolRequestResult;
 
         // Only run the find query if the ID exists
@@ -86,8 +86,8 @@
             if ($countExistingDays == 1) {
                 $tuple1 = array (
                     ":bind1" => $_POST['findVolDays'],
-                    ":bind2" => $currShelterName,
-                    ":bind3" => $currShelterLoc
+                    ":bind2" => $_SESSION["shelterName"],
+                    ":bind3" => $_SESSION["shelterLocation"]
                 );
         
                 $alltuples1 = array (
@@ -530,8 +530,8 @@
 
     function handleInsertInspectorRequest() {
         global $db_conn;
-        global $currShelterName;
-        global $currShelterLoc;
+        // global $currShelterName;
+        // global $currShelterLoc;
 
         // Only run the insert inspector query if the primary key is not already being used
         $tuple = array (
@@ -562,8 +562,8 @@
 
             $tuple1 = array (
                 ":bind1" => $_POST['insID'],
-                ":bind2" => $currShelterName,
-                ":bind3" => $currShelterLoc,
+                ":bind2" => $_SESSION["shelterName"],
+                ":bind3" => $_SESSION["shelterLocation"],
                 ":bind4" => $_POST['standardsMet']
             );
 
@@ -580,8 +580,8 @@
 
     function handleInsertVolunteerRequest() {
         global $db_conn;
-        global $currShelterName;
-        global $currShelterLoc;
+        // global $currShelterName;
+        // global $currShelterLoc;
 
         // Only run the insert volunteer query if the primary key is not already being used
         $tuple = array (
@@ -651,8 +651,8 @@
 
             $tuple = array (
                 ":bind1" => $_POST['volID'],
-                ":bind2" => $currShelterLoc,
-                ":bind3" => $currShelterName,
+                ":bind2" => $_SESSION["shelterLocation"],
+                ":bind3" => $_SESSION["shelterName"],
                 ":bind4" => $currentDate
             );
 

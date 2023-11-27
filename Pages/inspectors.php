@@ -1,8 +1,6 @@
 <?php
     include_once('../routeHandler.php');
     session_start();
-    echo $_SESSION["shelterName"];
-    echo $_SESSION["shelterLocation"];
 ?>
 
 <!DOCTYPE html>
@@ -49,6 +47,10 @@
 
     <?php
         connectToDB();
+
+        $currShelterName = $_SESSION["shelterName"];
+        $currShelterLoc = $_SESSION["shelterLocation"];
+
         $sql1 = "SELECT I.insID, I.insName, S.standardsMet
                 FROM Inspector I
                 INNER JOIN Inspect S ON I.insID = S.insID

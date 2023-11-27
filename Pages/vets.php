@@ -1,8 +1,6 @@
 <?php
     include_once('../routeHandler.php');
     session_start();
-    echo $_SESSION["shelterName"];
-    echo $_SESSION["shelterLocation"];
 ?>
 
 <!DOCTYPE html>

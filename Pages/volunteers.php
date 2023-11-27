@@ -1,8 +1,6 @@
 <?php
     include_once('../routeHandler.php');
     session_start();
-    echo $_SESSION["shelterName"];
-    echo $_SESSION["shelterLocation"];
 ?>
 
 <!DOCTYPE html>
@@ -52,6 +50,10 @@
 
     <?php
         connectToDB();
+
+        $currShelterName = $_SESSION["shelterName"];
+        $currShelterLoc = $_SESSION["shelterLocation"];
+        
         $sql = "SELECT *
                 FROM VolunteersAtShelter s
                 INNER JOIN Volunteer v ON s.volunteerID = v.volunteerID
