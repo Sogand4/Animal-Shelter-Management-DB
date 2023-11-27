@@ -1,5 +1,6 @@
 <?php
     include_once('../routeHandler.php');
+    session_start();
 ?>
 
 <!DOCTYPE html>
@@ -40,8 +41,6 @@
         Description: <input type="text" name="eventDescription" maxlength="255" required> <br /><br />
         Cost: <input type="text" name="cost" maxlength="255" required> <br /><br />
         Event Date: <input type="text" name="eventDate" maxlength="10" required pattern="\d{4}-\d{2}-\d{2}" title="Please enter a date in the format YYYY-MM-DD"> <br /><br />
-        Shelter Location: <input type="text" name="shelterLocation" maxlength="255" required> <br /><br />
-        Shelter Name: <input type="text" name="shelterName" maxlength="255" required> <br /><br />
         <input type="submit" value="Insert" name="insertSubmit">
     </form>
 
@@ -49,8 +48,6 @@
         <h2 style="margin: 0; padding-bottom: 10px;">Update Event Information:</h2>
         <input type="hidden" id="updateEventRequest" name="updateEventRequest">
         Event Name: <input type="text" name="eventName" maxlength="255" required> <br /><br />
-        Shelter Name: <input type="text" name="shelterName" maxlength="255" required> <br /><br />
-        Shelter Location: <input type="text" name="shelterLocation" maxlength="255" required> <br /><br />
         Description: <input type="text" name="eventDescription" maxlength="255" required> <br /><br />
         Cost: <input type="text" name="cost" maxlength="255" required> <br /><br />
         Event Date: <input type="text" name="eventDate" maxlength="10" required pattern="\d{4}-\d{2}-\d{2}" title="Please enter a date in the format YYYY-MM-DD"> <br /><br />
@@ -61,8 +58,6 @@
         <h2 style="margin: 0; padding-bottom: 10px;">Specify the event you want to delete below:</h2>
         <input type="hidden" id="deleteEventRequest" name="deleteEventRequest">
         Event Name: <input type="text" name="eventName" maxlength="255" required> <br /><br />
-        Shelter Location: <input type="text" name="shelterLocation" maxlength="255" required> <br /><br />
-        Shelter Name: <input type="text" name="shelterName" maxlength="255" required> <br /><br />
         <input type="submit" value="Delete" name="deleteSubmit">
     </form>
     
@@ -73,7 +68,14 @@
 
     <?php
         connectToDB();
-        $sql = 'SELECT * FROM EventsHosted';
+
+        $currShelterName = $_SESSION["shelterName"];
+        $currShelterLoc = $_SESSION["shelterLocation"];
+
+        $sql = "SELECT * 
+                FROM EventsHosted
+                WHERE shelterName = '$currShelterName' AND shelterLocation = '$currShelterLoc'";
+
         $result = executePlainSQL($sql);
     ?>
 
@@ -84,8 +86,6 @@
                 <th>Description</th>
                 <th>Cost</th>
                 <th>Event Date</th>
-                <th>Shelter Location</th>
-                <th>Shelter Name</th>
             </tr>
         </thead>
         <tbody>
@@ -97,8 +97,6 @@
                 echo '<td>' . $row['EVENTDESCRIPTION'] . '</td>';
                 echo '<td>' . $row['COST'] . '</td>';
                 echo '<td>' . $row['EVENTDATE'] . '</td>';
-                echo '<td>' . $row['SHELTERLOCATION'] . '</td>';
-                echo '<td>' . $row['SHELTERNAME'] . '</td>';
                 echo '</tr>';
             }
         ?>

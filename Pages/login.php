@@ -2,6 +2,7 @@
 
 	include("connection.php");
 	include_once('../routeHandler.php');
+	session_start();
 
 ?>
 
