@@ -49,9 +49,20 @@
 
     <?php
         connectToDB();
-        $sql = 'SELECT * FROM Vet
-                ORDER BY vetID DESC';
+
+        $currShelterName = $_SESSION["shelterName"];
+        $currShelterLoc = $_SESSION["shelterLocation"];
+        
+        $sql = "SELECT *
+                FROM VetWorksAtShelter s
+                INNER JOIN Vet v ON s.vetID = v.vetID
+                WHERE s.shelterName = '$currShelterName' AND s.shelterLocation = '$currShelterLoc'
+                ORDER BY v.vetID DESC";
         $result = executePlainSQL($sql);
+
+        // $sql = 'SELECT * FROM Vet
+        //         ORDER BY vetID DESC';
+        // $result = executePlainSQL($sql);
     ?>
 
     <table border="1">
