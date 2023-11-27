@@ -2,6 +2,9 @@
     require_once('connection.php');
     global $findVolRequestResult;
     $findVolRequestResult = null;
+    session_start();
+
+
 
     if (isset($_POST['reset']) || isset($_POST['insertSubmit']) || isset($_POST['signupSubmit']) || isset($_POST['loginSubmit']) || isset($_POST['updateSubmit']) || isset($_POST['deleteSubmit'])) {
         handlePOSTRequest();
@@ -53,8 +56,6 @@
 
     function handleFindVolunteerRequest() {
         global $db_conn;
-        global $currShelterName;
-        global $currShelterLoc;
         global $findVolRequestResult;
 
         // Only run the find query if the ID exists
@@ -76,8 +77,8 @@
             if ($countExistingDays == 1) {
                 $tuple1 = array (
                     ":bind1" => $_POST['findVolDays'],
-                    ":bind2" => $currShelterName,
-                    ":bind3" => $currShelterLoc
+                    ":bind2" => $_SESSION["shelterName"],
+                    ":bind3" => $_SESSION["shelterLocation"]
                 );
         
                 $alltuples1 = array (
@@ -330,8 +331,21 @@
             {
                 // login successful. Keep track of current shelter
                 // $currShelterName, $currShelterLoc = (do query to set this value)
+
+                $result_shel_name = executeBoundSQL("SELECT shelterName AS shelterName FROM Manager WHERE manID = :bind1", $alltuples);
+                $shelName  = oci_fetch_assoc($result_shel_name);
+                $currShelterName = $shelName['SHELTERNAME'];
+
+                $result_shel_loc = executeBoundSQL("SELECT shelterLocation AS shelterLocation FROM Manager WHERE manID = :bind1", $alltuples);
+                $shelLoc  = oci_fetch_assoc($result_shel_loc);
+                $currShelterLoc = $shelLoc['SHELTERLOCATION'];
+                
+                $_SESSION["shelterName"] = $currShelterName;
+                $_SESSION["shelterLocation"] = $currShelterLoc;
+
+
                 header("Location: index.php");
-                die;
+                //die;
             }
                 
         echo " wrong username or password NO RESULT";
@@ -364,15 +378,18 @@
             $tuple = array (
                 ":bind1" => $_POST['manID'],
                 ":bind2" => $_POST['manPassword'],
-                ":bind3" => $_POST['manName'],  
-                ":bind4" => $_POST['kpi']
+                ":bind3" => $_POST['shelterLocation'], 
+                ":bind4" => $_POST['shelterName'], 
+                ":bind5" => $_POST['manName'], 
+                ":bind6" => $_POST['kpi'],  
+                ":bind7" => $_POST['since']
             );
 
             $alltuples = array (
                 $tuple
             );
 
-            executeBoundSQL("insert into Manager values (:bind1, :bind2, :bind3, :bind4)", $alltuples);
+            executeBoundSQL("insert into Manager values (:bind1, :bind2, :bind3, :bind4, :bind5, :bind6, :bind7)", $alltuples);
             OCICommit($db_conn);
             echo '<p style="color: green;">Signup successfull</p>';
         } else {
@@ -424,8 +441,8 @@
         // Only run the insert event query if the primary key is not already being used
         $tuple = array (
             ":bind1" => $_POST['eventName'],
-            ":bind5" => $_POST['shelterLocation'],
-            ":bind6" => $_POST['shelterName']
+            ":bind5" => $_SESSION["shelterLocation"],
+            ":bind6" => $_SESSION["shelterName"]
         );
 
         $alltuples = array (
@@ -445,8 +462,8 @@
                 ":bind2" => $_POST['eventDescription'],
                 ":bind3" => $_POST['cost'],
                 ":bind4" => $eventDateFormatted,
-                ":bind5" => $_POST['shelterLocation'],
-                ":bind6" => $_POST['shelterName']
+                ":bind5" => $_SESSION["shelterLocation"],
+                ":bind6" => $_SESSION["shelterName"]
             );
 
             $alltuples = array (
@@ -467,8 +484,8 @@
         // Only run the update query if these exist
         $tuple = array (
             ":bind1" => $_POST['eventName'],
-            ":bind5" => $_POST['shelterLocation'],
-            ":bind6" => $_POST['shelterName']
+            ":bind5" => $_SESSION["shelterLocation"],
+            ":bind6" => $_SESSION["shelterName"]
         );
 
 
@@ -489,8 +506,8 @@
                 ":bind2" => $_POST['eventDescription'],
                 ":bind3" => $_POST['cost'],
                 ":bind4" => $eventDateFormatted,
-                ":bind5" => $_POST['shelterLocation'],
-                ":bind6" => $_POST['shelterName'],
+                ":bind5" => $_SESSION["shelterLocation"],
+                ":bind6" => $_SESSION["shelterName"],
             );
 
             $alltuples1 = array (
@@ -511,8 +528,8 @@
         // Only run the insert event query if the primary key is not already being used
         $tuple = array (
             ":bind1" => $_POST['eventName'],
-            ":bind5" => $_POST['shelterLocation'],
-            ":bind6" => $_POST['shelterName']
+            ":bind5" => $_SESSION["shelterLocation"],
+            ":bind6" => $_SESSION["shelterName"]
         );
 
         $alltuples = array (
@@ -532,8 +549,8 @@
                 ":bind2" => $_POST['eventDescription'],
                 ":bind3" => $_POST['cost'],
                 ":bind4" => $eventDateFormatted,
-                ":bind5" => $_POST['shelterLocation'],
-                ":bind6" => $_POST['shelterName']
+                ":bind5" => $_SESSION["shelterLocation"],
+                ":bind6" => $_SESSION["shelterName"]
             );
 
             $alltuples = array (
@@ -550,8 +567,8 @@
 
     function handleInsertInspectorRequest() {
         global $db_conn;
-        global $currShelterName;
-        global $currShelterLoc;
+        // global $currShelterName;
+        // global $currShelterLoc;
 
         // Only run the insert inspector query if the primary key is not already being used
         $tuple = array (
@@ -582,8 +599,8 @@
 
             $tuple1 = array (
                 ":bind1" => $_POST['insID'],
-                ":bind2" => $currShelterName,
-                ":bind3" => $currShelterLoc,
+                ":bind2" => $_SESSION["shelterName"],
+                ":bind3" => $_SESSION["shelterLocation"],
                 ":bind4" => $_POST['standardsMet']
             );
 
@@ -601,8 +618,8 @@
 
     function handleInsertVolunteerRequest() {
         global $db_conn;
-        global $currShelterName;
-        global $currShelterLoc;
+        // global $currShelterName;
+        // global $currShelterLoc;
 
         // Only run the insert volunteer query if the primary key is not already being used
         $tuple = array (
@@ -672,8 +689,8 @@
 
             $tuple = array (
                 ":bind1" => $_POST['volID'],
-                ":bind2" => $currShelterLoc,
-                ":bind3" => $currShelterName,
+                ":bind2" => $_SESSION["shelterLocation"],
+                ":bind3" => $_SESSION["shelterName"],
                 ":bind4" => $currentDate
             );
 

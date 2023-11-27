@@ -18,6 +18,10 @@ DROP TABLE Inspector;
 
 DROP TABLE Manager;
 
+DROP TABLE ManagerPerformance;
+
+DROP TABLE VetWorksAtShelter;
+
 DROP TABLE Cats;
 
 DROP TABLE Dogs;
@@ -64,6 +68,9 @@ CREATE TABLE
     Vet(
         vetID CHAR(4),
         vetName VARCHAR(225) NOT NULL,
+        specialty varchar(255),
+        yearsOfExperience INT,
+        vetLocation varchar(255),
         PRIMARY KEY (vetID)
     );
 
@@ -97,6 +104,15 @@ CREATE TABLE
         PRIMARY KEY (shelterLocation, shelterName)
     );
 
+CREATE TABLE VetWorksAtShelter (
+    vetID CHAR(4),
+    shelterLocation VARCHAR(225),
+    shelterName VARCHAR(225),    
+    PRIMARY KEY (vetID, shelterLocation, shelterName),
+    FOREIGN KEY (vetID) REFERENCES Vet(vetID),
+    FOREIGN KEY (shelterName, shelterLocation) REFERENCES Shelter(shelterName, shelterLocation)
+);
+
 CREATE TABLE
     Inspect(
         insID CHAR(4),
@@ -112,13 +128,24 @@ CREATE TABLE
         FOREIGN KEY (shelterLocation, shelterName) REFERENCES Shelter(shelterLocation, shelterName)
     );
 
+CREATE TABLE ManagerPerformance (
+  kpi VARCHAR(30),
+  salary VARCHAR(255),
+  PRIMARY KEY (kpi)
+);
+
 CREATE TABLE
     Manager(
         manID char(4),
         manPassword char(12),
+        shelterLocation VARCHAR(225),
+        shelterName VARCHAR(225),
         manName char(30) DEFAULT NULL,
-        kpi char(30) DEFAULT NULL,
-        PRIMARY KEY (manID)
+        kpi VARCHAR(30) DEFAULT NULL,
+        since date DEFAULT NULL,
+        PRIMARY KEY (manID),
+        FOREIGN KEY (shelterLocation, shelterName) REFERENCES Shelter(shelterLocation, shelterName),
+        FOREIGN KEY (kpi) REFERENCES ManagerPerformance(kpi)
     );
 
 CREATE TABLE
@@ -350,15 +377,23 @@ INSERT INTO Inspector(insName, insID) VALUES ('Tony', 'I004');
 
 INSERT INTO Inspector(insName, insID) VALUES ('Zed', 'I005');
 
-INSERT INTO Vet(vetID, vetName) VALUES ('V001', 'Andy');
 
-INSERT INTO Vet(vetID, vetName) VALUES ('V002', 'Jack');
 
-INSERT INTO Vet(vetID, vetName) VALUES ('V003', 'Mary');
+INSERT INTO Vet (vetID, vetName, specialty, yearsOfExperience, vetLocation)
+VALUES ('V001', 'Andy White', 'Cardiology', 6, 'Surrey');
 
-INSERT INTO Vet(vetID, vetName) VALUES ('V004', 'Jackie');
+INSERT INTO Vet (vetID, vetName, specialty, yearsOfExperience, vetLocation)
+VALUES ('V002', 'Jack Allen', 'Cardiology', 4, 'Surrey');
 
-INSERT INTO Vet(vetID, vetName) VALUES ('V005', 'Sandy');
+INSERT INTO Vet (vetID, vetName, specialty, yearsOfExperience, vetLocation)
+VALUES ('V003', 'Jackie Brown', 'Neurology', 3, 'Surrey');
+
+INSERT INTO Vet (vetID, vetName, specialty, yearsOfExperience, vetLocation)
+VALUES ('V004', 'Mary Moore', 'Oncology', 2, 'San Francisco');
+
+INSERT INTO Vet (vetID, vetName, specialty, yearsOfExperience, vetLocation)
+VALUES ('V005', 'Sandy Blum', 'Dentistry', 8, 'Dentistry');
+
 
 INSERT INTO
     AdoptersLocation(
@@ -642,6 +677,21 @@ VALUES (
         'The Animal Haven'
     );
 
+INSERT INTO VetWorksAtShelter (vetID, shelterLocation, shelterName)
+VALUES ('V001', '10776 King George Boulevard, Surrey, British Columbia', 'Paws and Claws Animal Shelter');
+
+INSERT INTO VetWorksAtShelter (vetID, shelterLocation, shelterName)
+VALUES ('V002', '10776 King George Boulevard, Surrey, British Columbia', 'Paws and Claws Animal Shelter');
+
+INSERT INTO VetWorksAtShelter (vetID, shelterLocation, shelterName)
+VALUES ('V003', '10776 King George Boulevard, Surrey, British Columbia', 'Paws and Claws Animal Shelter');
+
+INSERT INTO VetWorksAtShelter (vetID, shelterLocation, shelterName)
+VALUES ('V004', '234 Willow Lane, Supportville, USA', 'The Animal Haven');
+
+INSERT INTO VetWorksAtShelter (vetID, shelterLocation, shelterName)
+VALUES ('V005', '234 Willow Lane, Supportville, USA', 'The Animal Haven');
+
 INSERT INTO
     Inspect(
         insID,
@@ -726,15 +776,27 @@ VALUES (
         0
     );
 
-INSERT INTO Manager(manID, manPassword) VALUES ('M001', 'myt');
 
-INSERT INTO Manager(manID, manPassword) VALUES ('M002', 'myt');
 
-INSERT INTO Manager (manID, manPassword) VALUES ('M003', 'pass');
+INSERT INTO ManagerPerformance (kpi, salary) VALUES ('AnimalAdoptionRate : 70%', '5000/month');
+INSERT INTO ManagerPerformance (kpi, salary) VALUES ('AnimalAdoptionRate : 75%', '5500/month');
+INSERT INTO ManagerPerformance (kpi, salary) VALUES ('AnimalAdoptionRate : 60%', '4000/month');
+INSERT INTO ManagerPerformance (kpi, salary) VALUES ('AnimalAdoptionRate : 50%', '4000/month');
+INSERT INTO ManagerPerformance (kpi, salary) VALUES ('AnimalAdoptionRate : 80%', '6000/month');
 
-INSERT INTO Manager(manID, manPassword) VALUES ('M004', 'pass4');
 
-INSERT INTO Manager (manID, manPassword) VALUES ('M005', 'pass5');
+
+
+INSERT INTO Manager(manID, manPassword, shelterLocation, shelterName) VALUES ('M001', 'myt', '234 Willow Lane, Supportville, USA' , 'The Animal Haven');
+
+INSERT INTO Manager(manID, manPassword, shelterLocation, shelterName) VALUES ('M002', 'myt','234 Willow Lane, Supportville, USA' , 'The Animal Haven');
+
+INSERT INTO Manager (manID, manPassword, shelterLocation, shelterName) VALUES ('M003', 'pass','234 Willow Lane, Supportville, USA' , 'The Animal Haven');
+
+INSERT INTO Manager(manID, manPassword, shelterLocation, shelterName) VALUES ('M004', 'pass4','10776 King George Boulevard, Surrey, British Columbia', 'Paws and Claws Animal Shelter');
+
+INSERT INTO Manager (manID, manPassword, shelterLocation, shelterName) VALUES ('M005', 'pass5','10776 King George Boulevard, Surrey, British Columbia', 'Paws and Claws Animal Shelter');
+
 
 INSERT INTO
     VolunteersAtShelter (
@@ -841,6 +903,62 @@ VALUES (
         '10776 King George Boulevard, Surrey, British Columbia',
         'Paws and Claws Animal Shelter'
     );
+
+INSERT INTO
+    EventsHosted(
+        eventName,
+        eventDescription,
+        cost,
+        eventDate,
+        shelterLocation,
+        shelterName
+    )
+VALUES (
+        'Pets 101',
+        'Time to learn about being a pet owner',
+        '$15 per person',
+        TO_DATE('2023-12-24', 'YYYY-MM-DD'),
+        '10776 King George Boulevard, Surrey, British Columbia',
+        'Paws and Claws Animal Shelter'
+    );
+
+INSERT INTO
+    EventsHosted(
+        eventName,
+        eventDescription,
+        cost,
+        eventDate,
+        shelterLocation,
+        shelterName
+    )
+VALUES (
+        'Sick pet caring',
+        'Caring ways for your sick pet',
+        '$10 per person',
+        TO_DATE('2023-11-12', 'YYYY-MM-DD'),
+        '234 Willow Lane, Supportville, USA', 
+        'The Animal Haven'
+    );
+
+INSERT INTO
+    EventsHosted(
+        eventName,
+        eventDescription,
+        cost,
+        eventDate,
+        shelterLocation,
+        shelterName
+    )
+VALUES (
+        'Vets 101',
+        'Which vets can you trust?',
+        '$11 per person',
+        TO_DATE('2023-12-06', 'YYYY-MM-DD'),
+        '234 Willow Lane, Supportville, USA', 
+        'The Animal Haven'
+    );
+
+
 
 INSERT INTO RegisteredAnimal (animalID,  name, adopted, description, age, weight, breed,  shelterLocation, shelterName)
 VALUES 	('C000', 'Smokey', 0, 'A very cute cat. Loves to be pet.', 3, 8, 'British Shorthair','270 Gerrard St E, Toronto, Ontario', 'Lovely Pet Home' );

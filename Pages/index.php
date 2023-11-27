@@ -1,6 +1,7 @@
 <?php 
 	include("../connection.php");
 	include("../routeHandler.php");
+	session_start();
 ?>
 
 <!DOCTYPE html>
@@ -34,6 +35,10 @@
 
 	<?php
         connectToDB();
+
+		$currShelterName = $_SESSION["shelterName"];
+        $currShelterLoc = $_SESSION["shelterLocation"];
+
         $sql1 = "SELECT capacity
                 FROM Shelter
                 WHERE shelterName = '$currShelterName' AND shelterLocation = '$currShelterLoc'";
@@ -53,8 +58,8 @@
         $countExisting2 = $rowExisting2['COUNT'];
     ?>
 
-	<p>Shelter Name: <?php echo $currShelterName; ?></p>
-	<p>Shelter Location: <?php echo $currShelterLoc; ?></p>
+	<p>Shelter Name: <?php echo $_SESSION["shelterName"]; ?></p>
+	<p>Shelter Location: <?php echo $_SESSION["shelterLocation"]; ?></p>
 	<p>Shelter Capacity: <?php echo $countExisting1; ?></p>
 	<p>Number of Volunteers: <?php echo $countExisting2; ?></p>
 
