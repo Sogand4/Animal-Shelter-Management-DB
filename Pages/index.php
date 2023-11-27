@@ -35,6 +35,10 @@
 
 	<?php
         connectToDB();
+
+		$currShelterName = $_SESSION["shelterName"];
+        $currShelterLoc = $_SESSION["shelterLocation"];
+
         $sql1 = "SELECT capacity
                 FROM Shelter
                 WHERE shelterName = '$currShelterName' AND shelterLocation = '$currShelterLoc'";

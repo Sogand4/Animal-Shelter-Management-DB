@@ -38,6 +38,10 @@
             <input type="hidden" id="insertVetRequest" name="insertVetRequest">
             Id: <input type="text" name="vetID" pattern="V\d{3}" title="Invalid entry. Please follow the format above." required> <br /><br />
             Name: <input type="text" name="vetName" maxlength="255" required> <br /><br />
+            Specialty: <input type="text" name="specialty" maxlength="255" required> <br /><br />
+            Years of Experience: <input type="number" name="yearsOfExperience" maxlength="255" required> <br /><br />
+            Vet Location: <input type="text" name="vetLocation" maxlength="255" required> <br /><br />
+
         <input type="submit" value="Insert" name="insertSubmit"></p>
     </form>
 
@@ -55,6 +59,9 @@
             <tr>
                 <th>Vet ID</th>
                 <th>Name</th>
+                <th>Specialty</th>
+                <th>Years of Experience</th>
+                <th>Vet Location</th>
             </tr>
         </thead>
         <tbody>
@@ -64,6 +71,9 @@
                 echo '<tr>';
                 echo '<td>' . $row['VETID'] . '</td>';
                 echo '<td>' . $row['VETNAME'] . '</td>';
+                echo '<td>' . $row['SPECIALTY'] . '</td>';
+                echo '<td>' . $row['YEARSOFEXPERIENCE'] . '</td>';
+                echo '<td>' . $row['VETLOCATION'] . '</td>';
                 echo '</tr>';
             }
         ?>
