@@ -16,6 +16,8 @@ DROP TABLE Inspector;
 
 DROP TABLE Manager;
 
+DROP TABLE ManagerPerformance;
+
 DROP TABLE Cats;
 
 DROP TABLE Dogs;
@@ -111,13 +113,24 @@ CREATE TABLE
         FOREIGN KEY (shelterLocation, shelterName) REFERENCES Shelter(shelterLocation, shelterName)
     );
 
+CREATE TABLE ManagerPerformance (
+  kpi VARCHAR(30),
+  salary VARCHAR(255),
+  PRIMARY KEY (kpi)
+);
+
 CREATE TABLE
     Manager(
         manID char(4),
         manPassword char(12),
+        shelterLocation VARCHAR(225),
+        shelterName VARCHAR(225),
         manName char(30) DEFAULT NULL,
-        kpi char(30) DEFAULT NULL,
-        PRIMARY KEY (manID)
+        kpi VARCHAR(30) DEFAULT NULL,
+        since date DEFAULT NULL,
+        PRIMARY KEY (manID),
+        FOREIGN KEY (shelterLocation, shelterName) REFERENCES Shelter(shelterLocation, shelterName),
+        FOREIGN KEY (kpi) REFERENCES ManagerPerformance(kpi)
     );
 
 CREATE TABLE
@@ -713,15 +726,16 @@ VALUES (
         0
     );
 
-INSERT INTO Manager(manID, manPassword) VALUES ('M001', 'myt');
+INSERT INTO Manager(manID, manPassword, shelterLocation, shelterName) VALUES ('M001', 'myt', '234 Willow Lane, Supportville, USA' , 'The Animal Haven');
 
-INSERT INTO Manager(manID, manPassword) VALUES ('M002', 'myt');
+INSERT INTO Manager(manID, manPassword, shelterLocation, shelterName) VALUES ('M002', 'myt','234 Willow Lane, Supportville, USA' , 'The Animal Haven');
 
-INSERT INTO Manager (manID, manPassword) VALUES ('M003', 'pass');
+INSERT INTO Manager (manID, manPassword, shelterLocation, shelterName) VALUES ('M003', 'pass','234 Willow Lane, Supportville, USA' , 'The Animal Haven');
 
-INSERT INTO Manager(manID, manPassword) VALUES ('M004', 'pass4');
+INSERT INTO Manager(manID, manPassword, shelterLocation, shelterName) VALUES ('M004', 'pass4','10776 King George Boulevard, Surrey, British Columbia', 'Paws and Claws Animal Shelter');
 
-INSERT INTO Manager (manID, manPassword) VALUES ('M005', 'pass5');
+INSERT INTO Manager (manID, manPassword, shelterLocation, shelterName) VALUES ('M005', 'pass5','10776 King George Boulevard, Surrey, British Columbia', 'Paws and Claws Animal Shelter');
+
 
 INSERT INTO
     VolunteersAtShelter (

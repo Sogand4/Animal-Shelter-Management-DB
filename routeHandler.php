@@ -3,6 +3,16 @@
     global $findVolRequestResult;
     $findVolRequestResult = null;
 
+    // global $currShelterName;
+    // global $currShelterLoc;
+
+    // $currShelterName = null;
+    // $currShelterLoc = null;
+
+    session_start();
+
+
+
     if (isset($_POST['reset']) || isset($_POST['insertSubmit']) || isset($_POST['signupSubmit']) || isset($_POST['loginSubmit']) || isset($_POST['updateSubmit']) || isset($_POST['deleteSubmit'])) {
         handlePOSTRequest();
     }
@@ -284,8 +294,21 @@
             {
                 // login successful. Keep track of current shelter
                 // $currShelterName, $currShelterLoc = (do query to set this value)
+
+                $result_shel_name = executeBoundSQL("SELECT shelterName AS shelterName FROM Manager WHERE manID = :bind1", $alltuples);
+                $shelName  = oci_fetch_assoc($result_shel_name);
+                $currShelterName = $shelName['SHELTERNAME'];
+
+                $result_shel_loc = executeBoundSQL("SELECT shelterLocation AS shelterLocation FROM Manager WHERE manID = :bind1", $alltuples);
+                $shelLoc  = oci_fetch_assoc($result_shel_loc);
+                $currShelterLoc = $shelLoc['SHELTERLOCATION'];
+                
+                $_SESSION["shelterName"] = $currShelterName;
+                $_SESSION["shelterLocation"] = $currShelterLoc;
+
+
                 header("Location: index.php");
-                die;
+                //die;
             }
                 
         echo " wrong username or password NO RESULT";
@@ -318,15 +341,18 @@
             $tuple = array (
                 ":bind1" => $_POST['manID'],
                 ":bind2" => $_POST['manPassword'],
-                ":bind3" => $_POST['manName'],  
-                ":bind4" => $_POST['kpi']
+                ":bind3" => $_POST['shelterLocation'], 
+                ":bind4" => $_POST['shelterName'], 
+                ":bind5" => $_POST['manName'], 
+                ":bind6" => $_POST['kpi'],  
+                ":bind7" => $_POST['since']
             );
 
             $alltuples = array (
                 $tuple
             );
 
-            executeBoundSQL("insert into Manager values (:bind1, :bind2, :bind3, :bind4)", $alltuples);
+            executeBoundSQL("insert into Manager values (:bind1, :bind2, :bind3, :bind4, :bind5, :bind6, :bind7)", $alltuples);
             OCICommit($db_conn);
         } else {
             echo '<p style="color: red;">Invalid ID inserted. Please use an ID that is not already in use.</p>';
