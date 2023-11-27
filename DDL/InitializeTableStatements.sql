@@ -763,6 +763,17 @@ VALUES (
         0
     );
 
+
+
+INSERT INTO ManagerPerformance (kpi, salary) VALUES ('AnimalAdoptionRate : 70%', '5000/month');
+INSERT INTO ManagerPerformance (kpi, salary) VALUES ('AnimalAdoptionRate : 75%', '5500/month');
+INSERT INTO ManagerPerformance (kpi, salary) VALUES ('AnimalAdoptionRate : 60%', '4000/month');
+INSERT INTO ManagerPerformance (kpi, salary) VALUES ('AnimalAdoptionRate : 50%', '4000/month');
+INSERT INTO ManagerPerformance (kpi, salary) VALUES ('AnimalAdoptionRate : 80%', '6000/month');
+
+
+
+
 INSERT INTO Manager(manID, manPassword, shelterLocation, shelterName) VALUES ('M001', 'myt', '234 Willow Lane, Supportville, USA' , 'The Animal Haven');
 
 INSERT INTO Manager(manID, manPassword, shelterLocation, shelterName) VALUES ('M002', 'myt','234 Willow Lane, Supportville, USA' , 'The Animal Haven');
@@ -879,6 +890,62 @@ VALUES (
         '10776 King George Boulevard, Surrey, British Columbia',
         'Paws and Claws Animal Shelter'
     );
+
+INSERT INTO
+    EventsHosted(
+        eventName,
+        eventDescription,
+        cost,
+        eventDate,
+        shelterLocation,
+        shelterName
+    )
+VALUES (
+        'Pets 101',
+        'Time to learn about being a pet owner',
+        '$15 per person',
+        TO_DATE('2023-12-24', 'YYYY-MM-DD'),
+        '10776 King George Boulevard, Surrey, British Columbia',
+        'Paws and Claws Animal Shelter'
+    );
+
+INSERT INTO
+    EventsHosted(
+        eventName,
+        eventDescription,
+        cost,
+        eventDate,
+        shelterLocation,
+        shelterName
+    )
+VALUES (
+        'Sick pet caring',
+        'Caring ways for your sick pet',
+        '$10 per person',
+        TO_DATE('2023-11-12', 'YYYY-MM-DD'),
+        '234 Willow Lane, Supportville, USA', 
+        'The Animal Haven'
+    );
+
+INSERT INTO
+    EventsHosted(
+        eventName,
+        eventDescription,
+        cost,
+        eventDate,
+        shelterLocation,
+        shelterName
+    )
+VALUES (
+        'Vets 101',
+        'Which vets can you trust?',
+        '$11 per person',
+        TO_DATE('2023-12-06', 'YYYY-MM-DD'),
+        '234 Willow Lane, Supportville, USA', 
+        'The Animal Haven'
+    );
+
+
 
 INSERT INTO RegisteredAnimal (animalID,  name, adopted, description, age, weight, breed,  shelterLocation, shelterName)
 VALUES 	('C000', 'Smokey', 0, 'A very cute cat. Loves to be pet.', 3, 8, 'British Shorthair','270 Gerrard St E, Toronto, Ontario', 'Lovely Pet Home' );

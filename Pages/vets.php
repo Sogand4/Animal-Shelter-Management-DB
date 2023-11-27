@@ -60,9 +60,6 @@
                 ORDER BY v.vetID DESC";
         $result = executePlainSQL($sql);
 
-        // $sql = 'SELECT * FROM Vet
-        //         ORDER BY vetID DESC';
-        // $result = executePlainSQL($sql);
     ?>
 
     <table border="1">

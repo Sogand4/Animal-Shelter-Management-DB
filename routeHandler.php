@@ -2,13 +2,6 @@
     require_once('connection.php');
     global $findVolRequestResult;
     $findVolRequestResult = null;
-
-    // global $currShelterName;
-    // global $currShelterLoc;
-
-    // $currShelterName = null;
-    // $currShelterLoc = null;
-
     session_start();
 
 
@@ -63,8 +56,6 @@
 
     function handleFindVolunteerRequest() {
         global $db_conn;
-        // global $currShelterName;
-        // global $currShelterLoc;
         global $findVolRequestResult;
 
         // Only run the find query if the ID exists
@@ -402,8 +393,8 @@
         // Only run the insert event query if the primary key is not already being used
         $tuple = array (
             ":bind1" => $_POST['eventName'],
-            ":bind5" => $_POST['shelterLocation'],
-            ":bind6" => $_POST['shelterName']
+            ":bind5" => $_SESSION["shelterLocation"],
+            ":bind6" => $_SESSION["shelterName"]
         );
 
         $alltuples = array (
@@ -423,8 +414,8 @@
                 ":bind2" => $_POST['eventDescription'],
                 ":bind3" => $_POST['cost'],
                 ":bind4" => $eventDateFormatted,
-                ":bind5" => $_POST['shelterLocation'],
-                ":bind6" => $_POST['shelterName']
+                ":bind5" => $_SESSION["shelterLocation"],
+                ":bind6" => $_SESSION["shelterName"]
             );
 
             $alltuples = array (
@@ -445,8 +436,8 @@
         // Only run the update query if these exist
         $tuple = array (
             ":bind1" => $_POST['eventName'],
-            ":bind5" => $_POST['shelterLocation'],
-            ":bind6" => $_POST['shelterName']
+            ":bind5" => $_SESSION["shelterLocation"],
+            ":bind6" => $_SESSION["shelterName"]
         );
 
 
@@ -467,8 +458,8 @@
                 ":bind2" => $_POST['eventDescription'],
                 ":bind3" => $_POST['cost'],
                 ":bind4" => $eventDateFormatted,
-                ":bind5" => $_POST['shelterLocation'],
-                ":bind6" => $_POST['shelterName'],
+                ":bind5" => $_SESSION["shelterLocation"],
+                ":bind6" => $_SESSION["shelterName"],
             );
 
             $alltuples1 = array (
@@ -488,8 +479,8 @@
         // Only run the insert event query if the primary key is not already being used
         $tuple = array (
             ":bind1" => $_POST['eventName'],
-            ":bind5" => $_POST['shelterLocation'],
-            ":bind6" => $_POST['shelterName']
+            ":bind5" => $_SESSION["shelterLocation"],
+            ":bind6" => $_SESSION["shelterName"]
         );
 
         $alltuples = array (
@@ -509,8 +500,8 @@
                 ":bind2" => $_POST['eventDescription'],
                 ":bind3" => $_POST['cost'],
                 ":bind4" => $eventDateFormatted,
-                ":bind5" => $_POST['shelterLocation'],
-                ":bind6" => $_POST['shelterName']
+                ":bind5" => $_SESSION["shelterLocation"],
+                ":bind6" => $_SESSION["shelterName"]
             );
 
             $alltuples = array (
