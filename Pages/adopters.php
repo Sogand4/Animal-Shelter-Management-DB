@@ -33,7 +33,7 @@
     <p>If you wish to reset the table press on the reset button on the navigation bar above. If this is the first time you're running this page, you MUST use reset</p>
 
     <h2>Add new Adopter below:</h2>
-        <p>ID's are in the format 'AXXX' where X are numbers. National ID must be 10 characters.</p>
+        <p>ID's are in the format 'AXXX' where X are numbers. National ID must be 10 characters. Animal ID is 'BXXX', 'CXXX', or 'DXXX' (representing bird, cat or dog)</p>
         <form method="POST" action="adopters.php">
             <input type="hidden" id="insertAdopterRequest" name="insertAdopterRequest">
             Id: <input type="text" name="adptID" pattern="A\d{3}" title="Invalid entry. Please follow the format above." required> <br /><br />
@@ -46,6 +46,7 @@
             City: <input type="text" name="adptCity" maxlength="225"> <br /><br />
             Steet name: <input type="text" name="adptStreetName" maxlength="225"> <br /><br />
             Province: <input type="text" name="adptProvince" maxlength="225"> <br /><br />
+            ID of Animal they are adopting: <input type="text" name="adptAnimalID" pattern="^[BCD]\d{3}" required> <br /><br />
         <input type="submit" value="Insert" name="insertSubmit"></p>
     </form>
 
@@ -56,6 +57,7 @@
             Id: <input type="text" name="adptID" pattern="A\d{3}" title="Invalid entry. Please follow the format above." required> <br /><br />
             Name: <input type="text" name="adptName" maxlength="255"> <br /><br />
             Email: <input type="text" name="adptEmail" maxlength="225"> <br /><br />
+            Phone Number: <input type="number" name="adptNum"> <br /><br />
         <input type="submit" value="Update" name="updateSubmit"></p>
     </form>
 
@@ -72,23 +74,36 @@
 
     <br></br>
 
-    <!-- TODO: ADD FILTERING FOR CURRENT SHELTER AND ANIMALS -->
     <?php
         $view = isset($_GET['view']) ? $_GET['view'] : 'with_address';
         connectToDB();
         $sql = '';
         if ($view === 'with_address') {
             // Include the address columns in the query
-            $sql = 'SELECT *
-                    FROM AdoptersInfo i NATURAL LEFT OUTER JOIN AdoptersLocation
-                    ORDER BY i.adopterID DESC';
+            $sql = "SELECT *
+                    FROM AdoptersInfo i NATURAL LEFT OUTER JOIN AdoptersLocation l
+                    INNER JOIN Adopt a ON a.adopterId = i.adopterID
+                    INNER JOIN RegisteredAnimal r ON a.animalID = r.animalID
+                    INNER JOIN Shelter s ON s.shelterName = r.shelterName AND s.shelterLocation = r.shelterLocation
+                    WHERE s.shelterName = '$currShelterName' AND s.shelterLocation = '$currShelterLoc'
+                    ORDER BY i.adopterID DESC";
         } elseif ($view === 'without_address') {
             // Exclude the address columns in the query
-            $sql = 'SELECT ADOPTERID, NATIONALID, NAME, PHONENUMBER, EMAIL
-                    FROM AdoptersInfo
-                    ORDER BY ADOPTERID DESC';
+            $sql = "SELECT i.ADOPTERID, i.NATIONALID, i.ADOPTERNAME, i.PHONENUMBER, i.EMAIL, a.animalID
+                    FROM AdoptersInfo i
+                    INNER JOIN Adopt a ON a.adopterId = i.adopterID
+                    INNER JOIN RegisteredAnimal r ON a.animalID = r.animalID
+                    INNER JOIN Shelter s ON s.shelterName = r.shelterName AND s.shelterLocation = r.shelterLocation
+                    WHERE s.shelterName = '$currShelterName' AND s.shelterLocation = '$currShelterLoc'
+                    ORDER BY i.ADOPTERID DESC";
         }
         $result = executePlainSQL($sql);
+
+        // get animalIDs for animals in current shelter:
+        $sql2 = "SELECT *
+                FROM RegisteredAnimal
+                WHERE shelterName = '$currShelterName' AND shelterLocation = '$currShelterLoc' AND adopted = 0";
+        $result2 = executePlainSQL($sql2);
     ?>
 
     <table border="1">
@@ -99,6 +114,7 @@
                 <th>Name</th>
                 <th>Phone Number</th>
                 <th>Email</th>
+                <th>ID of Animal Adopted</th>
                 <?php if ($view === 'with_address') { ?>
                     <th>House Number</th>
                     <th>Postal Code</th>
@@ -115,9 +131,10 @@
                 echo '<tr>';
                 echo '<td>' . $row['ADOPTERID'] . '</td>';
                 echo '<td>' . $row['NATIONALID'] . '</td>';
-                echo '<td>' . $row['NAME'] . '</td>';
+                echo '<td>' . $row['ADOPTERNAME'] . '</td>';
                 echo '<td>' . $row['PHONENUMBER'] . '</td>';
                 echo '<td>' . $row['EMAIL'] . '</td>';
+                echo '<td>' . $row['ANIMALID'] . '</td>';
 
                 if ($view === 'with_address') {
                     echo '<td>' . $row['HOUSENUMBER'] . '</td>';
@@ -126,6 +143,25 @@
                     echo '<td>' . $row['STREETNAME'] . '</td>';
                     echo '<td>' . $row['PROVINCE'] . '</td>';
                 }
+            }
+        ?>
+
+        </tbody>
+    </table>
+
+    <h3>List of UNADOPTED animal IDs in this shelter</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Animal ID</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        <?php
+            while ($row = oci_fetch_assoc($result2)) {
+                echo '<tr>';
+                echo '<td>' . $row['ANIMALID'] . '</td>';
             }
         ?>
 

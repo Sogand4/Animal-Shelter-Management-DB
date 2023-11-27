@@ -1,5 +1,5 @@
 CREATE OR REPLACE TRIGGER CheckAdopterConstraint
-BEFORE INSERT ON AdoptersInfo
+AFTER INSERT ON AdoptersInfo
 FOR EACH ROW
 DECLARE
     v_count INTEGER;

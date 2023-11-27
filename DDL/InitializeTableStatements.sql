@@ -80,7 +80,7 @@ CREATE TABLE
     AdoptersInfo(
         adopterID CHAR(4),
         nationalID CHAR(10) UNIQUE,
-        name VARCHAR(225),
+        adopterName VARCHAR(225),
         phoneNumber INT,
         email VARCHAR(225) UNIQUE,
         postalCode VARCHAR(225),
@@ -434,7 +434,7 @@ INSERT INTO
     AdoptersInfo (
         adopterID,
         nationalID,
-        name,
+        adopterName,
         phoneNumber,
         email,
         postalCode,
@@ -454,7 +454,7 @@ INSERT INTO
     AdoptersInfo (
         adopterID,
         nationalID,
-        name,
+        adopterName,
         phoneNumber,
         email,
         postalCode,
@@ -474,7 +474,7 @@ INSERT INTO
     AdoptersInfo (
         adopterID,
         nationalID,
-        name,
+        adopterName,
         phoneNumber,
         email,
         postalCode,
@@ -494,7 +494,7 @@ INSERT INTO
     AdoptersInfo (
         adopterID,
         nationalID,
-        name,
+        adopterName,
         phoneNumber,
         email,
         postalCode,
@@ -514,7 +514,7 @@ INSERT INTO
     AdoptersInfo (
         adopterID,
         nationalID,
-        name,
+        adopterName,
         phoneNumber,
         email,
         postalCode,
@@ -534,7 +534,7 @@ INSERT INTO
     AdoptersInfo (
         adopterID,
         nationalID,
-        name,
+        adopterName,
         phoneNumber,
         email,
         postalCode,
@@ -554,7 +554,7 @@ INSERT INTO
     AdoptersInfo (
         adopterID,
         nationalID,
-        name,
+        adopterName,
         phoneNumber,
         email,
         postalCode,
@@ -855,7 +855,13 @@ INSERT INTO RegisteredAnimal (animalID,  name, adopted, description, age, weight
 VALUES ('C003', 'Bambi', 0, 'Bambi loves to be pet.', 1, 8, 'Calico', '10776 King George Boulevard, Surrey, British Columbia','Paws and Claws Animal Shelter');
 
 INSERT INTO RegisteredAnimal (animalID,  name, adopted, description, age, weight, breed,  shelterLocation, shelterName)
-VALUES ('C004', 'Daisy', 1, 'Loves to eat. Always hungry' , 4, 15, 'Ragdoll', '4455 110 Avenue SE, Calgary, Alberta', 'The Animal Haven');
+VALUES ('C004', 'Daisy', 1, 'Loves to eat. Always hungry' , 1, 15, 'Ragdoll', '234 Willow Lane, Supportville, USA', 'The Animal Haven');
+
+INSERT INTO RegisteredAnimal (animalID,  name, adopted, description, age, weight, breed,  shelterLocation, shelterName)
+VALUES ('C005', 'Kitkat', 1, 'Loves kitkats' , 0, 10, 'Ragdoll', '234 Willow Lane, Supportville, USA', 'The Animal Haven');
+
+INSERT INTO RegisteredAnimal (animalID,  name, adopted, description, age, weight, breed,  shelterLocation, shelterName)
+VALUES ('C006', 'Catcat', 0, 'is a ver nice cat' , 10, 18, 'Bengal', '234 Willow Lane, Supportville, USA', 'The Animal Haven');
 
 INSERT INTO RegisteredAnimal (animalID,  name, adopted, description, age, weight, breed,  shelterLocation, shelterName)
 VALUES ('D000', 'Spots', 1, 'A good boy, lots of energy.', 1, 15, 'Dalmatian','270 Gerrard St E, Toronto, Ontario', 'Lovely Pet Home');
@@ -870,7 +876,7 @@ INSERT INTO RegisteredAnimal (animalID,  name, adopted, description, age, weight
 VALUES ('D003', 'Luna', 0, 'Luna loves when you pet her.', 1, 8, 'Chinese Crested Dog', '10776 King George Boulevard, Surrey, British Columbia','Paws and Claws Animal Shelter');
 
 INSERT INTO RegisteredAnimal (animalID,  name, adopted, description, age, weight, breed,  shelterLocation, shelterName)
-VALUES ('D004', 'Bear', 1, 'Loves to eat.' , 1, 3, 'Husky', '4455 110 Avenue SE, Calgary, Alberta', 'The Animal Haven');
+VALUES ('D004', 'Bear', 1, 'Loves to eat.' , 1, 3, 'Husky', '234 Willow Lane, Supportville, USA', 'The Animal Haven');
 
 INSERT INTO RegisteredAnimal (animalID,  name, adopted, description, age, weight, breed,  shelterLocation, shelterName)
 VALUES ('B000', 'Coco', 1, 'Peaceful bird.', 3, 8, 'Finch','270 Gerrard St E, Toronto, Ontario', 'Lovely Pet Home');
@@ -885,7 +891,7 @@ INSERT INTO RegisteredAnimal (animalID,  name, adopted, description, age, weight
 VALUES ('B003', 'Raven', 0, 'Angry bird', 1, 8, 'Grey parrot' ,'10776 King George Boulevard, Surrey, British Columbia','Paws and Claws Animal Shelter');
 
 INSERT INTO RegisteredAnimal (animalID,  name, adopted, description, age, weight, breed,  shelterLocation, shelterName)
-VALUES ('B004', 'Kiwi', 0, 'Loves to eat. Always hungry' , 1, 3, 'Dove', '4455 110 Avenue SE, Calgary, Alberta', 'The Animal Haven');
+VALUES ('B004', 'Kiwi', 0, 'Loves to eat. Always hungry', 1, 3, 'Dove', '234 Willow Lane, Supportville, USA', 'The Animal Haven');
 
 INSERT INTO Cats (animalID, hasFur, social) VALUES ('C000', 1, 1);
 INSERT INTO Cats (animalID, hasFur, social) VALUES ('C001', 1, 0);
@@ -923,10 +929,10 @@ INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('D0
 INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('D002', 'Feline Distemper Vaccine', TO_DATE('2023-02-09', 'YYYY-MM-DD'));
 INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('C002', 'Avian Influenza Vaccine', TO_DATE('2023-09-17', 'YYYY-MM-DD'));
 
-INSERT INTO Adopt(adopterID, animalID, dateOfAdoption) VALUES ('A000', 'C002', TO_DATE('2023-08-23', 'YYYY-MM-DD'));
-INSERT INTO Adopt(adopterID, animalID, dateOfAdoption) VALUES ('A001', 'D001', TO_DATE('2023-09-02', 'YYYY-MM-DD'));
+INSERT INTO Adopt(adopterID, animalID, dateOfAdoption) VALUES ('A000', 'C005', TO_DATE('2023-08-23', 'YYYY-MM-DD'));
+INSERT INTO Adopt(adopterID, animalID, dateOfAdoption) VALUES ('A001', 'D004', TO_DATE('2023-09-02', 'YYYY-MM-DD'));
 INSERT INTO Adopt(adopterID, animalID, dateOfAdoption) VALUES ('A002', 'B002', TO_DATE('2023-10-03', 'YYYY-MM-DD'));
 INSERT INTO Adopt(adopterID, animalID, dateOfAdoption) VALUES ('A003', 'B000', TO_DATE('2023-10-11', 'YYYY-MM-DD'));
-INSERT INTO Adopt(adopterID, animalID, dateOfAdoption) VALUES ('A005', 'C003', TO_DATE('2023-10-22', 'YYYY-MM-DD'));
+INSERT INTO Adopt(adopterID, animalID, dateOfAdoption) VALUES ('A005', 'C004', TO_DATE('2023-10-22', 'YYYY-MM-DD'));
 INSERT INTO Adopt(adopterID, animalID, dateOfAdoption) VALUES ('A006', 'C001', TO_DATE('2023-11-06', 'YYYY-MM-DD'));
 INSERT INTO Adopt(adopterID, animalID, dateOfAdoption) VALUES ('A007', 'D003', TO_DATE('2022-06-02', 'YYYY-MM-DD'));
