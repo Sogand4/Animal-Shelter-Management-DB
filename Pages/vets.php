@@ -32,18 +32,42 @@
     <main>
         <p>If you wish to reset the table press on the reset button on the navigation bar above. If this is the first time you're running this page, you MUST use reset</p>
 
-    <h2>Add a new Vet below:</h2>
-        <p>ID's are in the format 'VXXX' where V are numbers.</p>
-        <form method="POST" action="vets.php">
-            <input type="hidden" id="insertVetRequest" name="insertVetRequest">
+        <div style="display: flex; justify-content: center;">
+    
+        <form method="POST" action="vets.php" style="border: 1px solid #ccc; padding: 15px; border-radius: 10px; background-color: #cccccc;">
+            <h2>Add a new Vet below:</h2>    
+            <p>ID's are in the format 'VXXX' where V are numbers.</p>
+        <input type="hidden" id="insertVetRequest" name="insertVetRequest">
             Id: <input type="text" name="vetID" pattern="V\d{3}" title="Invalid entry. Please follow the format above." required> <br /><br />
             Name: <input type="text" name="vetName" maxlength="255" required> <br /><br />
             Specialty: <input type="text" name="specialty" maxlength="255" required> <br /><br />
-            Years of Experience: <input type="number" name="yearsOfExperience" maxlength="255" required> <br /><br />
+            Years of Experience: <input type="number" name="yearsOfExperience" required> <br /><br />
             Vet Location: <input type="text" name="vetLocation" maxlength="255" required> <br /><br />
-
         <input type="submit" value="Insert" name="insertSubmit"></p>
-    </form>
+        </form>
+
+        <form action="vets.php" method="post" style="border: 1px solid #ccc; padding: 15px; border-radius: 10px; background-color: #cccccc; margin-left: 10px;">
+            <h2>Specify Vet you are looking for:</h2>  
+            <select name = spec>
+                <option>Choose a specialty</option>
+                <option value = "anesthesia"> Anesthesia and analgesia</option>
+                <option value = "animWelfare"> Animal welfare</option>
+                <option value = "behMedicine"> Behavioral medicine</option>
+                <option value = "cardiology"> Cardiology</option>
+                <option value = "oncology"> Oncology</option>
+                <option value = "dentistry"> Dentistry</option>
+                <option value = "other"> Other</option>
+            </select>    
+
+            <input type="hidden" id="insertYearsRequest" name="insertYearsRequest">
+            Minimum Years of Experience: <input type="number" name="minYearsOfExperience" required> <br /><br />
+            <input type="submit" value="Find Vets" name="insertSubmit">
+            
+        </form>   
+
+        </div>
+
+        
 
     <h1>List of vets</h1>
 
