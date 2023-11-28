@@ -50,7 +50,195 @@
             }
             else if (array_key_exists('findVolunteerRequest', $_POST)) {
                 handleFindVolunteerRequest();
+            } 
+            else if (array_key_exists('selecetAnimalRequest', $_POST)) {
+                handleSelectAnimalRequest();
+            } 
+            else if (array_key_exists('insertAnimalRequest', $_POST)) {
+                handleInsertAnimalRequest();
+            } 
+            else if (array_key_exists('updateAnimalRequest', $_POST)) {
+                handleUpdateAnimalRequest();
+            } 
+            else if (array_key_exists('calculateAvgRequest', $_POST)) {
+                handleCalculateAvgRequest();
             }
+    
+            disconnectFromDB();
+        }
+    }
+    
+    
+    function handleCalculateAvgRequest()
+    {
+        global $db_conn;
+        global $calcualteAvgRequestResult;
+    
+        $sql = "SELECT a.breed,AVG(a.weight) AS AverageWeight
+                FROM RegisteredAnimal a
+                GROUP BY a.breed
+                ORDER BY AverageWeight";
+    
+        $calcualteAvgRequestResult = executePlainSQL($sql);
+    }
+    
+    function handleInsertAnimalRequest()
+    {
+        global $db_conn;
+    
+        $tuple = array(
+            ":bind1" => $_POST['animalID']
+        );
+    
+        $alltuples = array(
+            $tuple
+        );
+    
+        $numExistingAnimal = executeBoundSQL("SELECT COUNT(*) AS count FROM RegisteredAnimal WHERE animalID = :bind1", $alltuples);
+        $rowExistingAnimal = oci_fetch_assoc($numExistingAnimal);
+        $countExistingAnimal = $rowExistingAnimal['COUNT'];
+    
+        //check if there exists the same animal
+        if ($countExistingAnimal == 0) {
+            $tuple = array(
+                ":bind1" => $_POST['animalID'],
+                ":bind2" => $_POST['name'],
+                ":bind3" => $_POST['adopted'],
+                ":bind4" => $_POST['description'],
+                ":bind5" => $_POST['age'],
+                ":bind6" => $_POST['weight'],
+                ":bind7" => $_POST['breed'],
+                ":bind8" => $_SESSION["shelterLocation"],
+                ":bind9" => $_SESSION["shelterName"]
+            );
+    
+            $alltuples = array(
+                $tuple
+            );
+    
+            executeBoundSQL("insert into RegisterdAnimal values (:bind1, :bind2, :bind3, :bind4, :bind5, :bind6, :bind7, :bind8, :bind9 )", $alltuples);
+            OCICommit($db_conn);
+            echo '<p style="color: green;">Successfully inserted into registerdAnimals</p>';
+        } else {
+            echo '<p style="color: red;">Invalid Animal inserted. Please use an animalID that is not already in use.</p>';
+        }
+    }
+    
+    function handleUpdateAnimalRequest()
+    {
+        global $db_conn;
+    
+        $tuple = array(
+            ":bind1" => $_POST['animalID']
+        );
+    
+        $alltuples = array(
+            $tuple
+        );
+    
+        $numExistingAnimal = executeBoundSQL("SELECT COUNT(*) AS count FROM RegisteredAnimal WHERE animalID = :bind1", $alltuples);
+        $rowExistingAnimal = oci_fetch_assoc($numExistingAnimal);
+        $countExistingAnimal = $rowExistingAnimal['COUNT'];
+    
+    
+        if ($countExistingAnimal == 1) {
+            // Update Animal
+            $tuple1 = array(
+                ":bind1" => $_POST['animalID'],
+                ":bind2" => $_POST['name'],
+                ":bind3" => $_POST['adopted'],
+                ":bind4" => $_POST['description'],
+                ":bind5" => $_POST['age'],
+                ":bind6" => $_POST['weight'],
+                ":bind7" => $_POST['breed'],
+                ":bind8" => $_SESSION["shelterLocation"],
+                ":bind9" => $_SESSION["shelterName"]
+            );
+    
+            $alltuples1 = array(
+                $tuple1
+            );
+    
+            executeBoundSQL("UPDATE RegisteredAnimal SET  name = :bind2, adopted = :bind3, description = :bind4, age = :bind5, weight= :bind6, breed = :bind7, shelterLocation = :bind8, shelterName = :bind9 WHERE animalID = :bind1", $alltuples1);
+            OCICommit($db_conn);
+            echo '<p style="color: green;">Successfully updated animal</p>';
+        } else {
+            echo '<p style="color: red;">Invalid info inserted. Please use an already existing animalID.</p>';
+        }
+    }
+    
+    
+    
+    
+    
+    function handleSelectAnimalRequest()
+    {
+        global $db_conn;
+        global $selectAnimalRequestResult;
+    
+        $breed = $_POST['breed'];
+        $age = $_POST['age'];
+        $operator = $_POST['operator'];
+    
+        //check if the input value is NULl
+        if ($breed != NULL && $age != NULL) {
+    
+            $tuple = array(
+                ":bind1" => $_POST['breed']
+            );
+    
+            $alltuples = array(
+                $tuple
+            );
+    
+            // check if animals with breed 1 and breed 2 exists in our database
+            $numExistingAnimals1 = executeBoundSQL("SELECT COUNT(*) AS count FROM RegisteredAnimal WHERE breed = :bind1", $alltuples);
+            $rowExistingAnimals1 = oci_fetch_assoc($numExistingAnimals1);
+            $countExistingAnimals1 = $rowExistingAnimals1['COUNT'];
+    
+            $tuple0 = array(
+                ":bind1" => $_POST['age']
+            );
+    
+            $alltuples0 = array(
+                $tuple0
+            );
+    
+            $numExistingAnimals2 = executeBoundSQL("SELECT COUNT(*) AS count FROM RegisteredAnimal WHERE age = :bind1", $alltuples0);
+            $rowExistingAnimals2 = oci_fetch_assoc($numExistingAnimals2);
+            $countExistingAnimals2 = $rowExistingAnimals2['COUNT'];
+    
+            if ($countExistingAnimals1 == 0 && $countExistingAnimals2 == 0) {
+                echo '<p style="color: red;">No animal has those breeds</p>';
+            } else {
+                $tuple1 = array(
+                    ":bind1" => $_POST['breed'],
+                    ":bind2" => $_POST['age'],
+                    ":bind3" => $_SESSION["shelterName"],
+                    ":bind4" => $_SESSION["shelterLocation"]
+                );
+    
+                $alltuples1 = array(
+                    $tuple1
+                );
+    
+                if ($operator == "And") {
+                    $selectAnimalRequestResult = executeBoundSQL(
+                        "SELECT * FROM RegisteredAnimal a
+                    WHERE a.breed = :bind1 AND a.age = :bind2 AND a.shelterName = :bind3 AND a.shelterLocation = :bind4",
+                        $alltuples1
+                    );
+                } else if ($operator == "Or") {
+                    $selectAnimalRequestResult = executeBoundSQL("SELECT * FROM RegisteredAnimal a
+            WHERE a.breed = :bind1 OR a.age = :bind2 AND a.shelterName = :bind3 AND a.shelterLocation = :bind4", $alltuples1);
+                }
+                ;
+                echo '<p style="color: green;">Successfully select required animals.</p>';
+            }
+        } else {
+            echo '<p style="color: red;">Cannot select null value.</p>';
+        }
+    }
 
             disconnectFromDB();
         }
