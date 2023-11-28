@@ -5,7 +5,7 @@
     function connectToDB() {
         global $db_conn;
 
-        $db_conn = OCILogon("USER", "PASS", "dbhost.students.cs.ubc.ca:1522/stu");
+        $db_conn = OCILogon("ora_sogand4", "a52251600", "dbhost.students.cs.ubc.ca:1522/stu");
 
         if ($db_conn) {
             return true;

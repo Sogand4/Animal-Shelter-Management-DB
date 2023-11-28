@@ -56,6 +56,28 @@
 
 		$rowExisting2 = oci_fetch_assoc($result2);
         $countExisting2 = $rowExisting2['COUNT'];
+
+		// Projection
+		$tables = array();
+		global $attributes;
+		$attributes = array();
+	
+		$allTablesSql = "SELECT table_name FROM user_tables";
+		$allTables = executePlainSQL($allTablesSql);
+	
+		while ($row = oci_fetch_assoc($allTables)) {
+			$tableName = $row['TABLE_NAME'];
+			$tables[] = $tableName;
+	
+			$attributes[$tableName] = array();
+	
+			$attrSql = "SELECT column_name FROM user_tab_cols WHERE table_name = '$tableName'";
+			$attrResult = executePlainSQL($attrSql);
+	
+			while ($attrRow = oci_fetch_assoc($attrResult)) {
+				$attributes[$tableName][] = $attrRow['COLUMN_NAME'];
+			}
+		}
     ?>
 
 	<p>Shelter Name: <?php echo $_SESSION["shelterName"]; ?></p>
@@ -63,10 +85,82 @@
 	<p>Shelter Capacity: <?php echo $countExisting1; ?></p>
 	<p>Number of Volunteers: <?php echo $countExisting2; ?></p>
 
+	<h2> Select a table below to view it's contents: </h2>
+	<form method='post' action='index.php'>
+		<select name='selectedTable' onchange='this.form.submit()'>
+			<option value=""></option>
+			<?php
+				foreach ($tables as $table) {
+					echo "<option value='$table'>$table</option>";
+				}
+			?>
+		</select>
+	</form>
+
+	<?php
+		if (isset($_POST['selectedTable'])) {
+			$_SESSION['currTable'] = $_POST['selectedTable'];
+			$attributeOptions = $attributes[$_POST['selectedTable']];
+		}
+	?>
+
+	<h2>Select attributes to view (hold control to select multiple)</h2>
+	<form method='post' action='index.php'>
+	<select multiple name='selectedAttributes[]'>
+		<?php
+		if (isset($attributeOptions)) {
+			foreach ($attributeOptions as $attribute) {
+				echo "<option value='$attribute'>$attribute</option>";
+			}
+		}
+		?>
+	</select>
+	<input type='submit' name='submitAttributes' value='View Table'>
+	</form>
+
+	<?php
+		$selectedAttributes = $_POST['selectedAttributes'];
+
+		if (isset($_POST['selectedAttributes'])) {
+			$sql = "SELECT " . implode(', ', $_POST['selectedAttributes']) . " FROM " . $_SESSION['currTable'];
+    		$result = executePlainSQL($sql);
+
+			echo "<h2>Table for: " . $_SESSION['currTable'] . "</h2>";
+		}
+	?>
+		
+	<?php
+	if (!empty($selectedAttributes)) {
+	?>
+		<table border="1">
+			<thead>
+				<tr>
+					<?php
+						foreach ($selectedAttributes as $attribute) {
+							echo "<th>" . $attribute . "</th>";
+						}
+					?>
+				</tr>
+			</thead>
+			<tbody>
+				<?php
+				while ($row = oci_fetch_assoc($result)) {
+					echo "<tr>";
+					foreach ($selectedAttributes as $attribute) {
+						echo "<td>" . $row[$attribute] . "</td>";
+					}
+					echo "</tr>";
+				}
+				?>
+			</tbody>
+		</table>
+	<?php
+	}
+	?>
+
 	</main>
 
 	<?php
-        oci_free_statement($result);
         disconnectFromDB();
     ?>
 </body>
