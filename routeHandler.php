@@ -1,12 +1,13 @@
 <?php
     require_once('connection.php');
+
     global $findVolRequestResult;
     $findVolRequestResult = null;
+
     session_start();
 
-
-
-    if (isset($_POST['reset']) || isset($_POST['insertSubmit']) || isset($_POST['signupSubmit']) || isset($_POST['loginSubmit']) || isset($_POST['updateSubmit']) || isset($_POST['deleteSubmit'])) {
+    if (isset($_POST['reset']) || isset($_POST['insertSubmit']) || isset($_POST['signupSubmit']) || isset($_POST['loginSubmit'])
+        || isset($_POST['updateSubmit']) || isset($_POST['deleteSubmit'])) {
         handlePOSTRequest();
     }
 
@@ -290,7 +291,6 @@
         }
     }
 
-    // ECE TODO: add logic to keep track of shelter name of the manager who logged in works at
     function handleInsertLoginRequest() {
         global $db_conn;
 
@@ -349,9 +349,6 @@
         }
 }
 
-    // ECE TODO: manager signs up name and location of shelter too 
-    // add all attributes to sheltermanagerinfo
-    // ShelterManagerPerformance table
     function handleInsertSignupRequest() {
         global $db_conn;
 
@@ -392,9 +389,7 @@
         }
     }
 
-    // ECE TODO: ADD FILTERING FOR THE SHELTER WE ARE CURRENTLY WORKING IN
-    // add all attributes
-    // - vet works at shelter table
+    // ECE TODO: add logic to keep track of shelter name of the manager who logged in works at
     function handleInsertVetRequest() {
         global $db_conn;
 

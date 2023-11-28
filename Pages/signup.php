@@ -45,9 +45,6 @@
 	}
 
 	</style>
-
-
-    <!-- TODO: MOVE RESET BUTTON TO NAV BAR -->
         <p>If you wish to reset the table press on the reset button. If this is the first time you're running this page, you MUST use reset</p>
 
         <form method="POST" action="signup.php">
