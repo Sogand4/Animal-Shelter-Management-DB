@@ -1,12 +1,13 @@
 <?php
     require_once('connection.php');
+
     global $findVolRequestResult;
     $findVolRequestResult = null;
+
     session_start();
 
-
-
-    if (isset($_POST['reset']) || isset($_POST['insertSubmit']) || isset($_POST['signupSubmit']) || isset($_POST['loginSubmit']) || isset($_POST['updateSubmit']) || isset($_POST['deleteSubmit'])) {
+    if (isset($_POST['reset']) || isset($_POST['insertSubmit']) || isset($_POST['signupSubmit']) || isset($_POST['loginSubmit'])
+        || isset($_POST['updateSubmit']) || isset($_POST['deleteSubmit'])) {
         handlePOSTRequest();
     }
 
@@ -290,7 +291,6 @@
         }
     }
 
-    // ECE TODO: add logic to keep track of shelter name of the manager who logged in works at
     function handleInsertLoginRequest() {
         global $db_conn;
 
@@ -338,7 +338,6 @@
                 $_SESSION["shelterName"] = $currShelterName;
                 $_SESSION["shelterLocation"] = $currShelterLoc;
 
-
                 header("Location: index.php");
                 die;
             }
@@ -349,9 +348,6 @@
         }
 }
 
-    // ECE TODO: manager signs up name and location of shelter too 
-    // add all attributes to sheltermanagerinfo
-    // ShelterManagerPerformance table
     function handleInsertSignupRequest() {
         global $db_conn;
 
@@ -369,6 +365,16 @@
         $countExistingMan = $rowExistingMan['COUNT'];
         
         if ($countExistingMan == 0) {
+            // Check if shelterName + shelterLocation exists in shelter
+
+            // if exists yay
+                // (i added more sample inserts for shelter that is not in manager table yet so you can use those to check this)
+            // if not exists -> add it to shelter first
+
+            // then also make sure that the COMBINATION of sheltername and shelterlocation is unique
+            // if not -> send error message and do not add
+            // else continue
+
             // Add new manager
             $tuple = array (
                 ":bind1" => $_POST['manID'],
@@ -392,9 +398,7 @@
         }
     }
 
-    // ECE TODO: ADD FILTERING FOR THE SHELTER WE ARE CURRENTLY WORKING IN
-    // add all attributes
-    // - vet works at shelter table
+    // ECE TODO: add logic to keep track of shelter name of the manager who logged in works at
     function handleInsertVetRequest() {
         global $db_conn;
 
@@ -568,8 +572,6 @@
 
     function handleInsertInspectorRequest() {
         global $db_conn;
-        // global $currShelterName;
-        // global $currShelterLoc;
 
         // Only run the insert inspector query if the primary key is not already being used
         $tuple = array (
@@ -619,8 +621,6 @@
 
     function handleInsertVolunteerRequest() {
         global $db_conn;
-        // global $currShelterName;
-        // global $currShelterLoc;
 
         // Only run the insert volunteer query if the primary key is not already being used
         $tuple = array (

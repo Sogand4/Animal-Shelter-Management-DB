@@ -1,3 +1,20 @@
+/* Our assertion checks were run in a separate file (Triggers.sql) because our parser couldn't process this
+(Note that the semicolons for the code below were removed so the parser could run)
+
+CREATE OR REPLACE TRIGGER CheckAdopterConstraint
+BEFORE INSERT ON AdoptersInfo
+FOR EACH ROW
+DECLARE
+    v_count INT
+BEGIN
+    SELECT COUNT(*) INTO v_count FROM Adopt WHERE adopterID = :new.adopterID
+
+    IF v_count = 0 THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Every Adopter must be associated with at least one Animal.')
+    END IF
+END
+*/
+
 DROP TABLE VolunteersAtShelter;
 
 DROP TABLE Volunteer;
@@ -138,12 +155,13 @@ CREATE TABLE
     Manager(
         manID char(4),
         manPassword char(12),
-        shelterLocation VARCHAR(225),
-        shelterName VARCHAR(225),
+        shelterLocation VARCHAR(225) NOT NULL,
+        shelterName VARCHAR(225) NOT NULL,
         manName char(30) DEFAULT NULL,
         kpi VARCHAR(30) DEFAULT NULL,
         since date DEFAULT NULL,
         PRIMARY KEY (manID),
+        UNIQUE (shelterLocation, shelterName),
         FOREIGN KEY (shelterLocation, shelterName) REFERENCES Shelter(shelterLocation, shelterName),
         FOREIGN KEY (kpi) REFERENCES ManagerPerformance(kpi)
     );
@@ -660,6 +678,30 @@ INSERT INTO
         shelterName
     )
 VALUES (
+        '416 Meridian Rd SE, Calgary, Alberta',
+        150,
+        'Animal Sanctuary'
+    );
+
+INSERT INTO
+    Shelter(
+        shelterLocation,
+        capacity,
+        shelterName
+    )
+VALUES (
+        '1357 Oakway Lane, Woodland Hills, California',
+        85,
+        'Animals Friends'
+    );
+
+INSERT INTO
+    Shelter(
+        shelterLocation,
+        capacity,
+        shelterName
+    )
+VALUES (
         '4455 110 Avenue SE, Calgary, Alberta',
         300,
         'The Animal Haven'
@@ -776,26 +818,17 @@ VALUES (
         0
     );
 
-
-
 INSERT INTO ManagerPerformance (kpi, salary) VALUES ('AnimalAdoptionRate : 70%', '5000/month');
 INSERT INTO ManagerPerformance (kpi, salary) VALUES ('AnimalAdoptionRate : 75%', '5500/month');
 INSERT INTO ManagerPerformance (kpi, salary) VALUES ('AnimalAdoptionRate : 60%', '4000/month');
 INSERT INTO ManagerPerformance (kpi, salary) VALUES ('AnimalAdoptionRate : 50%', '4000/month');
 INSERT INTO ManagerPerformance (kpi, salary) VALUES ('AnimalAdoptionRate : 80%', '6000/month');
 
-
-
-
-INSERT INTO Manager(manID, manPassword, shelterLocation, shelterName) VALUES ('M001', 'myt', '234 Willow Lane, Supportville, USA' , 'The Animal Haven');
-
-INSERT INTO Manager(manID, manPassword, shelterLocation, shelterName) VALUES ('M002', 'myt','234 Willow Lane, Supportville, USA' , 'The Animal Haven');
-
-INSERT INTO Manager (manID, manPassword, shelterLocation, shelterName) VALUES ('M003', 'pass','234 Willow Lane, Supportville, USA' , 'The Animal Haven');
-
-INSERT INTO Manager(manID, manPassword, shelterLocation, shelterName) VALUES ('M004', 'pass4','10776 King George Boulevard, Surrey, British Columbia', 'Paws and Claws Animal Shelter');
-
-INSERT INTO Manager (manID, manPassword, shelterLocation, shelterName) VALUES ('M005', 'pass5','10776 King George Boulevard, Surrey, British Columbia', 'Paws and Claws Animal Shelter');
+INSERT INTO Manager (manID, manPassword, shelterLocation, shelterName, manName, kpi, since) VALUES ('M001', 'myt', '322 Dundas St W, Toronto,Ontario', 'Loving Care Animal Shelter', 'Seth Smith', 'AnimalAdoptionRate : 70%', TO_DATE('2020-02-02', 'YYYY-MM-DD'));
+INSERT INTO Manager (manID, manPassword, shelterLocation, shelterName, manName, kpi, since) VALUES ('M002', 'myt','234 Willow Lane, Supportville, USA' , 'The Animal Haven', 'Jordon Miles', 'AnimalAdoptionRate : 70%', TO_DATE('2009-10-09', 'YYYY-MM-DD'));
+INSERT INTO Manager (manID, manPassword, shelterLocation, shelterName, manName, kpi, since) VALUES ('M003', 'pass','4455 110 Avenue SE, Calgary, Alberta', 'The Animal Haven', 'Sarah Coles', 'AnimalAdoptionRate : 60%', TO_DATE('2010-11-29', 'YYYY-MM-DD'));
+INSERT INTO Manager (manID, manPassword, shelterLocation, shelterName, manName, kpi, since) VALUES ('M004', 'pass4','101 Oak Street, Evacuationville, USA', 'Lovely Pet Home', 'Nick Knightly', 'AnimalAdoptionRate : 50%', TO_DATE('2010-05-27', 'YYYY-MM-DD'));
+INSERT INTO Manager (manID, manPassword, shelterLocation, shelterName, manName, kpi, since) VALUES ('M005', 'pass5','10776 King George Boulevard, Surrey, British Columbia', 'Paws and Claws Animal Shelter', 'Anna Johnson', 'AnimalAdoptionRate : 70%', TO_DATE('2017-04-15', 'YYYY-MM-DD'));
 
 
 INSERT INTO
