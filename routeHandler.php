@@ -366,6 +366,15 @@
         $countExistingMan = $rowExistingMan['COUNT'];
         
         if ($countExistingMan == 0) {
+            // Check if shelterName + shelterLocation exists in shelter
+
+
+
+
+
+
+
+
             // Add new manager
             $tuple = array (
                 ":bind1" => $_POST['manID'],
