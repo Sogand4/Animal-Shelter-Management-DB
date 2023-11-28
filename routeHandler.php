@@ -419,14 +419,20 @@
             // Add new vet
             $tuple = array (
                 ":bind1" => $_POST['vetID'],
-                ":bind2" => $_POST['vetName']
+                ":bind2" => $_POST['vetName'],
+                ":bind3" => $_POST['specialty'],
+                ":bind4" => $_POST['yearsOfExperience'],
+                ":bind5" => $_POST['vetLocation'],
+                ":bind6" => $_SESSION["shelterLocation"],
+                ":bind7" => $_SESSION["shelterName"]
             );
 
             $alltuples = array (
                 $tuple
             );
 
-            executeBoundSQL("insert into Vet values (:bind1, :bind2)", $alltuples);
+            executeBoundSQL("insert into Vet values (:bind1, :bind2, :bind3, :bind4, :bind5)", $alltuples);
+            executeBoundSQL("insert into VetWorksAtShelter values (:bind1, :bind6, :bind7)", $alltuples);
             OCICommit($db_conn);
             echo '<p style="color: green;">Successfully inserted into vets</p>';
         } else {
