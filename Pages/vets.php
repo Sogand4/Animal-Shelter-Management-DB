@@ -47,18 +47,8 @@
         </form>
 
         <form action="vets.php" method="post" style="border: 1px solid #ccc; padding: 15px; border-radius: 10px; background-color: #cccccc; margin-left: 10px;">
-            <h2>Specify Vet you are looking for:</h2>  
-            <select name = spec>
-                <option>Choose a specialty</option>
-                <option value = "anesthesia"> Anesthesia and analgesia</option>
-                <option value = "animWelfare"> Animal welfare</option>
-                <option value = "behMedicine"> Behavioral medicine</option>
-                <option value = "cardiology"> Cardiology</option>
-                <option value = "oncology"> Oncology</option>
-                <option value = "dentistry"> Dentistry</option>
-                <option value = "other"> Other</option>
-            </select>    
-
+            <h2>Specify experience level of Vet:</h2>  
+            <p>Enter a number below to see which specialties have vets in your shelter that match the minimum years of experience you specified.</p>
             <input type="hidden" id="insertYearsRequest" name="insertYearsRequest">
             Minimum Years of Experience: <input type="number" name="minYearsOfExperience" required> <br /><br />
             <input type="submit" value="Find Vets" name="insertSubmit">
@@ -69,24 +59,44 @@
 
         
 
-    <h1>List of vets</h1>
+    
 
     <?php
         connectToDB();
 
         $currShelterName = $_SESSION["shelterName"];
         $currShelterLoc = $_SESSION["shelterLocation"];
-        
-        $sql = "SELECT *
+        $minYears = $_POST['minYearsOfExperience'];
+
+        $sql = "SELECT v.vetID, v.vetName, v.specialty, v.yearsOfExperience, v.vetLocation
                 FROM VetWorksAtShelter s
                 INNER JOIN Vet v ON s.vetID = v.vetID
-                WHERE s.shelterName = '$currShelterName' AND s.shelterLocation = '$currShelterLoc'
-                ORDER BY v.vetID DESC";
+                WHERE s.shelterName = '$currShelterName' AND s.shelterLocation = '$currShelterLoc'";
         $result = executePlainSQL($sql);
+
+
+        if (isset($minYears)){
+
+            $sql_years = "SELECT DISTINCT(v.specialty)
+            FROM VetWorksAtShelter s
+            INNER JOIN Vet v ON s.vetID = v.vetID
+            WHERE s.shelterName = '$currShelterName' AND s.shelterLocation = '$currShelterLoc'
+            GROUP BY v.specialty, v.yearsOfExperience
+            HAVING v.yearsOfExperience >= $minYears";
+            
+            $result_years = executePlainSQL($sql_years);
+        } 
 
     ?>
 
-    <table border="1">
+
+<div style="display: flex; justify-content: center;">
+    
+
+    <table border="1" style="margin-right: 10px;">
+        <caption style="caption-side: top; font-size: 1.5em; font-weight: bold; padding: 10px;">
+            Vet Information
+        </caption>
         <thead>
             <tr>
                 <th>Vet ID</th>
@@ -112,6 +122,30 @@
 
         </tbody>
     </table>
+
+
+    <table border="1" style="margin-left: 10px;">
+        <caption style="caption-side: top; font-size: 1.5em; font-weight: bold; padding: 10px;">
+            Specialties  
+        </caption>
+        <thead>
+            <tr>
+                <th>Specialty</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        <?php
+            while ($row_years = oci_fetch_assoc($result_years)) {
+                echo '<tr>';
+                echo '<td>' . $row_years['SPECIALTY'] . '</td>';
+                echo '</tr>';
+            }
+        ?>
+
+        </tbody>
+    </table>
+</div>
 
     </main>
 
