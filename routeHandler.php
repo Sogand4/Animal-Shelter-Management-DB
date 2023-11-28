@@ -11,6 +11,7 @@
         handlePOSTRequest();
     }
 
+
     // HANDLE ALL POST ROUTES
     function handlePOSTRequest() {
         if (connectToDB()) {
