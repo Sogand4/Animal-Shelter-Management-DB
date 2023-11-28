@@ -23,6 +23,9 @@ session_start();
 			<li><a href="inspectors.php">Inspectors</a></li>
 			<li><a href="events_ws.php">Events and Workshops</a></li>
 			<li><a href="animals.php">Animals</a></li>
+			<li><a href="animals.php">Cats</a></li>
+			<li><a href="animals.php">Dogs</a></li>
+			<li><a href="animals.php">Birds</a></li>
 			<li><a href="login.php">Logout</a></li>
 			<li>
 				<form method="POST" action="animals.php">
@@ -81,6 +84,22 @@ session_start();
 				Breed: <input type="text" name="breed" required> <br /><br />
 				<input type="submit" value="Update" name="updateSubmit">
 			</form>
+
+			<form method="POST" action="animals.php"
+				style="border: 1px solid #ccc; padding: 15px; border-radius: 10px;background-color: #cccccc;">
+				<h2 style="margin: 0; padding-bottom: 10px;">Delete Animal:</h2>
+				<p>AnmialID's are in the format 'CXXX or BXXX or DXXX' where X are integers between 0-9.
+					Enter 1 if the animal is adopted, 0 otherwise.
+					You can only delete existing animals in our database.
+				</p>
+				<input type="hidden" id="deleteAnimalRequest" name="deleteAnimalRequest">
+				AnimalID: <input type="text" name="animalID" maxlength="255" pattern="C\d{3} || D\d{3} || B\d{3}"
+					title="Please enter the animal ID in the required format" required> <br /><br />
+				<input type="submit" value="Delete" name="deleteSubmit">
+			</form>
+
+
+
 		</div>
 
 		<!-- Meet the selection requirement: users can select the breed and age of animals with and/or clause-->

@@ -63,11 +63,56 @@
             else if (array_key_exists('calculateAvgRequest', $_POST)) {
                 handleCalculateAvgRequest();
             }
+            else if (array_key_exists('deleteAnimalRequest', $_POST)) {
+                handleDeleteAnimalRequest();
+            }
+    
     
             disconnectFromDB();
         }
     }
     
+    function handleDeleteAnimalRequest(){
+
+     global $db_conn;
+        $tuple = array (
+            ":bind1" => $_POST['animalID'],
+        );
+
+        $alltuples = array (
+            $tuple
+        );
+
+        $numExistingAnimal = executeBoundSQL("SELECT COUNT(*) AS count FROM RegisteredAnimal WHERE animalID = :bind1", $alltuples);
+        $rowExistingAnimal = oci_fetch_assoc($numExistingAnimal);
+        $countExistingAnimal = $rowExistingAnimal['COUNT'];
+
+        if ($countExistingAnimal== 1) {
+            $tuple2 = array (
+                ":bind1" => $_POST['animalID'],
+                ":bind2" => $_POST['name'],
+                ":bind3" => $_POST['adopted'],
+                ":bind4" => $_POST['description'],
+                ":bind5" => $_POST['age'],
+                ":bind6" => $_POST['weight'],
+                ":bind7" => $_POST['breed'],
+                ":bind8" => $_SESSION["shelterLocation"],
+                ":bind9" => $_SESSION["shelterName"]
+            );
+
+            $alltuples2 = array (
+                $tuple2
+            );
+
+            executeBoundSQL("DELETE FROM RegisteredAnimals WHERE animalID = :bind1", $alltuples2);
+            OCICommit($db_conn);
+            echo '<p style="color: green;">Successfully delete Animal</p>';
+        } else {
+            echo '<p style="color: red;">This animal does not exist. Please use an existing animalID </p>';
+        }
+    }
+
+
     
     function handleCalculateAvgRequest()
     {
