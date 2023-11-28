@@ -240,9 +240,6 @@
         }
     }
 
-            disconnectFromDB();
-        }
-    }
 
     function handleFindVolunteerRequest() {
         global $db_conn;
