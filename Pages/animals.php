@@ -85,6 +85,7 @@ session_start();
 				<input type="submit" value="Update" name="updateSubmit">
 			</form>
 
+			<!-- Delete Animals -->
 			<form method="POST" action="animals.php"
 				style="border: 1px solid #ccc; padding: 15px; border-radius: 10px;background-color: #cccccc;">
 				<h2 style="margin: 0; padding-bottom: 10px;">Delete Animal:</h2>
@@ -115,11 +116,94 @@ session_start();
 			<input type="submit" value="Submit" name="insertSubmit">
 		</form>
 
-			
-			<?php
-			global $selectAnimalRequestResult;
-			if ($selectAnimalRequestResult) { ?>
-				<table border="1">
+
+		<?php
+		global $selectAnimalRequestResult;
+		if ($selectAnimalRequestResult) { ?>
+			<table border="1">
+				<thead>
+					<tr>
+						<th>AnimalID</th>
+						<th>Name</th>
+						<th>Adopted</th>
+						<th>Description</th>
+						<th>Age</th>
+						<th>Weight</th>
+						<th>Breed</th>
+					</tr>
+				</thead>
+				<tbody>
+				<?php } ?>
+
+				<?php
+				while ($row = oci_fetch_assoc($selectAnimalRequestResult)) {
+					echo '<tr>';
+					echo '<td>' . $row['ANIMALID'] . '</td>';
+					echo '<td>' . $row['NAME'] . '</td>';
+					echo '<td>' . ($row['ADOPTED'] ? 'Yes' : 'No') . '</td>';
+					echo '<td>' . $row['DESCRIPTION'] . '</td>';
+					echo '<td>' . $row['AGE'] . '</td>';
+					echo '<td>' . $row['WEIGHT'] . '</td>';
+					echo '<td>' . $row['BREED'] . '</td>';
+					echo '</tr>';
+				}
+				?>
+
+				<!-- Calculate average age of each breed-->
+				<h2>Average age of each breed:</h2>
+				<form method="POST" action="animals.php">
+					<input type="hidden" id="calculateAvgRequest" name="calculateAvgRequest">
+					<input type="submit" value="Calculate Average" name="insertSubmit">
+				</form>
+
+				<?php
+				global $calculateAvgRequestResult;
+				if ($calculateAvgRequestResult) { ?>
+
+					<table border="1">
+						<thead>
+							<tr>
+								<th>Breed</th>
+								<th>Average Age</th>
+							</tr>
+						</thead>
+						<tbody>
+
+						<?php } ?>
+
+						<?php
+						while ($row = oci_fetch_assoc($calculateAvgRequestResult)) {
+							echo '<tr>';
+							echo '<td>' . $row['BREED'] . '</td>';
+							echo '<td>' . $row['AVERAGEAGE'] . '</td>';
+							echo '</tr>';
+						}
+						?>
+					</tbody>
+				</table>
+				<hr />
+
+				<!-- Cats -->
+				<h1>Lovely Cats</h1>
+
+				<h2>List of Cats with Health Records</h2>
+
+				<?php
+				connectToDB();
+
+				$currShelterName = $_SESSION["shelterName"];
+				$currShelterLoc = $_SESSION["shelterLocation"];
+
+				$sql = "SELECT * 
+                FROM Cats c
+				INNER JOIN RegisteredAnimal a ON c.animalID = a.animalID
+				INNER JOIN HealthRecord h ON c.animalID = h.animalID
+                WHERE a.shelterName = '$currShelterName' AND a.shelterLocation = '$currShelterLoc'";
+
+				$result = executePlainSQL($sql);
+				?>
+
+				<table border="1" style="margin: auto;">
 					<thead>
 						<tr>
 							<th>AnimalID</th>
@@ -129,60 +213,293 @@ session_start();
 							<th>Age</th>
 							<th>Weight</th>
 							<th>Breed</th>
+							<th>hasFur</th>
+							<th>Social</th>
 						</tr>
 					</thead>
 					<tbody>
-					<?php } ?>
 
-					<?php
-					while ($row = oci_fetch_assoc($selectAnimalRequestResult)) {
-						echo '<tr>';
-						echo '<td>' . $row['ANIMALID'] . '</td>';
-						echo '<td>' . $row['NAME'] . '</td>';
-						echo '<td>' . ($row['ADOPTED']? 'Yes':'No') . '</td>';
-						echo '<td>' . $row['DESCRIPTION'] . '</td>';
-						echo '<td>' . $row['AGE'] . '</td>';
-						echo '<td>' . $row['WEIGHT'] . '</td>';
-						echo '<td>' . $row['BREED'] . '</td>';
-						echo '</tr>';
-					}
-					?>
+						<?php
+						while ($row = oci_fetch_assoc($result)) {
+							echo '<tr>';
+							echo '<td>' . $row['ANIMALID'] . '</td>';
+							echo '<td>' . $row['NAME'] . '</td>';
+							echo '<td>' . ($row['ADOPTED'] ? 'Yes' : 'No') . '</td>';
+							echo '<td>' . $row['DESCRIPTION'] . '</td>';
+							echo '<td>' . $row['AGE'] . '</td>';
+							echo '<td>' . $row['WEIGHT'] . '</td>';
+							echo '<td>' . $row['BREED'] . '</td>';
+							echo '<td>' . ($row['HASFUR'] ? 'Yes' : 'No') . '</td>';
+							echo '<td>' . ($row['SOCIAL'] ? 'Yes' : 'No') . '</td>';
+							echo '</tr>';
+						}
+						?>
 
-	<!-- Calculate average weight of each breed-->
-	<h2>Average weight of each breed:</h2>
-		<form method="POST" action="animals.php">
-			<input type="hidden" id="calculateAvgRequest" name="calculateAvgRequest">
-			<input type="submit" value="Calculate Average" name="insertSubmit">
-		</form>
+					</tbody>
+				</table>
 
-		<?php
-			global $calculateAvgRequestResult;
-			if ($calculateAvgRequestResult) { ?>
-				<table border="1">
+				<h2>List of Overweight Cats</h2>
+
+				<?php
+				connectToDB();
+
+				$currShelterName = $_SESSION["shelterName"];
+				$currShelterLoc = $_SESSION["shelterLocation"];
+
+				$sql2 = "SELECT c.animalID,a.name,a.breed
+                FROM Cats c
+				INNER JOIN RegisteredAnimal a ON c.animalID = a.animalID
+                WHERE a.shelterName = '$currShelterName' AND a.shelterLocation = '$currShelterLoc'
+				GROUP BY a.breed
+				HAVING a.weight > (SELECT AVG(b.weight) FROM RegisteredAnimal b
+				                   INNER JOIN Cats d ON b.animalID = d.animalID)";
+
+				$result2 = executePlainSQL($sql2);
+				?>
+
+				<table border="1" style="margin: auto;">
 					<thead>
 						<tr>
-							<th>Breed</th>
-							<th>Average Weight</th>
+							<th>AnimalID</th>
+							<th>Name</th>
+							<th>BREED</th>
 						</tr>
 					</thead>
 					<tbody>
-					<?php } ?>
 
-					<?php
-					while ($row = oci_fetch_assoc($calculateAvgRequestResult)) {
-						echo '<tr>';
-						echo '<td>' . $row['BREED'] . '</td>';
-						echo '<td>' . $row['AVERAGEWEIGHT'] . '</td>';
-						echo '</tr>';
-					}
-					?>
+						<?php
+						while ($row = oci_fetch_assoc($result2)) {
+							echo '<tr>';
+							echo '<td>' . $row['ANIMALID'] . '</td>';
+							echo '<td>' . $row['NAME'] . '</td>';
+							echo '<td>' . $row['BREED'] . '</td>';
+							echo '</tr>';
+						}
+						?>
+
+					</tbody>
+				</table>
+
+
+
+
+				<!-- Dogs-->
+				<h1>Adorable Dogs</h1>
+
+				<h2>List of Dogs with Health Records</h2>
+
+				<?php
+				connectToDB();
+
+				$currShelterName = $_SESSION["shelterName"];
+				$currShelterLoc = $_SESSION["shelterLocation"];
+
+				$sql3 = "SELECT * 
+                FROM Dogs d
+				INNER JOIN RegisteredAnimal a ON d.animalID = a.animalID
+				INNER JOIN HealthRecord h ON d.animalID = h.animalID
+                WHERE a.shelterName = '$currShelterName' AND a.shelterLocation = '$currShelterLoc'";
+
+				$result3 = executePlainSQL($sql3);
+				?>
+
+				<table border="1" style="margin: auto;">
+					<thead>
+						<tr>
+							<th>AnimalID</th>
+							<th>Name</th>
+							<th>Adopted</th>
+							<th>Description</th>
+							<th>Age</th>
+							<th>Weight</th>
+							<th>Breed</th>
+							<th>hasFur</th>
+							<th>Social</th>
+						</tr>
+					</thead>
+					<tbody>
+
+						<?php
+						while ($row = oci_fetch_assoc($result3)) {
+							echo '<tr>';
+							echo '<td>' . $row['ANIMALID'] . '</td>';
+							echo '<td>' . $row['NAME'] . '</td>';
+							echo '<td>' . ($row['ADOPTED'] ? 'Yes' : 'No') . '</td>';
+							echo '<td>' . $row['DESCRIPTION'] . '</td>';
+							echo '<td>' . $row['AGE'] . '</td>';
+							echo '<td>' . $row['WEIGHT'] . '</td>';
+							echo '<td>' . $row['BREED'] . '</td>';
+							echo '<td>' . ($row['HASFUR'] ? 'Yes' : 'No') . '</td>';
+							echo '<td>' . ($row['SOCIAL'] ? 'Yes' : 'No') . '</td>';
+							echo '</tr>';
+						}
+						?>
+
+					</tbody>
+				</table>
+
+
+				<h2>List of Overweight Dogs</h2>
+
+				<?php
+				connectToDB();
+
+				$currShelterName = $_SESSION["shelterName"];
+				$currShelterLoc = $_SESSION["shelterLocation"];
+
+				$sql4 = "SELECT d.animalID,a.name,a.breed
+                FROM Dogs d
+				INNER JOIN RegisteredAnimal a ON d.animalID = a.animalID
+                WHERE a.shelterName = '$currShelterName' AND a.shelterLocation = '$currShelterLoc'
+				GROUP BY a.breed
+				HAVING a.weight > (SELECT AVG(m.weight) FROM RegisteredAnimal m
+				                   INNER JOIN Dogs n ON m.animalID = n.animalID)";
+
+				$result4 = executePlainSQL($sql4);
+				?>
+
+				<table border="1" style="margin: auto;">
+					<thead>
+						<tr>
+							<th>AnimalID</th>
+							<th>Name</th>
+							<th>BREED</th>
+						</tr>
+					</thead>
+					<tbody>
+
+						<?php
+						while ($row = oci_fetch_assoc($result)) {
+							echo '<tr>';
+							echo '<td>' . $row['ANIMALID'] . '</td>';
+							echo '<td>' . $row['NAME'] . '</td>';
+							echo '<td>' . $row['BREED'] . '</td>';
+							echo '</tr>';
+						}
+						?>
+
+					</tbody>
+				</table>
+
+
+
+
+				<!-- Birds-->
+				<h1>Beautiful Birds</h1>
+
+				<h2>List of Birds with Health Records</h2>
+
+				<?php
+				connectToDB();
+
+				$currShelterName = $_SESSION["shelterName"];
+				$currShelterLoc = $_SESSION["shelterLocation"];
+
+				$sql5 = "SELECT * FROM Birds b
+                INNER JOIN RegisteredAnimal a ON b.animalID = a.animalID
+                INNER JOIN HealthRecord h ON b.animalID = h.animalID
+                WHERE a.shelterName = '$currShelterName' AND a.shelterLocation = '$currShelterLoc'";
+
+				$result5 = executePlainSQL($sql5);
+				?>
+
+				<table border="1" style="margin: auto;">
+					<thead>
+						<tr>
+							<th>AnimalID</th>
+							<th>Name</th>
+							<th>Adopted</th>
+							<th>Description</th>
+							<th>Age</th>
+							<th>Weight</th>
+							<th>Breed</th>
+							<th>hasFur</th>
+							<th>Social</th>
+						</tr>
+					</thead>
+					<tbody>
+
+						<?php
+						while ($row = oci_fetch_assoc($result5)) {
+							echo '<tr>';
+							echo '<td>' . $row['ANIMALID'] . '</td>';
+							echo '<td>' . $row['NAME'] . '</td>';
+							echo '<td>' . ($row['ADOPTED'] ? 'Yes' : 'No') . '</td>';
+							echo '<td>' . $row['DESCRIPTION'] . '</td>';
+							echo '<td>' . $row['AGE'] . '</td>';
+							echo '<td>' . $row['WEIGHT'] . '</td>';
+							echo '<td>' . $row['BREED'] . '</td>';
+							echo '<td>' . ($row['HASFUR'] ? 'Yes' : 'No') . '</td>';
+							echo '<td>' . ($row['SOCIAL'] ? 'Yes' : 'No') . '</td>';
+							echo '</tr>';
+						}
+						?>
+
+					</tbody>
+				</table>
+
+
+				<h2>List of Overweight Birds</h2>
+
+				<?php
+				connectToDB();
+
+				$currShelterName = $_SESSION["shelterName"];
+				$currShelterLoc = $_SESSION["shelterLocation"];
+
+				$sql6 ="SELECT b.animalID,a.name,a.breed
+                        FROM Birds b
+                        INNER JOIN RegisteredAnimal a ON b.animalID = a.animalID
+                        WHERE a.shelterName = '$currShelterName' AND a.shelterLocation = '$currShelterLoc'
+                        GROUP BY a.breed
+                        HAVING a.weight > (SELECT AVG(m.weight) FROM RegisteredAnimal m
+				        INNER JOIN Birds n ON m.animalID = n.animalID)";
+
+				$result6 = executePlainSQL($sql6);
+				?>
+
+				<table border="1" style="margin: auto;">
+					<thead>
+						<tr>
+							<th>AnimalID</th>
+							<th>Name</th>
+							<th>BREED</th>
+						</tr>
+					</thead>
+					<tbody>
+
+						<?php
+						while ($row = oci_fetch_assoc($result6)) {
+							echo '<tr>';
+							echo '<td>' . $row['ANIMALID'] . '</td>';
+							echo '<td>' . $row['NAME'] . '</td>';
+							echo '<td>' . $row['BREED'] . '</td>';
+							echo '</tr>';
+						}
+						?>
+
+					</tbody>
+				</table>
+
+
+				<!-- list of Unvaccinated Animals -->
+				
+
+
+
+
+
+
+
+
+
 
 	</main>
 
 
 	<?php
-        disconnectFromDB();
-    ?>
+	disconnectFromDB();
+	?>
 
 </body>
 

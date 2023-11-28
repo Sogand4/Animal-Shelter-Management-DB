@@ -119,10 +119,10 @@
         global $db_conn;
         global $calculateAvgRequestResult;
     
-        $sql = "SELECT a.breed,AVG(a.weight) AS AverageWeight
+        $sql = "SELECT a.breed,AVG(a.age) AS averageAge
                 FROM RegisteredAnimal a
                 GROUP BY a.breed
-                ORDER BY AverageWeight";
+                ORDER BY averageAge";
     
         $calculateAvgRequestResult = executePlainSQL($sql);
     }
