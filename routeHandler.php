@@ -338,7 +338,6 @@
                 $_SESSION["shelterName"] = $currShelterName;
                 $_SESSION["shelterLocation"] = $currShelterLoc;
 
-
                 header("Location: index.php");
                 die;
             }
@@ -368,12 +367,13 @@
         if ($countExistingMan == 0) {
             // Check if shelterName + shelterLocation exists in shelter
 
+            // if exists yay
+                // (i added more sample inserts for shelter that is not in manager table yet so you can use those to check this)
+            // if not exists -> add it to shelter first
 
-
-
-
-
-
+            // then also make sure that the COMBINATION of sheltername and shelterlocation is unique
+            // if not -> send error message and do not add
+            // else continue
 
             // Add new manager
             $tuple = array (
@@ -566,8 +566,6 @@
 
     function handleInsertInspectorRequest() {
         global $db_conn;
-        // global $currShelterName;
-        // global $currShelterLoc;
 
         // Only run the insert inspector query if the primary key is not already being used
         $tuple = array (
@@ -617,8 +615,6 @@
 
     function handleInsertVolunteerRequest() {
         global $db_conn;
-        // global $currShelterName;
-        // global $currShelterLoc;
 
         // Only run the insert volunteer query if the primary key is not already being used
         $tuple = array (
