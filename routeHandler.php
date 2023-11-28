@@ -72,14 +72,14 @@
     function handleCalculateAvgRequest()
     {
         global $db_conn;
-        global $calcualteAvgRequestResult;
+        global $calculateAvgRequestResult;
     
         $sql = "SELECT a.breed,AVG(a.weight) AS AverageWeight
                 FROM RegisteredAnimal a
                 GROUP BY a.breed
                 ORDER BY AverageWeight";
     
-        $calcualteAvgRequestResult = executePlainSQL($sql);
+        $calculateAvgRequestResult = executePlainSQL($sql);
     }
     
     function handleInsertAnimalRequest()

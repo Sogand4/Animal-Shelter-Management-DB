@@ -37,11 +37,11 @@ session_start();
 		<p>If you wish to reset the table press on the reset button on the navigation bar above. If this is the first
 			time you're running this page, you MUST use reset</p>
 
-		<div style="display:flex; justify-content:center;">
+		<div style="display:flex; justify-content:space-around;">
 
 			<!-- Add new animals -->
 			<form method="POST" action="animals.php"
-				style="border: 1px solid #ccc; padding: 15px; border-radius: 10px;background-color: #cccccc;">
+				style="border: 1px solid #ccc; padding: 15px; b order-radius: 10px;background-color: #cccccc;">
 				<h2 style="margin: 0; padding-bottom: 10px;">Add a new Animal below:</h2>
 				<p>AnmialID's are in the format 'CXXX or BXXX or DXXX' where X are numbers.
 					Enter 1 if the animal is adopted, 0 otherwise.
@@ -137,8 +137,8 @@ session_start();
 		</form>
 
 		<?php
-			global $calcualteAvgRequestResult;
-			if ($calcualteAvgRequestResult) { ?>
+			global $calculateAvgRequestResult;
+			if ($calculateAvgRequestResult) { ?>
 				<table border="1">
 					<thead>
 						<tr>
@@ -150,7 +150,7 @@ session_start();
 					<?php } ?>
 
 					<?php
-					while ($row = oci_fetch_assoc($calcualteAvgRequestResult)) {
+					while ($row = oci_fetch_assoc($calculateAvgRequestResult)) {
 						echo '<tr>';
 						echo '<td>' . $row['BREED'] . '</td>';
 						echo '<td>' . $row['AVERAGEWEIGHT'] . '</td>';
@@ -162,7 +162,6 @@ session_start();
 
 
 	<?php
-        oci_free_statement($result);
         disconnectFromDB();
     ?>
 
