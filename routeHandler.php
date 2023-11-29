@@ -65,12 +65,33 @@
             }
             else if (array_key_exists('deleteAnimalRequest', $_POST)) {
                 handleDeleteAnimalRequest();
+            }   
+            else if (array_key_exists('getUnvaccinatedRequest', $_POST)) {
+                handlegetUnvaccinatedRequest();
             }
-    
     
             disconnectFromDB();
         }
     }
+
+
+    function handlegetUnvaccinatedRequest(){
+        global $db_conn;
+        global $getUnvaccinatedRequestResult;
+
+        $currShelterName = $_SESSION["shelterName"];
+        $currShelterLoc = $_SESSION["shelterLocation"];
+
+    
+        $sql = "SELECT a.animalID,a.name
+                FROM RegisteredAnimal a
+                WHERE shelterName = '$currShelterName' 
+                AND shelterLocation = '$currShelterLoc' 
+                AND NOT EXISTS (SELECT animalID FROM  GetVaccination)";
+            $getUnvaccinatedRequestResult = executePlainSQL($sql);
+    }
+
+
     
     function handleDeleteAnimalRequest(){
 
@@ -118,9 +139,12 @@
     {
         global $db_conn;
         global $calculateAvgRequestResult;
+        $currShelterName = $_SESSION["shelterName"];
+        $currShelterLoc = $_SESSION["shelterLocation"];
     
         $sql = "SELECT a.breed,AVG(a.age) AS averageAge
                 FROM RegisteredAnimal a
+                WHERE shelterName = '$currShelterName' AND shelterLocation = '$currShelterLoc'
                 GROUP BY a.breed
                 ORDER BY averageAge";
     

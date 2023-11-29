@@ -194,13 +194,13 @@ session_start();
 				$currShelterName = $_SESSION["shelterName"];
 				$currShelterLoc = $_SESSION["shelterLocation"];
 
-				$sql = "SELECT * 
+				$sql1 = "SELECT * 
                 FROM Cats c
 				INNER JOIN RegisteredAnimal a ON c.animalID = a.animalID
 				INNER JOIN HealthRecord h ON c.animalID = h.animalID
                 WHERE a.shelterName = '$currShelterName' AND a.shelterLocation = '$currShelterLoc'";
 
-				$result = executePlainSQL($sql);
+				$result1 = executePlainSQL($sql1);
 				?>
 
 				<table border="1" style="margin: auto;">
@@ -220,7 +220,7 @@ session_start();
 					<tbody>
 
 						<?php
-						while ($row = oci_fetch_assoc($result)) {
+						while ($row = oci_fetch_assoc($result1)) {
 							echo '<tr>';
 							echo '<td>' . $row['ANIMALID'] . '</td>';
 							echo '<td>' . $row['NAME'] . '</td>';
@@ -279,6 +279,7 @@ session_start();
 
 					</tbody>
 				</table>
+				<hr/>
 
 
 
@@ -380,6 +381,7 @@ session_start();
 
 					</tbody>
 				</table>
+				<hr/>
 
 
 
@@ -480,24 +482,54 @@ session_start();
 
 					</tbody>
 				</table>
+				<hr/>
 
 
 				<!-- list of Unvaccinated Animals -->
-				
+				<h2>View list of unvaccinated animals</h2>
+				<form method="POST" action="animals.php">
+					<input type="hidden" id="getUnvaccinatedRequest" name="getUnvaccinatedRequest">
+					<input type="submit" value="View Result" name="insertSubmit">
+				</form>
 
+				<?php
+				global $getUnvaccinatedRequestResult;
+				if ($getUnvaccinatedRequestResult) { ?>
 
+					<table border="1">
+						<thead>
+							<tr>
+								<th>AnimalID</th>
+								<th>Name</th>
+							</tr>
+						</thead>
+						<tbody>
 
+						<?php } ?>
 
-
-
-
-
+						<?php
+						while ($row = oci_fetch_assoc($getUnvaccinatedRequestResult)) {
+							echo '<tr>';
+							echo '<td>' . $row['ANIMALID'] . '</td>';
+							echo '<td>' . $row['NAME'] . '</td>';
+							echo '</tr>';
+						}
+						?>
+					</tbody>
+				</table>
+				<hr />
 
 
 	</main>
 
 
 	<?php
+	oci_free_statement($result1);
+	oci_free_statement($result2);
+	oci_free_statement($result3);
+	oci_free_statement($result4);
+	oci_free_statement($result5);
+	oci_free_statement($result6);
 	disconnectFromDB();
 	?>
 
