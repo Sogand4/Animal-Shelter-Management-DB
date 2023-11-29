@@ -60,12 +60,12 @@
             else if (array_key_exists('updateAnimalRequest', $_POST)) {
                 handleUpdateAnimalRequest();
             } 
-            else if (array_key_exists('calculateAvgRequest', $_POST)) {
-                handleCalculateAvgRequest();
-            }
             else if (array_key_exists('deleteAnimalRequest', $_POST)) {
                 handleDeleteAnimalRequest();
             }   
+            else if (array_key_exists('calculateAvgRequest', $_POST)) {
+                handleCalculateAvgRequest();
+            }
             else if (array_key_exists('getUnvaccinatedRequest', $_POST)) {
                 handlegetUnvaccinatedRequest();
             }
@@ -92,6 +92,21 @@
     }
 
 
+    function handleCalculateAvgRequest()
+    {
+        global $db_conn;
+        global $calculateAvgRequestResult;
+        $currShelterName = $_SESSION["shelterName"];
+        $currShelterLoc = $_SESSION["shelterLocation"];
+    
+        $sql = "SELECT a.breed,AVG(a.age) AS averageAge
+                FROM RegisteredAnimal a
+                WHERE shelterName = '$currShelterName' AND shelterLocation = '$currShelterLoc'
+                GROUP BY a.breed
+                ORDER BY averageAge";
+    
+        $calculateAvgRequestResult = executePlainSQL($sql);
+    }
     
     function handleDeleteAnimalRequest(){
 
@@ -134,22 +149,6 @@
     }
 
 
-    
-    function handleCalculateAvgRequest()
-    {
-        global $db_conn;
-        global $calculateAvgRequestResult;
-        $currShelterName = $_SESSION["shelterName"];
-        $currShelterLoc = $_SESSION["shelterLocation"];
-    
-        $sql = "SELECT a.breed,AVG(a.age) AS averageAge
-                FROM RegisteredAnimal a
-                WHERE shelterName = '$currShelterName' AND shelterLocation = '$currShelterLoc'
-                GROUP BY a.breed
-                ORDER BY averageAge";
-    
-        $calculateAvgRequestResult = executePlainSQL($sql);
-    }
     
     function handleInsertAnimalRequest()
     {
