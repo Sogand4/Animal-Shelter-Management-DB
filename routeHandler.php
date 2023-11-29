@@ -51,7 +51,7 @@
             else if (array_key_exists('findVolunteerRequest', $_POST)) {
                 handleFindVolunteerRequest();
             } 
-            else if (array_key_exists('selecetAnimalRequest', $_POST)) {
+            else if (array_key_exists('selectAnimalRequest', $_POST)) {
                 handleSelectAnimalRequest();
             } 
             else if (array_key_exists('insertAnimalRequest', $_POST)) {

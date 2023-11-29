@@ -23,9 +23,6 @@ session_start();
 			<li><a href="inspectors.php">Inspectors</a></li>
 			<li><a href="events_ws.php">Events and Workshops</a></li>
 			<li><a href="animals.php">Animals</a></li>
-			<li><a href="animals.php">Cats</a></li>
-			<li><a href="animals.php">Dogs</a></li>
-			<li><a href="animals.php">Birds</a></li>
 			<li><a href="login.php">Logout</a></li>
 			<li>
 				<form method="POST" action="animals.php">
@@ -44,7 +41,7 @@ session_start();
 
 			<!-- Add new animals -->
 			<form method="POST" action="animals.php"
-				style="border: 1px solid #ccc; padding: 15px; b order-radius: 10px;background-color: #cccccc;">
+				style="border: 1px solid #ccc; padding: 15px; border-radius: 10px;margin: 20px;background-color: #cccccc;">
 				<h2 style="margin: 0; padding-bottom: 10px;">Add a new Animal below:</h2>
 				<p>AnmialID's are in the format 'CXXX or BXXX or DXXX' where X are numbers.
 					Enter 1 if the animal is adopted, 0 otherwise.
@@ -66,7 +63,7 @@ session_start();
 
 			<!-- Update Animal Information -->
 			<form method="POST" action="animals.php"
-				style="border: 1px solid #ccc; padding: 15px; border-radius: 10px;background-color: #cccccc;">
+				style="border: 1px solid #ccc; padding: 15px; border-radius: 10px;margin: 20px;background-color: #cccccc;">
 				<h2 style="margin: 0; padding-bottom: 10px;">Update Animal Info:</h2>
 				<p>AnmialID's are in the format 'CXXX or BXXX or DXXX' where X are integers between 0-9.
 					Enter 1 if the animal is adopted, 0 otherwise.
@@ -87,7 +84,7 @@ session_start();
 
 			<!-- Delete Animals -->
 			<form method="POST" action="animals.php"
-				style="border: 1px solid #ccc; padding: 15px; border-radius: 10px;background-color: #cccccc;">
+				style="border: 1px solid #ccc; padding: 15px; border-radius: 10px;margin: 20px;background-color: #cccccc;">
 				<h2 style="margin: 0; padding-bottom: 10px;">Delete Animal:</h2>
 				<p>AnmialID's are in the format 'CXXX or BXXX or DXXX' where X are integers between 0-9.
 					Enter 1 if the animal is adopted, 0 otherwise.
