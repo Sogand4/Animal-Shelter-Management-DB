@@ -193,7 +193,7 @@
                 $tuple
             );
     
-            executeBoundSQL("insert into RegisterdAnimal values (:bind1, :bind2, :bind3, :bind4, :bind5, :bind6, :bind7, :bind8, :bind9 )", $alltuples);
+            executeBoundSQL("insert into RegisteredAnimal values (:bind1, :bind2, :bind3, :bind4, :bind5, :bind6, :bind7, :bind8, :bind9 )", $alltuples);
             OCICommit($db_conn);
             echo '<p style="color: green;">Successfully inserted into registerdAnimals</p>';
         } else {

@@ -52,7 +52,7 @@ session_start();
 					You cannot insert existing animals into our database.
 				</p>
 				<input type="hidden" id="insertAnimalRequest" name="insertAnimalRequest">
-				AnimalID: <input type="text" name="animalID" maxlength="255" pattern="C\d{3} || D\d{3} || B\d{3}"
+				AnimalID: <input type="text" name="animalID" maxlength="255" pattern="C\d{3}" or pattern = "D\d{3}" or pattern = "B\d{3}"
 					title="Please enter the animal ID in the required format" required> <br /><br />
 				Name: <input type="text" name="name" maxlength="255" required> <br /><br />
 				Adopted: <input type="text" name="adopted" maxlength="255" required
@@ -74,7 +74,7 @@ session_start();
 					You can only update existing animals in our database.
 				</p>
 				<input type="hidden" id="upateAnimalRequest" name="updateAnimalRequest">
-				AnimalID: <input type="text" name="animalID" maxlength="255" pattern="C\d{3} | D\d{3} | B\d{3}"
+				AnimalID: <input type="text" name="animalID" maxlength="255" pattern="C\d{3}" or pattern = "D\d{3}" or pattern = "B\d{3}"
 					title="Please enter the animal ID in the required format" required> <br /><br />
 				Name: <input type="text" name="name" maxlength="255" required> <br /><br />
 				Adopted: <input type="text" name="adopted" maxlength="255" required
