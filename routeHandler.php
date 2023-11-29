@@ -4,6 +4,15 @@
     global $findVolRequestResult;
     $findVolRequestResult = null;
 
+    global $getUnvaccinatedRequestResult;
+    $getUnvaccinatedRequestResult = null;
+
+    global $calculateAvgRequestResult;
+    $calculateAvgRequestResult = null;
+
+    global $selectAnimalRequestResult;
+    $selectAnimalRequestResult = null;
+
     session_start();
 
     if (isset($_POST['reset']) || isset($_POST['insertSubmit']) || isset($_POST['signupSubmit']) || isset($_POST['loginSubmit'])
@@ -277,7 +286,7 @@
             $countExistingAnimals2 = $rowExistingAnimals2['COUNT'];
     
             if ($countExistingAnimals1 == 0 && $countExistingAnimals2 == 0) {
-                echo '<p style="color: red;">No animal has those breeds</p>';
+                echo '<p style="color: red;">No animal has these breed OR age</p>';
             } else {
                 $tuple1 = array(
                     ":bind1" => $_POST['breed'],
@@ -298,7 +307,7 @@
                     );
                 } else if ($operator == "Or") {
                     $selectAnimalRequestResult = executeBoundSQL("SELECT * FROM RegisteredAnimal a
-            WHERE a.breed = :bind1 OR a.age = :bind2 AND a.shelterName = :bind3 AND a.shelterLocation = :bind4", $alltuples1);
+            WHERE  a.shelterName = :bind3 AND a.shelterLocation = :bind4 AND (a.breed = :bind1 OR a.age = :bind2)" , $alltuples1);
                 }
                 ;
                 echo '<p style="color: green;">Successfully select required animals.</p>';
