@@ -232,42 +232,6 @@ session_start();
 		<hr />
 
 
-		<!-- list of Unvaccinated Animals -->
-		<h2>View list of unvaccinated animals</h2>
-		<form method="POST" action="animals.php">
-			<input type="hidden" id="getUnvaccinatedRequest" name="getUnvaccinatedRequest">
-			<input type="submit" value="View Result" name="insertSubmit">
-		</form>
-		<br>
-
-		<?php
-		global $getUnvaccinatedRequestResult;
-		if ($getUnvaccinatedRequestResult) { ?>
-
-			<table border="1">
-				<thead>
-					<tr>
-						<th>AnimalID</th>
-						<th>Name</th>
-					</tr>
-				</thead>
-				<tbody>
-
-				<?php } ?>
-
-				<?php
-				while ($row = oci_fetch_assoc($getUnvaccinatedRequestResult)) {
-					echo '<tr>';
-					echo '<td>' . $row['ANIMALID'] . '</td>';
-					echo '<td>' . $row['NAME'] . '</td>';
-					echo '</tr>';
-				}
-				?>
-			</tbody>
-		</table>
-		<hr />
-
-
 		<!-- Calculate average age of each breed-->
 		<h2>Average age of each breed:</h2>
 		<form method="POST" action="animals.php">

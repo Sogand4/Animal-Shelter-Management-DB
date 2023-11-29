@@ -4,8 +4,14 @@ require_once('connection.php');
 global $findVolRequestResult;
 $findVolRequestResult = null;
 
-global $getUnvaccinatedRequestResult;
-$getUnvaccinatedRequestResult = null;
+global $birdUnvaccinatedResult
+$birdUnvaccinatedResult = null;
+
+global $catUnvaccinatedResult
+$catUnvaccinatedResult= null;
+
+global $dogUnvaccinatedResult
+$dogUnvaccinatedResult= null;
 
 global $calculateAvgRequestResult;
 $calculateAvgRequestResult = null;
@@ -61,8 +67,12 @@ function handlePOSTRequest()
             handleDeleteAnimalRequest();
         } else if (array_key_exists('calculateAvgRequest', $_POST)) {
             handleCalculateAvgRequest();
-        } else if (array_key_exists('getUnvaccinatedRequest', $_POST)) {
-            handlegetUnvaccinatedRequest();
+        } else if (array_key_exists('catUnvaccinatedRequest', $_POST)) {
+            handlecatUnvaccinatedRequest();
+        } else if (array_key_exists('dogUnvaccinatedRequest', $_POST)) {
+            handledogUnvaccinatedRequest();
+        } else if (array_key_exists('birdUnvaccinatedRequest', $_POST)) {
+            handlebirdUnvaccinatedRequest();
         }
 
         disconnectFromDB();
@@ -70,10 +80,10 @@ function handlePOSTRequest()
 }
 
 
-function handlegetUnvaccinatedRequest()
+function handlebirdUnvaccinatedRequest()
 {
     global $db_conn;
-    global $getUnvaccinatedRequestResult;
+    global $birdUnvaccinatedResult;
 
     $currShelterName = $_SESSION["shelterName"];
     $currShelterLoc = $_SESSION["shelterLocation"];
@@ -81,10 +91,61 @@ function handlegetUnvaccinatedRequest()
 
     $sql = "SELECT a.animalID,a.name
                 FROM RegisteredAnimal a
+                INNER JOIN Birds b ON c.animalID = b.animalID
                 WHERE shelterName = '$currShelterName' 
                 AND shelterLocation = '$currShelterLoc' 
-                AND NOT EXISTS (SELECT animalID FROM  GetVaccination)";
-    $getUnvaccinatedRequestResult = executePlainSQL($sql);
+                WHERE NOT EXISTS
+                (SELECT vaccineName FROM  Vaccination
+                 MINUS (SELECT g.vaccineName FROM GetVaccination g WHERE g.animalID = a.animalID )
+                )";
+    $birdUnvaccinatedResult = executePlainSQL($sql);
+}
+
+
+
+
+function handledogUnvaccinatedRequest()
+{
+    global $db_conn;
+    global $dogUnvaccinatedResult;
+
+    $currShelterName = $_SESSION["shelterName"];
+    $currShelterLoc = $_SESSION["shelterLocation"];
+
+
+    $sql = "SELECT a.animalID,a.name
+                FROM RegisteredAnimal a
+                INNER JOIN Dogs d ON d.animalID = a.animalID
+                WHERE shelterName = '$currShelterName' 
+                AND shelterLocation = '$currShelterLoc' 
+                WHERE NOT EXISTS
+                (SELECT vaccineName FROM  Vaccination
+                 MINUS (SELECT g.vaccineName FROM GetVaccination g WHERE g.animalID = a.animalID )
+                )";
+    $dogUnvaccinatedResult = executePlainSQL($sql);
+}
+
+
+
+function handlecatUnvaccinatedRequest()
+{
+    global $db_conn;
+    global $catUnvaccinatedResult;
+
+    $currShelterName = $_SESSION["shelterName"];
+    $currShelterLoc = $_SESSION["shelterLocation"];
+
+
+    $sql = "SELECT a.animalID,a.name
+                FROM RegisteredAnimal a
+                INNER JOIN Cats c ON c.animalID = a.animalID
+                WHERE shelterName = '$currShelterName' 
+                AND shelterLocation = '$currShelterLoc' 
+                WHERE NOT EXISTS
+                (SELECT vaccineName FROM  Vaccination
+                 MINUS (SELECT g.vaccineName FROM GetVaccination g WHERE g.animalID = a.animalID )
+                )";
+    $catUnvaccinatedResult = executePlainSQL($sql);
 }
 
 

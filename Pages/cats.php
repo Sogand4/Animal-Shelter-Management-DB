@@ -135,12 +135,53 @@ session_start();
 
 			</tbody>
 		</table>
+
+		<h2>List of Cats get all vaccines</h2>
+		<form method="POST" action="cats.php">
+			<input type="hidden" id="catUnvaccinatedRequest" name="catUnvaccinatedRequest">
+			<input type="submit" value="View Result" name="insertSubmit">
+		</form>
+		<br>
+
+		<?php
+		global $catUnvaccinatedResult;
+		if ($catUnvaccinatedResult) { ?>
+
+			<table border="1">
+				<thead>
+					<tr>
+						<th>AnimalID</th>
+						<th>Name</th>
+					</tr>
+				</thead>
+				<tbody>
+
+				<?php } ?>
+
+				<?php
+				while ($row = oci_fetch_assoc($catUnvaccinatedResult)) {
+					echo '<tr>';
+					echo '<td>' . $row['ANIMALID'] . '</td>';
+					echo '<td>' . $row['NAME'] . '</td>';
+					echo '</tr>';
+				}
+				?>
+			</tbody>
+		</table>
+		<hr />
+
+
+
+
 		
 		<?php
 	    oci_free_statement($result1);
 	    oci_free_statement($result2);
 	    disconnectFromDB();
 	    ?>
+
+
+
 
 </body>
 

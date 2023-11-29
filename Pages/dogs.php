@@ -138,6 +138,42 @@ HAVING a.weight > (SELECT AVG(m.weight) FROM RegisteredAnimal m
 	</table>
 
 
+	<h2>List of Dogs get all vaccines</h2>
+		<form method="POST" action="dogs.php">
+			<input type="hidden" id="dogUnvaccinatedRequest" name="dogUnvaccinatedRequest">
+			<input type="submit" value="View Result" name="insertSubmit">
+		</form>
+		<br>
+
+		<?php
+		global $dogUnvaccinatedResult;
+		if ($dogUnvaccinatedResult) { ?>
+
+			<table border="1">
+				<thead>
+					<tr>
+						<th>AnimalID</th>
+						<th>Name</th>
+					</tr>
+				</thead>
+				<tbody>
+
+				<?php } ?>
+
+				<?php
+				while ($row = oci_fetch_assoc($dogUnvaccinatedResult)) {
+					echo '<tr>';
+					echo '<td>' . $row['ANIMALID'] . '</td>';
+					echo '<td>' . $row['NAME'] . '</td>';
+					echo '</tr>';
+				}
+				?>
+			</tbody>
+		</table>
+		<hr />
+
+
+
 	<?php
 	oci_free_statement($result3);
 	oci_free_statement($result4);

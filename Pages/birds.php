@@ -139,6 +139,42 @@ $result6 = executePlainSQL($sql6);
 </table>
 
 
+<h2>List of Birds get all vaccines</h2>
+		<form method="POST" action="birds.php">
+			<input type="hidden" id="birdUnvaccinatedRequest" name="birdUnvaccinatedRequest">
+			<input type="submit" value="View Result" name="insertSubmit">
+		</form>
+		<br>
+
+		<?php
+		global $birdUnvaccinatedResult;
+		if ($birdUnvaccinatedResult) { ?>
+
+			<table border="1">
+				<thead>
+					<tr>
+						<th>AnimalID</th>
+						<th>Name</th>
+					</tr>
+				</thead>
+				<tbody>
+
+				<?php } ?>
+
+				<?php
+				while ($row = oci_fetch_assoc($birdUnvaccinatedResult)) {
+					echo '<tr>';
+					echo '<td>' . $row['ANIMALID'] . '</td>';
+					echo '<td>' . $row['NAME'] . '</td>';
+					echo '</tr>';
+				}
+				?>
+			</tbody>
+		</table>
+		<hr />
+
+
+
 <?php
 	oci_free_statement($result5);
 	oci_free_statement($result6);
