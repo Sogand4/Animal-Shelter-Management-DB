@@ -1075,10 +1075,42 @@ INSERT INTO Vaccination (vaccineName, expiryDate, recordID) VALUES ('Feline Dist
 INSERT INTO Vaccination (vaccineName, expiryDate, recordID) VALUES ('Avian Influenza Vaccine', TO_DATE('2029-09-02', 'YYYY-MM-DD'), 'R444');
 		
 INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('C000', 'Rabies Vaccine', TO_DATE('2022-01-20', 'YYYY-MM-DD'));
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('C000', 'Bordetella Vaccine', TO_DATE('2022-03-21', 'YYYY-MM-DD'));
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('C000', 'Canine Parvovirus Vaccine', TO_DATE('2021-02-04', 'YYYY-MM-DD'));
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('C000', 'Feline Distemper Vaccine', TO_DATE('2022-09-09', 'YYYY-MM-DD'));
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('C000', 'Avian Influenza Vaccine', TO_DATE('2023-02-09', 'YYYY-MM-DD'));
+
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('C002', 'Avian Influenza Vaccine', TO_DATE('2023-09-17', 'YYYY-MM-DD'));
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('C003', 'Rabies Vaccine', TO_DATE('2022-01-20', 'YYYY-MM-DD'));
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('C003', 'Bordetella Vaccine', TO_DATE('2022-03-21', 'YYYY-MM-DD'));
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('C003', 'Canine Parvovirus Vaccine', TO_DATE('2021-02-04', 'YYYY-MM-DD'));
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('C003', 'Feline Distemper Vaccine', TO_DATE('2022-09-09', 'YYYY-MM-DD'));
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('C003', 'Avian Influenza Vaccine', TO_DATE('2023-02-09', 'YYYY-MM-DD'));
 INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('D001', 'Bordetella Vaccine', TO_DATE('2021-02-04', 'YYYY-MM-DD'));
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('D003', 'Rabies Vaccine', TO_DATE('2022-01-20', 'YYYY-MM-DD'));
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('D003', 'Bordetella Vaccine', TO_DATE('2022-03-21', 'YYYY-MM-DD'));
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('D003', 'Canine Parvovirus Vaccine', TO_DATE('2021-02-04', 'YYYY-MM-DD'));
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('D003', 'Feline Distemper Vaccine', TO_DATE('2022-09-09', 'YYYY-MM-DD'));
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('D003', 'Avian Influenza Vaccine', TO_DATE('2023-02-09', 'YYYY-MM-DD'));
 INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('D002', 'Bordetella Vaccine', TO_DATE('2022-09-09', 'YYYY-MM-DD'));
 INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('D002', 'Feline Distemper Vaccine', TO_DATE('2023-02-09', 'YYYY-MM-DD'));
 INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('C002', 'Avian Influenza Vaccine', TO_DATE('2023-09-17', 'YYYY-MM-DD'));
+
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('B001', 'Rabies Vaccine', TO_DATE('2022-01-20', 'YYYY-MM-DD'));
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('B001', 'Bordetella Vaccine', TO_DATE('2022-03-21', 'YYYY-MM-DD'));
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('B001', 'Canine Parvovirus Vaccine', TO_DATE('2021-02-04', 'YYYY-MM-DD'));
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('B001', 'Feline Distemper Vaccine', TO_DATE('2022-09-09', 'YYYY-MM-DD'));
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('B001', 'Avian Influenza Vaccine', TO_DATE('2023-02-09', 'YYYY-MM-DD'));
+
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('B002', 'Rabies Vaccine', TO_DATE('2022-01-20', 'YYYY-MM-DD'));
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('B003', 'Bordetella Vaccine', TO_DATE('2022-03-21', 'YYYY-MM-DD'));
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('B002', 'Canine Parvovirus Vaccine', TO_DATE('2021-02-04', 'YYYY-MM-DD'));
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('B004', 'Feline Distemper Vaccine', TO_DATE('2022-09-09', 'YYYY-MM-DD'));
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('B005', 'Avian Influenza Vaccine', TO_DATE('2023-02-09', 'YYYY-MM-DD'));
+
+
+
+
 
 INSERT INTO Adopt(adopterID, animalID, dateOfAdoption) VALUES ('A000', 'C005', TO_DATE('2023-08-23', 'YYYY-MM-DD'));
 INSERT INTO Adopt(adopterID, animalID, dateOfAdoption) VALUES ('A001', 'D004', TO_DATE('2023-09-02', 'YYYY-MM-DD'));
