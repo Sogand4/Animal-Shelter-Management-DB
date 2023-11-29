@@ -52,8 +52,8 @@ session_start();
 					You cannot insert existing animals into our database.
 				</p>
 				<input type="hidden" id="insertAnimalRequest" name="insertAnimalRequest">
-				AnimalID: <input type="text" name="animalID" maxlength="255" pattern="C\d{3}" or pattern = "D\d{3}" or pattern = "B\d{3}"
-					title="Please enter the animal ID in the required format" required> <br /><br />
+				AnimalID: <input type="text" name="animalID" maxlength="255" pattern="C\d{3}" or pattern="D\d{3}" or
+					pattern="B\d{3}" title="Please enter the animal ID in the required format" required> <br /><br />
 				Name: <input type="text" name="name" maxlength="255" required> <br /><br />
 				Adopted: <input type="text" name="adopted" maxlength="255" required
 					title="Please follow the required format above"> <br /><br />
@@ -74,8 +74,8 @@ session_start();
 					You can only update existing animals in our database.
 				</p>
 				<input type="hidden" id="upateAnimalRequest" name="updateAnimalRequest">
-				AnimalID: <input type="text" name="animalID" maxlength="255" pattern="C\d{3}" or pattern = "D\d{3}" or pattern = "B\d{3}"
-					title="Please enter the animal ID in the required format" required> <br /><br />
+				AnimalID: <input type="text" name="animalID" maxlength="255" pattern="C\d{3}" or pattern="D\d{3}" or
+					pattern="B\d{3}" title="Please enter the animal ID in the required format" required> <br /><br />
 				Name: <input type="text" name="name" maxlength="255" required> <br /><br />
 				Adopted: <input type="text" name="adopted" maxlength="255" required
 					title="Please follow the required format above"> <br /><br />
@@ -102,16 +102,95 @@ session_start();
 
 		</div>
 
-		<!-- Meet the selection requirement: users can select the breed and age of animals with and/or clause-->
-		<h2>Select animals by breed:</h2>
+		<!-- List of Animals-->
+		<h2>List of Registered Animals in this shelter</h2>
+		<?php
+		connectToDB();
+
+		$currShelterName = $_SESSION["shelterName"];
+		$currShelterLoc = $_SESSION["shelterLocation"];
+
+		$sql = "SELECT * 
+                FROM RegisteredAnimal
+                WHERE shelterName = '$currShelterName' AND shelterLocation = '$currShelterLoc'";
+
+		$result = executePlainSQL($sql);
+		?>
+
+		<table border="1" style="margin: auto;">
+			<thead>
+				<tr>
+					<th>AnimalID</th>
+					<th>Name</th>
+					<th>Adopted</th>
+					<th>Description</th>
+					<th>Age</th>
+					<th>Weight</th>
+					<th>Breed</th>
+				</tr>
+			</thead>
+			<tbody>
+
+				<?php
+				while ($row = oci_fetch_assoc($result)) {
+					echo '<tr>';
+					echo '<td>' . $row['ANIMALID'] . '</td>';
+					echo '<td>' . $row['NAME'] . '</td>';
+					echo '<td>' . ($row['ADOPTED'] ? 'Yes' : 'No') . '</td>';
+					echo '<td>' . $row['DESCRIPTION'] . '</td>';
+					echo '<td>' . $row['AGE'] . '</td>';
+					echo '<td>' . $row['WEIGHT'] . '</td>';
+					echo '<td>' . $row['BREED'] . '</td>';
+					echo '</tr>';
+				}
+				?>
+
+			</tbody>
+		</table>
+
+
+
+
+
+
+
+
+		<!-- Meet the selection requirement-->
+		<h2>Select animals based on your interest:</h2>
 		<form method="POST" action="animals.php">
 			<input type="hidden" id="selectAnimalRequest" name="selectAnimalRequest">
-			Breed = <input type="text" name="breed" required>
-			<select name="operator">
+			AnimalID: <input type="text" name="animalID" maxlength="255" pattern="C\d{3}" or pattern="D\d{3}" or
+				pattern="B\d{3}" title="Please enter the animal ID in the required format"> 
+			<select name="operator1">
 				<option value="And"> AND </option>
 				<option value="Or"> OR </option>
-			</select>
-			Age = <input type="text" name="age" required>
+			</select><br /><br />
+			Name: <input type="text" name="name" maxlength="255"> 
+			<select name="operator2">
+				<option value="And"> AND </option>
+				<option value="Or"> OR </option>
+			</select><br /><br />
+			Adopted: <input type="text" name="adopted" maxlength="255" title="Please follow the required format above">
+			<select name="operator3">
+				<option value="And"> AND </option>
+				<option value="Or"> OR </option>
+			</select><br /><br />
+			Description: <input type="text" name="description"> 
+			<select name="operator4">
+				<option value="And"> AND </option>
+				<option value="Or"> OR </option>
+			</select><br /><br />
+			Age: <input type="number" name="age"> 
+			<select name="operator5">
+				<option value="And"> AND </option>
+				<option value="Or"> OR </option>
+			</select><br /><br />
+			Weight: <input type="number" name="weight"> 
+			<select name="operator6">
+				<option value="And"> AND </option>
+				<option value="Or"> OR </option>
+			</select><br /><br />
+			Breed: <input type="text" name="breed"> 
 			<input type="submit" value="Submit" name="insertSubmit">
 		</form>
 		<br>
