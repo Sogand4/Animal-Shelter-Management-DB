@@ -233,8 +233,8 @@ session_start();
 					<th>Age</th>
 					<th>Weight</th>
 					<th>Breed</th>
-					<th>hasFur</th>
-					<th>Social</th>
+					<th>medicallyTrained</th>
+					<th>hasFur </th>
 				</tr>
 			</thead>
 			<tbody>
@@ -249,8 +249,8 @@ session_start();
 					echo '<td>' . $row['AGE'] . '</td>';
 					echo '<td>' . $row['WEIGHT'] . '</td>';
 					echo '<td>' . $row['BREED'] . '</td>';
+					echo '<td>' . ($row['MEDICALLYTRAINED'] ? 'Yes' : 'No') . '</td>';
 					echo '<td>' . ($row['HASFUR'] ? 'Yes' : 'No') . '</td>';
-					echo '<td>' . ($row['SOCIAL'] ? 'Yes' : 'No') . '</td>';
 					echo '</tr>';
 				}
 				?>
@@ -333,8 +333,9 @@ session_start();
 					<th>Age</th>
 					<th>Weight</th>
 					<th>Breed</th>
-					<th>hasFur</th>
-					<th>Social</th>
+					<th>beakSize</th>
+					<th>wingSpan</th>
+					<th>color</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -349,8 +350,9 @@ session_start();
 					echo '<td>' . $row['AGE'] . '</td>';
 					echo '<td>' . $row['WEIGHT'] . '</td>';
 					echo '<td>' . $row['BREED'] . '</td>';
-					echo '<td>' . ($row['HASFUR'] ? 'Yes' : 'No') . '</td>';
-					echo '<td>' . ($row['SOCIAL'] ? 'Yes' : 'No') . '</td>';
+					echo '<td>' . $row['BEAKSIZE'] . '</td>';
+					echo '<td>' . $row['WINGSPAN'] . '</td>';
+					echo '<td>' . $row['COLOR'] . '</td>';
 					echo '</tr>';
 				}
 				?>
