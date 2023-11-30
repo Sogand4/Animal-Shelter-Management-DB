@@ -1164,7 +1164,7 @@ INSERT INTO RegisteredAnimal (animalID,  name, adopted, description, age, weight
 VALUES ('C006', 'Catcat', 0, 'is a ver nice cat' , 10, 18, 'Bengal', '234 Willow Lane, Supportville, USA', 'The Animal Haven');
 
 INSERT INTO RegisteredAnimal (animalID,  name, adopted, description, age, weight, breed,  shelterLocation, shelterName)
-VALUES ('C007', 'Kitty', 0, 'Kitty is really cute.', 1, 10, 'Calico', '10776 King George Boulevard, Surrey, British Columbia','Paws and Claws Animal Shelter');
+VALUES ('C007', 'Kitty', 0, 'Kitty is really cute.', 4, 10, 'Calico', '10776 King George Boulevard, Surrey, British Columbia','Paws and Claws Animal Shelter');
 
 INSERT INTO RegisteredAnimal (animalID,  name, adopted, description, age, weight, breed,  shelterLocation, shelterName)
 VALUES ('D000', 'Spots', 1, 'A good boy, lots of energy.', 1, 15, 'Dalmatian','270 Gerrard St E, Toronto, Ontario', 'Lovely Pet Home');

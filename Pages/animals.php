@@ -239,6 +239,8 @@ session_start();
 						<th>Age</th>
 						<th>Weight</th>
 						<th>Breed</th>
+						<th>Shelter Name</th>
+						<th>Shelter Location</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -253,6 +255,8 @@ session_start();
 					echo '<td>' . $row['AGE'] . '</td>';
 					echo '<td>' . $row['WEIGHT'] . '</td>';
 					echo '<td>' . $row['BREED'] . '</td>';
+					echo '<td>' . $row['SHELTERNAME'] . '</td>';
+					echo '<td>' . $row['SHELTERLOCATION'] . '</td>';
 					echo '</tr>';
 				} ?>
 			    </tbody>
