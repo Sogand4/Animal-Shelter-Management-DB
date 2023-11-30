@@ -100,6 +100,7 @@ function handlebirdUnvaccinatedRequest()
                  MINUS (SELECT g.vaccineName FROM GetVaccination g WHERE g.animalID = b.animalID )
                 )";
     $birdUnvaccinatedResult = executePlainSQL($sql);
+
 }
 
 

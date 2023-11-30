@@ -57,18 +57,18 @@ session_start();
 				<input type="hidden" id="insertAnimalRequest" name="insertAnimalRequest">
 				AnimalID: <input type="text" name="animalID" maxlength="255" pattern="[CDB]\d{3}" title="Please enter the animal ID in the required format" required>
 				Name: <input type="text" name="name" maxlength="255" required> 
-				Adopted: <input type="text" name="adopted" maxlength="255" required
+				Adopted (type 1 or 0): <input type="text" name="adopted" maxlength="255" required
 					title="Please follow the required format above"> <br /><br />
 				Description: <input type="text" name="description" required> <br /><br />
 				Age: <input type="number" name="age" required> 
 				Weight: <input type="number" name="weight" required> 
 				Breed: <input type="text" name="breed" required> <br /><br />
 				<p>Fill in the following blanks if AnimalID Starts with C</p>
-				HasFur: <input type="text" name="hasFur" > 
-				Social: <input type="text" name="social"> <br /><br />
+				HasFur (type 1 or 0): <input type="text" name="hasFur" > 
+				Social (type 1 or 0): <input type="text" name="social"> <br /><br />
 				<p>Fill in the following blanks if AnimalID Starts with D</p>
-				MedicallyTrained: <input type="text" name="medicallyTrained"> 
-				HasFur: <input type="text" name="hasFur"> <br /><br />
+				MedicallyTrained (type 1 or 0): <input type="text" name="medicallyTrained"> 
+				HasFur(type 1 or 0): <input type="text" name="hasFur"> <br /><br />
 				<p>Fill in the following blanks if AnimalID Starts with B</p>
 				BeakSize: <input type="number" name="beakSize"> 
 				WingSpan: <input type="number" name="wingSpan"> 
@@ -92,18 +92,18 @@ session_start();
 				<input type="hidden" id="upateAnimalRequest" name="updateAnimalRequest">
 				AnimalID: <input type="text" name="animalID" maxlength="255" pattern="[CDB]\d{3}" title="Please enter the animal ID in the required format" required>
 				Name: <input type="text" name="name" maxlength="255" required> 
-				Adopted: <input type="text" name="adopted" maxlength="255" required
+				Adopted (type 1 or 0): <input type="text" name="adopted" maxlength="255" required
 					title="Please follow the required format above"> <br /><br />
 				Description: <input type="text" name="description" required> <br /><br />
 				Age: <input type="number" name="age" required> 
 				Weight: <input type="number" name="weight" required> 
 				Breed: <input type="text" name="breed" required> <br /><br />
 				<p>Fill in the following blanks if AnimalID Starts with C</p>
-				HasFur: <input type="text" name="hasFur" > 
-				Social: <input type="text" name="social"> <br /><br />
+				HasFur (type 1 or 0): <input type="text" name="hasFur" > 
+				Social (type 1 or 0): <input type="text" name="social"> <br /><br />
 				<p>Fill in the following blanks if AnimalID Starts with D</p>
-				MedicallyTrained: <input type="text" name="medicallyTrained"> 
-				HasFur: <input type="text" name="hasFur"> <br /><br />
+				MedicallyTrained (type 1 or 0): <input type="text" name="medicallyTrained"> 
+				HasFur(type 1 or 0): <input type="text" name="hasFur"> <br /><br />
 				<p>Fill in the following blanks if AnimalID Starts with B</p>
 				BeakSize: <input type="number" name="beakSize"> 
 				WingSpan: <input type="number" name="wingSpan"> 
