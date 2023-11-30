@@ -198,7 +198,7 @@ session_start();
 
 		<?php
 		global $selectAnimalRequestResult;
-		if ($selectAnimalRequestResult) { ?>
+		if ($selectAnimalRequestResult != NULL) { ?>
 
 			<table border="1">
 				<thead>
@@ -213,9 +213,8 @@ session_start();
 					</tr>
 				</thead>
 				<tbody>
-				<?php } ?>
+
 				<?php
-				global $selectAnimalRequestResult;
 				while ($row = oci_fetch_assoc($selectAnimalRequestResult)) {
 					echo '<tr>';
 					echo '<td>' . $row['ANIMALID'] . '</td>';
@@ -227,8 +226,11 @@ session_start();
 					echo '<td>' . $row['BREED'] . '</td>';
 					echo '</tr>';
 				} ?>
-			</tbody>
-		</table>
+			    </tbody>
+		    </table>
+		<?php } ?>
+
+
 		<hr />
 
 
@@ -241,7 +243,7 @@ session_start();
 
 		<?php
 		global $calculateAvgRequestResult;
-		if ($calculateAvgRequestResult) { ?>
+		if ($calculateAvgRequestResult != NULL) { ?>
 			<table border="1">
 				<thead>
 					<tr>
@@ -250,8 +252,6 @@ session_start();
 					</tr>
 				</thead>
 				<tbody>
-
-				<?php } ?>
 
 				<?php
 				while ($row = oci_fetch_assoc($calculateAvgRequestResult)) {
@@ -263,6 +263,7 @@ session_start();
 				?>
 			</tbody>
 		</table>
+		<?php } ?>
 
 
 	</main>

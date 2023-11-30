@@ -4,13 +4,14 @@ require_once('connection.php');
 global $findVolRequestResult;
 $findVolRequestResult = null;
 
-global $birdUnvaccinatedResult
-$birdUnvaccinatedResult = null;
 
-global $catUnvaccinatedResult
+global $catUnvaccinatedResult;
 $catUnvaccinatedResult= null;
 
-global $dogUnvaccinatedResult
+global $birdUnvaccinatedResult;
+$birdUnvaccinatedResult = null;
+
+global $dogUnvaccinatedResult;
 $dogUnvaccinatedResult= null;
 
 global $calculateAvgRequestResult;
@@ -79,7 +80,7 @@ function handlePOSTRequest()
     }
 }
 
-
+//  select birds in this shelter that has got all vaccines
 function handlebirdUnvaccinatedRequest()
 {
     global $db_conn;
@@ -91,19 +92,19 @@ function handlebirdUnvaccinatedRequest()
 
     $sql = "SELECT a.animalID,a.name
                 FROM RegisteredAnimal a
-                INNER JOIN Birds b ON c.animalID = b.animalID
+                INNER JOIN Birds b ON a.animalID = b.animalID
                 WHERE shelterName = '$currShelterName' 
                 AND shelterLocation = '$currShelterLoc' 
-                WHERE NOT EXISTS
+                AND NOT EXISTS
                 (SELECT vaccineName FROM  Vaccination
-                 MINUS (SELECT g.vaccineName FROM GetVaccination g WHERE g.animalID = a.animalID )
+                 MINUS (SELECT g.vaccineName FROM GetVaccination g WHERE g.animalID = b.animalID )
                 )";
     $birdUnvaccinatedResult = executePlainSQL($sql);
 }
 
 
 
-
+//  select dogs in this shelter that has got all vaccines
 function handledogUnvaccinatedRequest()
 {
     global $db_conn;
@@ -120,7 +121,7 @@ function handledogUnvaccinatedRequest()
                 AND shelterLocation = '$currShelterLoc' 
                 WHERE NOT EXISTS
                 (SELECT vaccineName FROM  Vaccination
-                 MINUS (SELECT g.vaccineName FROM GetVaccination g WHERE g.animalID = a.animalID )
+                 MINUS (SELECT g.vaccineName FROM GetVaccination g WHERE g.animalID = d.animalID )
                 )";
     $dogUnvaccinatedResult = executePlainSQL($sql);
 }
@@ -135,15 +136,15 @@ function handlecatUnvaccinatedRequest()
     $currShelterName = $_SESSION["shelterName"];
     $currShelterLoc = $_SESSION["shelterLocation"];
 
-
+//  select cats in this shelter that has got all vaccines
     $sql = "SELECT a.animalID,a.name
                 FROM RegisteredAnimal a
                 INNER JOIN Cats c ON c.animalID = a.animalID
                 WHERE shelterName = '$currShelterName' 
                 AND shelterLocation = '$currShelterLoc' 
-                WHERE NOT EXISTS
+                AND NOT EXISTS
                 (SELECT vaccineName FROM  Vaccination
-                 MINUS (SELECT g.vaccineName FROM GetVaccination g WHERE g.animalID = a.animalID )
+                 MINUS (SELECT g.vaccineName FROM GetVaccination g WHERE g.animalID = c.animalID )
                 )";
     $catUnvaccinatedResult = executePlainSQL($sql);
 }
@@ -153,6 +154,7 @@ function handleCalculateAvgRequest()
 {
     global $db_conn;
     global $calculateAvgRequestResult;
+
     $currShelterName = $_SESSION["shelterName"];
     $currShelterLoc = $_SESSION["shelterLocation"];
 
@@ -161,7 +163,6 @@ function handleCalculateAvgRequest()
                 WHERE shelterName = '$currShelterName' AND shelterLocation = '$currShelterLoc'
                 GROUP BY a.breed
                 ORDER BY averageAge";
-
     $calculateAvgRequestResult = executePlainSQL($sql);
 }
 
@@ -340,8 +341,8 @@ function handleSelectAnimalRequest()
         );
 
         $selectAnimalRequestResult = executeBoundSQL("SELECT * FROM RegisteredAnimal a
-            WHERE   a.animalID = :bind1 $operator1  a.name = :bind2 $operator2  a.adopted = :bind3 $operator3 a.description = :bind4 $operator4
-            a.age = :bind5 $operator5 a.weight = :bind6 $operator6  a.breed = :bind7 AND (a.shelterLocation = :bind8 AND a.shelterName = :bind9) ", $alltuples);
+            WHERE ( ( a.animalID = :bind1 )$operator1 (a.name = :bind2) $operator2  (a.adopted = :bind3) $operator3 (a.description = :bind4) $operator4
+            (a.age = :bind5) $operator5 (a.weight = :bind6) $operator6  (a.breed = :bind7) ) AND (a.shelterLocation = :bind8 AND a.shelterName = :bind9) ", $alltuples);
     }
 
     if ($selectAnimalRequestResult == NULL) {
