@@ -71,7 +71,8 @@ CREATE TABLE
         name varchar(255) NOT NULL,
         availableDays char(7),
         phoneNumber int,
-        FOREIGN KEY (availableDays) REFERENCES AvailableDaysRegularVolunteer(availableDays)
+        FOREIGN KEY (availableDays) REFERENCES AvailableDaysRegularVolunteer(availableDays),
+        CONSTRAINT check_vol_phoneNumber CHECK (phoneNumber >= 0)
     );
 
 CREATE TABLE
@@ -110,7 +111,8 @@ CREATE TABLE
         postalCode VARCHAR(225),
         houseNumber VARCHAR(225),
         PRIMARY KEY (adopterID),
-        FOREIGN KEY (postalCode) REFERENCES AdoptersLocation(postalCode) ON DELETE SET NULL
+        FOREIGN KEY (postalCode) REFERENCES AdoptersLocation(postalCode) ON DELETE SET NULL,
+        CONSTRAINT check_adopter_phoneNumber CHECK (phoneNumber >= 0)
     );
 
 CREATE TABLE
@@ -316,6 +318,13 @@ INSERT INTO
 VALUES ('FFFFFFF', 0);
 
 INSERT INTO
+    AvailableDaysRegularVolunteer (
+        availableDays,
+        regularVolunteer
+    )
+VALUES ('FTFFTFF', 1);
+
+INSERT INTO
     Volunteer (
         volunteerID,
         name,
@@ -355,6 +364,76 @@ VALUES (
         'Anna Smith',
         'TTTTFFF',
         7781111111
+    );
+
+INSERT INTO
+    Volunteer (
+        volunteerID,
+        name,
+        availableDays,
+        phoneNumber
+    )
+VALUES (
+        'V444',
+        'Robert Robertson',
+        'FFFFFFF',
+        6046046044
+    );
+
+INSERT INTO
+    Volunteer (
+        volunteerID,
+        name,
+        availableDays,
+        phoneNumber
+    )
+VALUES (
+        'V445',
+        'Blake Tran',
+        'TTTTFFF',
+        2233445566
+    );
+
+INSERT INTO
+    Volunteer (
+        volunteerID,
+        name,
+        availableDays,
+        phoneNumber
+    )
+VALUES (
+        'V446',
+        'Clare Cooper',
+        'TTTTFFF',
+        3452435267
+    );
+
+INSERT INTO
+    Volunteer (
+        volunteerID,
+        name,
+        availableDays,
+        phoneNumber
+    )
+VALUES (
+        'V447',
+        'Jake Miles',
+        'FFFFFFF',
+        1234567888
+    );
+
+INSERT INTO
+    Volunteer (
+        volunteerID,
+        name,
+        availableDays,
+        phoneNumber
+    )
+VALUES (
+        'V448',
+        'Jamie Finley',
+        'FTFFTFF',
+        2342342344
     );
 
 INSERT INTO
@@ -902,6 +981,76 @@ VALUES (
     );
 
 INSERT INTO
+    VolunteersAtShelter (
+        volunteerID,
+        shelterLocation,
+        shelterName,
+        since
+    )
+VALUES (
+        'V444',
+        '10776 King George Boulevard, Surrey, British Columbia',
+        'Paws and Claws Animal Shelter',
+        TO_DATE('2010-12-18', 'YYYY-MM-DD')
+    );
+
+INSERT INTO
+    VolunteersAtShelter (
+        volunteerID,
+        shelterLocation,
+        shelterName,
+        since
+    )
+VALUES (
+        'V445',
+        '10776 King George Boulevard, Surrey, British Columbia',
+        'Paws and Claws Animal Shelter',
+        TO_DATE('2010-02-23', 'YYYY-MM-DD')
+    );
+
+INSERT INTO
+    VolunteersAtShelter (
+        volunteerID,
+        shelterLocation,
+        shelterName,
+        since
+    )
+VALUES (
+        'V446',
+        '10776 King George Boulevard, Surrey, British Columbia',
+        'Paws and Claws Animal Shelter',
+        TO_DATE('2019-09-05', 'YYYY-MM-DD')
+    );
+
+INSERT INTO
+    VolunteersAtShelter (
+        volunteerID,
+        shelterLocation,
+        shelterName,
+        since
+    )
+VALUES (
+        'V447',
+        '10776 King George Boulevard, Surrey, British Columbia',
+        'Paws and Claws Animal Shelter',
+        TO_DATE('2013-08-14', 'YYYY-MM-DD')
+    );
+
+INSERT INTO
+    VolunteersAtShelter (
+        volunteerID,
+        shelterLocation,
+        shelterName,
+        since
+    )
+VALUES (
+        'V448',
+        '10776 King George Boulevard, Surrey, British Columbia',
+        'Paws and Claws Animal Shelter',
+        TO_DATE('2011-10-04', 'YYYY-MM-DD')
+    );
+
+INSERT INTO
     EventsHosted(
         eventName,
         eventDescription,
@@ -1024,7 +1173,7 @@ INSERT INTO RegisteredAnimal (animalID,  name, adopted, description, age, weight
 VALUES  ('D002', 'Wolfie', 0, 'Loves to cuddle.', 3, 15, 'Golden Retriever', '322 Dundas St W, Toronto,Ontario', 'Loving Care Animal Shelter');
 
 INSERT INTO RegisteredAnimal (animalID,  name, adopted, description, age, weight, breed,  shelterLocation, shelterName)
-VALUES ('D003', 'Luna', 0, 'Luna loves when you pet her.', 1, 8, 'Chinese Crested Dog', '10776 King George Boulevard, Surrey, British Columbia','Paws and Claws Animal Shelter');
+VALUES ('D003', 'Luna', 1, 'Luna loves when you pet her.', 1, 8, 'Chinese Crested Dog', '10776 King George Boulevard, Surrey, British Columbia','Paws and Claws Animal Shelter');
 
 INSERT INTO RegisteredAnimal (animalID,  name, adopted, description, age, weight, breed,  shelterLocation, shelterName)
 VALUES ('D004', 'Bear', 1, 'Loves to eat.' , 1, 3, 'Husky', '234 Willow Lane, Supportville, USA', 'The Animal Haven');

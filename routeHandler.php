@@ -103,6 +103,13 @@
     function handleUpdateAdopterRequest() {
         global $db_conn;
 
+        // Phone number must be >= 0
+        $num = $_POST['adptNum'];
+        if ($num < 0 && $num != null) {
+            echo '<p style="color: red;">Please enter a positive phone number.</p>';
+            return;
+        }
+
         // Only run the update adopter query if the ID exists and unique keys are not being used
         $tuple = array (
             ":bind1" => $_POST['adptID']
@@ -151,6 +158,13 @@
     
     function handleInsertAdopterRequest() {
         global $db_conn;
+
+        // Phone number must be >= 0
+        $num = $_POST['adptNum'];
+        if ($num < 0 && $num != null) {
+            echo '<p style="color: red;">Please enter a positive phone number.</p>';
+            return;
+        }
 
         // Only run the insert adopter query if the unique keys are not being used
         $tuple = array (
@@ -398,7 +412,6 @@
         }
     }
 
-    // ECE TODO: add logic to keep track of shelter name of the manager who logged in works at
     function handleInsertVetRequest() {
         global $db_conn;
 
@@ -622,6 +635,13 @@
     function handleInsertVolunteerRequest() {
         global $db_conn;
 
+        // Phone number must be >= 0
+        $num = $_POST['volNum'];
+        if ($num < 0 && $num != null) {
+            echo '<p style="color: red;">Please enter a positive phone number.</p>';
+            return;
+        }
+
         // Only run the insert volunteer query if the primary key is not already being used
         $tuple = array (
             ":bind1" => $_POST['volID']
@@ -720,13 +740,11 @@
 
         $sqlScriptAssertions = file_get_contents(__DIR__ . '/DDL/Triggers.sql');
         executePlainSQL($sqlScriptAssertions);
+
+        echo '<p style="color: green;">Reset Successfull</p>';
         
         OCICommit($db_conn);
     }
-
-    /* SELINA TODO:
-        - because we only have "on delete CASCADE" in animals tables, we need to implement ability for user to delete a cat/dog/bird to meet the ruric requirement
-    */
 
     // Function from: https://www.students.cs.ubc.ca/~cs-304/resources/php-oracle-resources/php-setup.html
     // takes a plain (no bound variables) SQL command and executes it
