@@ -22,9 +22,9 @@ session_start();
 			<li><a href="inspectors.php">Inspectors</a></li>
 			<li><a href="events_ws.php">Events and Workshops</a></li>
 			<li><a href="animals.php">Animals</a></li>
-			<li><a href="animals.php">Dogs</a></li>
-			<li><a href="animals.php">Cats</a></li>
-			<li><a href="animals.php">Birds</a></li>
+			<li><a href="dogs.php">Dogs</a></li>
+			<li><a href="cats.php">Cats</a></li>
+			<li><a href="birds.php">Birds</a></li>
 			<li><a href="login.php">Logout</a></li>
 			<li>
 				<form method="POST" action="dogs.php">
@@ -42,7 +42,7 @@ session_start();
 	<!-- Dogs-->
 	<h1>Adorable Dogs</h1>
 
-	<h2>List of Dogs with Health Records</h2>
+	<h2>List of Dogs</h2>
 
 	<?php
 	connectToDB();
@@ -53,7 +53,6 @@ session_start();
 	$sql3 = "SELECT * 
 FROM Dogs d
 INNER JOIN RegisteredAnimal a ON d.animalID = a.animalID
-INNER JOIN HealthRecord h ON d.animalID = h.animalID
 WHERE a.shelterName = '$currShelterName' AND a.shelterLocation = '$currShelterLoc'";
 
 	$result3 = executePlainSQL($sql3);
@@ -69,8 +68,6 @@ WHERE a.shelterName = '$currShelterName' AND a.shelterLocation = '$currShelterLo
 				<th>Age</th>
 				<th>Weight</th>
 				<th>Breed</th>
-				<th>medicallyTrained</th>
-				<th>hasFur </th>
 			</tr>
 		</thead>
 		<tbody>
@@ -85,8 +82,6 @@ WHERE a.shelterName = '$currShelterName' AND a.shelterLocation = '$currShelterLo
 				echo '<td>' . $row['AGE'] . '</td>';
 				echo '<td>' . $row['WEIGHT'] . '</td>';
 				echo '<td>' . $row['BREED'] . '</td>';
-				echo '<td>' . ($row['MEDICALLYTRAINED'] ? 'Yes' : 'No') . '</td>';
-				echo '<td>' . ($row['HASFUR'] ? 'Yes' : 'No') . '</td>';
 				echo '</tr>';
 			}
 			?>
@@ -125,7 +120,7 @@ HAVING a.weight > (SELECT AVG(m.weight) FROM RegisteredAnimal m
 		<tbody>
 
 			<?php
-			while ($row = oci_fetch_assoc($result)) {
+			while ($row = oci_fetch_assoc($result4)) {
 				echo '<tr>';
 				echo '<td>' . $row['ANIMALID'] . '</td>';
 				echo '<td>' . $row['WEIGHT'] . '</td>';
@@ -158,7 +153,6 @@ HAVING a.weight > (SELECT AVG(m.weight) FROM RegisteredAnimal m
 				</thead>
 				<tbody>
 
-				<?php } ?>
 
 				<?php
 				while ($row = oci_fetch_assoc($dogUnvaccinatedResult)) {
@@ -170,6 +164,7 @@ HAVING a.weight > (SELECT AVG(m.weight) FROM RegisteredAnimal m
 				?>
 			</tbody>
 		</table>
+		<?php } ?>
 		<hr />
 
 

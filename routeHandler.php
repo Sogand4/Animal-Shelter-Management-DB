@@ -119,10 +119,9 @@ function handledogUnvaccinatedRequest()
                 INNER JOIN Dogs d ON d.animalID = a.animalID
                 WHERE shelterName = '$currShelterName' 
                 AND shelterLocation = '$currShelterLoc' 
-                WHERE NOT EXISTS
+                AND NOT EXISTS
                 (SELECT vaccineName FROM  Vaccination
-                 MINUS (SELECT g.vaccineName FROM GetVaccination g WHERE g.animalID = d.animalID )
-                )";
+                 MINUS (SELECT g.vaccineName FROM GetVaccination g WHERE g.animalID = d.animalID))";
     $dogUnvaccinatedResult = executePlainSQL($sql);
 }
 
@@ -185,21 +184,31 @@ function handleDeleteAnimalRequest()
     if ($countExistingAnimal == 1) {
         $tuple2 = array(
             ":bind1" => $_POST['animalID'],
-            ":bind2" => $_POST['name'],
-            ":bind3" => $_POST['adopted'],
-            ":bind4" => $_POST['description'],
-            ":bind5" => $_POST['age'],
-            ":bind6" => $_POST['weight'],
-            ":bind7" => $_POST['breed'],
-            ":bind8" => $_SESSION["shelterLocation"],
-            ":bind9" => $_SESSION["shelterName"]
+            // ":bind2" => $_POST['name'],
+            // ":bind3" => $_POST['adopted'],
+            // ":bind4" => $_POST['description'],
+            // ":bind5" => $_POST['age'],
+            // ":bind6" => $_POST['weight'],
+            // ":bind7" => $_POST['breed'],
+            // ":bind8" => $_SESSION["shelterLocation"],
+            // ":bind9" => $_SESSION["shelterName"]
         );
 
         $alltuples2 = array(
             $tuple2
         );
 
-        executeBoundSQL("DELETE FROM RegisteredAnimals WHERE animalID = :bind1", $alltuples2);
+
+        // if(str_starts_with($_POST['animalID'],"B")){
+        //     executeBoundSQL("DELETE FROM Birds WHERE animalID = :bind1", $alltuples2);
+        // }elseif (str_starts_with($_POST['animalID'],"C")){
+        //     executeBoundSQL("DELETE FROM Cats WHERE animalID = :bind1", $alltuples2);
+        // }else {
+        //     executeBoundSQL("DELETE FROM Dogs WHERE animalID = :bind1", $alltuples2);
+        // }
+        executeBoundSQL("DELETE FROM RegisteredAnimal WHERE animalID = :bind1", $alltuples2);
+
+
         OCICommit($db_conn);
         echo '<p style="color: green;">Successfully delete Animal</p>';
     } else {
@@ -239,11 +248,50 @@ function handleInsertAnimalRequest()
             ":bind9" => $_SESSION["shelterName"]
         );
 
+        
         $alltuples = array(
             $tuple
         );
 
         executeBoundSQL("insert into RegisteredAnimal values (:bind1, :bind2, :bind3, :bind4, :bind5, :bind6, :bind7, :bind8, :bind9 )", $alltuples);
+        
+
+        if(str_starts_with($_POST['animalID'],"C")){
+            $tuple2 = array(
+                ":bind1" => $_POST['animalID'],
+                ":bind2" => $_POST['hasFur'],
+                ":bind3" => $_POST['social'],
+            );
+    
+            
+            $alltuples2 = array(
+                $tuple2
+            );
+            executeBoundSQL("insert into Cats values (:bind1, :bind2, :bind3)", $alltuples2);
+        }elseif (str_starts_with($_POST['animalID'],"D")){
+            $tuple3 = array(
+                ":bind1" => $_POST['animalID'],
+                ":bind2" => $_POST['medicallyTrained'],
+                ":bind3" => $_POST['hasFur'],
+            );
+            
+            $alltuples3 = array(
+                $tuple3
+            );
+            executeBoundSQL("insert into Dogs values (:bind1, :bind2, :bind3)", $alltuples3);
+        }else {
+            $tuple4 = array(
+                ":bind1" => $_POST['animalID'],
+                ":bind2" => $_POST['beakSize'],
+                ":bind3" => $_POST['wingSpan'],
+                ":bind4" => $_POST['color'],
+            );
+            
+            $alltuples4 = array(
+                $tuple4
+            );
+            executeBoundSQL("insert into Birds values (:bind1, :bind2, :bind3)", $alltuples4);
+        }
         OCICommit($db_conn);
         echo '<p style="color: green;">Successfully inserted into registerdAnimals</p>';
     } else {
@@ -287,6 +335,46 @@ function handleUpdateAnimalRequest()
         );
 
         executeBoundSQL("UPDATE RegisteredAnimal SET  name = :bind2, adopted = :bind3, description = :bind4, age = :bind5, weight= :bind6, breed = :bind7, shelterLocation = :bind8, shelterName = :bind9 WHERE animalID = :bind1", $alltuples1);
+
+        if(str_starts_with($_POST['animalID'],"C")){
+            $tuple2 = array(
+                ":bind1" => $_POST['animalID'],
+                ":bind2" => $_POST['hasFur'],
+                ":bind3" => $_POST['social'],
+            );
+    
+            
+            $alltuples2 = array(
+                $tuple2
+            );
+            executeBoundSQL("UPDATE Cats SET  hasFur = :bind2, social = :bind3 WHERE animalID = :bind1", $alltuples2);
+        }elseif (str_starts_with($_POST['animalID'],"D")){
+            $tuple3 = array(
+                ":bind1" => $_POST['animalID'],
+                ":bind2" => $_POST['medicallyTrained'],
+                ":bind3" => $_POST['hasFur'],
+            );
+            
+            $alltuples3 = array(
+                $tuple3
+            );
+            executeBoundSQL("UPDATE Dogs SET medicallyTrained = :bind2, hasFur = :bind3 WHERE animalID = :bind1", $alltuples3);
+        }else {
+            $tuple4 = array(
+                ":bind1" => $_POST['animalID'],
+                ":bind2" => $_POST['beakSize'],
+                ":bind3" => $_POST['wingSpan'],
+                ":bind4" => $_POST['color'],
+            );
+            
+            $alltuples4 = array(
+                $tuple4
+            );
+            executeBoundSQL("UPDATE Birds SET beakSize = :bind2, wingSpan = :bind3,color = :bind4 WHERE animalID = :bind1", $alltuples4);
+        }
+
+
+
         OCICommit($db_conn);
         echo '<p style="color: green;">Successfully updated animal</p>';
     } else {
@@ -310,17 +398,23 @@ function handleSelectAnimalRequest()
     $age = $_POST['age'];
     $weight = $_POST['weight'];
     $breed = $_POST['breed'];
+    $shelterLocation = $_POST['shelterLocation'];
+    $shelterName = $_POST['shelterName'];
+
     $operator1 = $_POST['operator1'];
     $operator2 = $_POST['operator2'];
     $operator3 = $_POST['operator3'];
     $operator4 = $_POST['operator4'];
     $operator5 = $_POST['operator5'];
     $operator6 = $_POST['operator6'];
+    $operator7 = $_POST['operator7'];
+    $operator8 = $_POST['operator8'];
+
 
     //check if the input value are all NULL
     if (
         $animalID == NULL && $name == NULL && $adopted == NULL && $description == NULL &&
-        $age == NULL && $weight == NULL && $breed == NULL
+        $age == NULL && $weight == NULL && $breed == NULL && $shelterLocation == NULL&& $shelterName == NULL
     ) {
         echo '<p style="color: red;">Cannot select null value.</p>';
     } else {
@@ -332,8 +426,8 @@ function handleSelectAnimalRequest()
             ":bind5" => $_POST['age'],
             ":bind6" => $_POST['weight'],
             ":bind7" => $_POST['breed'],
-            ":bind8" => $_SESSION["shelterLocation"],
-            ":bind9" => $_SESSION["shelterName"],
+            ":bind8" => $_POST['shelterLocation'],
+            ":bind9" => $_POST['shelterName'],
         );
 
         $alltuples = array(
@@ -341,16 +435,18 @@ function handleSelectAnimalRequest()
         );
 
         $selectAnimalRequestResult = executeBoundSQL("SELECT * FROM RegisteredAnimal a
-            WHERE ( ( a.animalID = :bind1 )$operator1 (a.name = :bind2) $operator2  (a.adopted = :bind3) $operator3 (a.description = :bind4) $operator4
-            (a.age = :bind5) $operator5 (a.weight = :bind6) $operator6  (a.breed = :bind7) ) AND (a.shelterLocation = :bind8 AND a.shelterName = :bind9) ", $alltuples);
-    }
-
-    if ($selectAnimalRequestResult == NULL) {
-        echo '<p style="color: red;">No animal has meet these requirements in this shelter.</p>';
-    } else {
+            WHERE  (a.animalID = :bind1) $operator1 (a.name = :bind2) $operator2  (a.adopted = :bind3) $operator3 (a.description = :bind4) $operator4
+            (a.age = :bind5) $operator5 (a.weight = :bind6) $operator6  (a.breed = :bind7) $operator7 (a.shelterLocation = :bind8) $operator8 (a.shelterName = :bind9) ", $alltuples);
         echo '<p style="color: green;">Successfully select required animals.</p>';
     }
 }
+
+
+
+
+
+
+
 
 
 function handleFindVolunteerRequest()

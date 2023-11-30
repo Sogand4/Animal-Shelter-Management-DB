@@ -41,26 +41,38 @@ session_start();
 		<p>If you wish to reset the table press on the reset button on the navigation bar above. If this is the first
 			time you're running this page, you MUST use reset</p>
 
-		<div style="display:flex; justify-content:space-around;">
 
 			<!-- Add new animals -->
 			<form method="POST" action="animals.php"
 				style="border: 1px solid #ccc; padding: 15px; border-radius: 10px;margin: 20px;background-color: #cccccc;">
 				<h2 style="margin: 0; padding-bottom: 10px;">Add a new Animal below:</h2>
-				<p>AnmialID's are in the format 'CXXX or BXXX or DXXX' where X are numbers.
-					Enter 1 if the animal is adopted, 0 otherwise.
-					You cannot insert existing animals into our database.
+				<p>AnmialID's are in the format 'CXXX or BXXX or DXXX' where X are integers between 0-9.
+				    Enter BXXX if you want to add Birds.
+					Enter CXXX if you want to add Cats.
+					Enter DXXX if you want to add Dogs.
+					Enter 1 for True, 0 otherwise.
+					You can only update existing animals in this shelter.
+					You should fill in ALL blanks in the form.
 				</p>
 				<input type="hidden" id="insertAnimalRequest" name="insertAnimalRequest">
-				AnimalID: <input type="text" name="animalID" maxlength="255" pattern="C\d{3}" or pattern="D\d{3}" or
-					pattern="B\d{3}" title="Please enter the animal ID in the required format" required> <br /><br />
-				Name: <input type="text" name="name" maxlength="255" required> <br /><br />
+				AnimalID: <input type="text" name="animalID" maxlength="255" pattern="[CDB]\d{3}" title="Please enter the animal ID in the required format" required>
+				Name: <input type="text" name="name" maxlength="255" required> 
 				Adopted: <input type="text" name="adopted" maxlength="255" required
 					title="Please follow the required format above"> <br /><br />
 				Description: <input type="text" name="description" required> <br /><br />
-				Age: <input type="number" name="age" required> <br /><br />
-				Weight: <input type="number" name="weight" required> <br /><br />
+				Age: <input type="number" name="age" required> 
+				Weight: <input type="number" name="weight" required> 
 				Breed: <input type="text" name="breed" required> <br /><br />
+				<p>Fill in the following blanks if AnimalID Starts with C</p>
+				HasFur: <input type="text" name="hasFur" > 
+				Social: <input type="text" name="social"> <br /><br />
+				<p>Fill in the following blanks if AnimalID Starts with D</p>
+				MedicallyTrained: <input type="text" name="medicallyTrained"> 
+				HasFur: <input type="text" name="hasFur"> <br /><br />
+				<p>Fill in the following blanks if AnimalID Starts with B</p>
+				BeakSize: <input type="number" name="beakSize"> 
+				WingSpan: <input type="number" name="wingSpan"> 
+				Color: <input type="text" name="color" > <br /><br />
 				<input type="submit" value="Insert" name="insertSubmit">
 			</form>
 
@@ -70,19 +82,32 @@ session_start();
 				style="border: 1px solid #ccc; padding: 15px; border-radius: 10px;margin: 20px;background-color: #cccccc;">
 				<h2 style="margin: 0; padding-bottom: 10px;">Update Animal Info:</h2>
 				<p>AnmialID's are in the format 'CXXX or BXXX or DXXX' where X are integers between 0-9.
-					Enter 1 if the animal is adopted, 0 otherwise.
-					You can only update existing animals in our database.
+				    Enter BXXX if you want to add Birds.
+					Enter CXXX if you want to add Cats.
+					Enter DXXX if you want to add Dogs.
+					Enter 1 for True, 0 otherwise.
+					You can only update existing animals in this shelter.
+					You should fill in ALL blanks in the form.
 				</p>
 				<input type="hidden" id="upateAnimalRequest" name="updateAnimalRequest">
-				AnimalID: <input type="text" name="animalID" maxlength="255" pattern="C\d{3}" or pattern="D\d{3}" or
-					pattern="B\d{3}" title="Please enter the animal ID in the required format" required> <br /><br />
-				Name: <input type="text" name="name" maxlength="255" required> <br /><br />
+				AnimalID: <input type="text" name="animalID" maxlength="255" pattern="[CDB]\d{3}" title="Please enter the animal ID in the required format" required>
+				Name: <input type="text" name="name" maxlength="255" required> 
 				Adopted: <input type="text" name="adopted" maxlength="255" required
 					title="Please follow the required format above"> <br /><br />
 				Description: <input type="text" name="description" required> <br /><br />
-				Age: <input type="number" name="age" required> <br /><br />
-				Weight: <input type="number" name="weight" required> <br /><br />
+				Age: <input type="number" name="age" required> 
+				Weight: <input type="number" name="weight" required> 
 				Breed: <input type="text" name="breed" required> <br /><br />
+				<p>Fill in the following blanks if AnimalID Starts with C</p>
+				HasFur: <input type="text" name="hasFur" > 
+				Social: <input type="text" name="social"> <br /><br />
+				<p>Fill in the following blanks if AnimalID Starts with D</p>
+				MedicallyTrained: <input type="text" name="medicallyTrained"> 
+				HasFur: <input type="text" name="hasFur"> <br /><br />
+				<p>Fill in the following blanks if AnimalID Starts with B</p>
+				BeakSize: <input type="number" name="beakSize"> 
+				WingSpan: <input type="number" name="wingSpan"> 
+				Color: <input type="text" name="color" > <br /><br />
 				<input type="submit" value="Update" name="updateSubmit">
 			</form>
 
@@ -92,15 +117,14 @@ session_start();
 				<h2 style="margin: 0; padding-bottom: 10px;">Delete Animal:</h2>
 				<p>AnmialID's are in the format 'CXXX or BXXX or DXXX' where X are integers between 0-9.
 					Enter 1 if the animal is adopted, 0 otherwise.
-					You can only delete existing animals in our database.
+					You can only delete existing animals in this shelter.
 				</p>
 				<input type="hidden" id="deleteAnimalRequest" name="deleteAnimalRequest">
-				AnimalID: <input type="text" name="animalID" maxlength="255" pattern="C\d{3} | D\d{3} | B\d{3}"
+				AnimalID: <input type="text" name="animalID" maxlength="255" pattern="[CDB]\d{3}"
 					title="Please enter the animal ID in the required format" required> <br /><br />
 				<input type="submit" value="Delete" name="deleteSubmit">
 			</form>
 
-		</div>
 
 		<!-- List of Animals-->
 		<h2>List of Registered Animals in this shelter</h2>
@@ -151,46 +175,51 @@ session_start();
 
 
 
-
-
-
-
 		<!-- Meet the selection requirement-->
 		<h2>Select animals based on your interest:</h2>
 		<form method="POST" action="animals.php">
 			<input type="hidden" id="selectAnimalRequest" name="selectAnimalRequest">
-			AnimalID: <input type="text" name="animalID" maxlength="255" pattern="C\d{3}" or pattern="D\d{3}" or
-				pattern="B\d{3}" title="Please enter the animal ID in the required format"> 
+			AnimalID: <input type="text" name="animalID" maxlength="255" pattern="[BDC]\d{3}" title="Please enter the animal ID in the required format"> 
 			<select name="operator1">
-				<option value="And"> AND </option>
 				<option value="Or"> OR </option>
+				<option value="And"> AND</option>
 			</select><br /><br />
 			Name: <input type="text" name="name" maxlength="255"> 
 			<select name="operator2">
-				<option value="And"> AND </option>
-				<option value="Or"> OR </option>
+			    <option value="Or"> OR </option>
+				<option value="And"> AND</option>
 			</select><br /><br />
 			Adopted: <input type="text" name="adopted" maxlength="255" title="Please follow the required format above">
 			<select name="operator3">
-				<option value="And"> AND </option>
-				<option value="Or"> OR </option>
+			    <option value="Or"> OR </option>
+				<option value="And"> AND</option>
 			</select><br /><br />
 			Description: <input type="text" name="description"> 
 			<select name="operator4">
-				<option value="And"> AND </option>
-				<option value="Or"> OR </option>
+			    <option value="Or"> OR </option>
+				<option value="And"> AND</option>
 			</select><br /><br />
 			Age: <input type="number" name="age"> 
 			<select name="operator5">
-				<option value="And"> AND </option>
-				<option value="Or"> OR </option>
+			    <option value="Or"> OR </option>
+				<option value="And"> AND</option>
 			</select><br /><br />
 			Weight: <input type="number" name="weight"> 
 			<select name="operator6">
-				<option value="And"> AND </option>
-				<option value="Or"> OR </option>
+			    <option value="Or"> OR </option>
+				<option value="And"> AND</option>
 			</select><br /><br />
-			Breed: <input type="text" name="breed"> 
+			Breed: <input type="text" name="breed">  
+			<select name="operator7">
+			    <option value="Or"> OR </option>
+				<option value="And"> AND</option>
+			</select><br /><br />
+			ShelterLocation: <input type="text" name="shelterLocation"> 
+			<select name="operator8">
+			    <option value="Or"> OR </option>
+				<option value="And"> AND</option>
+			</select><br /><br />
+			ShelterName: <input type="text" name="shelterName"> 
 			<input type="submit" value="Submit" name="insertSubmit">
 		</form>
 		<br>
@@ -240,6 +269,7 @@ session_start();
 			<input type="hidden" id="calculateAvgRequest" name="calculateAvgRequest">
 			<input type="submit" value="Calculate Average" name="insertSubmit">
 		</form>
+		<br>
 
 		<?php
 		global $calculateAvgRequestResult;

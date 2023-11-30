@@ -42,7 +42,7 @@ session_start();
 	<!-- Birds-->
 	<h1>Beautiful Birds</h1>
 
-<h2>List of Birds with Health Records</h2>
+<h2>List of Birds</h2>
 
 <?php
 connectToDB();
@@ -52,7 +52,6 @@ $currShelterLoc = $_SESSION["shelterLocation"];
 
 $sql5 = "SELECT * FROM Birds b
 		INNER JOIN RegisteredAnimal a ON b.animalID = a.animalID
-		INNER JOIN HealthRecord h ON b.animalID = h.animalID
 		WHERE a.shelterName = '$currShelterName' AND a.shelterLocation = '$currShelterLoc'";
 
 $result5 = executePlainSQL($sql5);
@@ -68,9 +67,6 @@ $result5 = executePlainSQL($sql5);
 			<th>Age</th>
 			<th>Weight</th>
 			<th>Breed</th>
-			<th>beakSize</th>
-			<th>wingSpan</th>
-			<th>color</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -85,9 +81,6 @@ $result5 = executePlainSQL($sql5);
 			echo '<td>' . $row['AGE'] . '</td>';
 			echo '<td>' . $row['WEIGHT'] . '</td>';
 			echo '<td>' . $row['BREED'] . '</td>';
-			echo '<td>' . $row['BEAKSIZE'] . '</td>';
-			echo '<td>' . $row['WINGSPAN'] . '</td>';
-			echo '<td>' . $row['COLOR'] . '</td>';
 			echo '</tr>';
 		}
 		?>

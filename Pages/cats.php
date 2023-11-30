@@ -22,9 +22,9 @@ session_start();
 			<li><a href="inspectors.php">Inspectors</a></li>
 			<li><a href="events_ws.php">Events and Workshops</a></li>
 			<li><a href="animals.php">Animals</a></li>
-			<li><a href="animals.php">Dogs</a></li>
-			<li><a href="animals.php">Cats</a></li>
-			<li><a href="animals.php">Birds</a></li>
+			<li><a href="dogs.php">Dogs</a></li>
+			<li><a href="cats.php">Cats</a></li>
+			<li><a href="birds.php">Birds</a></li>
 			<li><a href="login.php">Logout</a></li>
 			<li>
 				<form method="POST" action="cats.php">
@@ -42,7 +42,7 @@ session_start();
 		<!-- Cats -->
 		<h1>Lovely Cats</h1>
 
-		<h2>List of Cats with Health Records</h2>
+		<h2>List of Cats</h2>
 
 		<?php
 		connectToDB();
@@ -53,7 +53,6 @@ session_start();
 		$sql1 = "SELECT * 
                 FROM Cats c
 				INNER JOIN RegisteredAnimal a ON c.animalID = a.animalID
-				INNER JOIN HealthRecord h ON c.animalID = h.animalID
                 WHERE a.shelterName = '$currShelterName' AND a.shelterLocation = '$currShelterLoc'";
 
 		$result1 = executePlainSQL($sql1);
@@ -69,8 +68,6 @@ session_start();
 					<th>Age</th>
 					<th>Weight</th>
 					<th>Breed</th>
-					<th>hasFur</th>
-					<th>Social</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -85,8 +82,6 @@ session_start();
 					echo '<td>' . $row['AGE'] . '</td>';
 					echo '<td>' . $row['WEIGHT'] . '</td>';
 					echo '<td>' . $row['BREED'] . '</td>';
-					echo '<td>' . ($row['HASFUR'] ? 'Yes' : 'No') . '</td>';
-					echo '<td>' . ($row['SOCIAL'] ? 'Yes' : 'No') . '</td>';
 					echo '</tr>';
 				}
 				?>
@@ -117,7 +112,7 @@ session_start();
 			<thead>
 				<tr>
 					<th>AnimalID</th>
-					<th>Name</th>
+					<th>Weight</th>
 					<th>Breed</th>
 				</tr>
 			</thead>
@@ -156,7 +151,6 @@ session_start();
 				</thead>
 				<tbody>
 
-				<?php } ?>
 
 				<?php
 				while ($row = oci_fetch_assoc($catUnvaccinatedResult)) {
@@ -168,6 +162,7 @@ session_start();
 				?>
 			</tbody>
 		</table>
+		<?php } ?>
 		<hr />
 
 
