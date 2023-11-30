@@ -363,20 +363,46 @@
         $numExistingMan = executeBoundSQL("SELECT COUNT(*) AS count FROM Manager WHERE manID = :bind1", $alltuples);
         $rowExistingMan = oci_fetch_assoc($numExistingMan);
         $countExistingMan = $rowExistingMan['COUNT'];
+
+
+        //TO CHECK IF SHELTER EXISTS 
+        $tuple_check = array (
+            ":bind2" => $_POST['shelterName'],
+            ":bind3" => $_POST['shelterLocation']
+        );
+
+        $alltuples_check = array (
+            $tuple_check
+        );
+
+        $numExistingShelter = executeBoundSQL("SELECT COUNT(*) AS count FROM Manager WHERE shelterName = :bind2 AND shelterLocation = :bind3" , $alltuples_check);
+        $rowExistingShelter = oci_fetch_assoc($numExistingShelter);
+        $countExistingShelter = $rowExistingShelter['COUNT'];
+
+    
         
         if ($countExistingMan == 0) {
+
             // Check if shelterName + shelterLocation exists in shelter
+            if ($countExistingShelter == 0){
 
-            // if exists yay
-                // (i added more sample inserts for shelter that is not in manager table yet so you can use those to check this)
-            // if not exists -> add it to shelter first
+            
+            $tuple_add = array (
+                ":bind4" => $_POST['shelterName'], 
+                ":bind5" => $_POST['shelterLocation']
 
-            // then also make sure that the COMBINATION of sheltername and shelterlocation is unique
-            // if not -> send error message and do not add
-            // else continue
+            );
 
-            // Add new manager
-            $tuple = array (
+            $alltuples_add = array (
+                $tuple_add
+            );
+
+            //if shelter does not exist add it to shelter
+            executeBoundSQL("insert into Shelter(shelterLocation, shelterName) values (:bind5, :bind4)", $alltuples_add);
+            OCICommit($db_conn);
+
+             // THEN ADD A NEW MANGER
+             $tuple_man = array (
                 ":bind1" => $_POST['manID'],
                 ":bind2" => $_POST['manPassword'],
                 ":bind3" => $_POST['shelterLocation'], 
@@ -386,17 +412,32 @@
                 ":bind7" => $_POST['since']
             );
 
-            $alltuples = array (
-                $tuple
+            $alltuples_man = array (
+                $tuple_man
             );
 
-            executeBoundSQL("insert into Manager values (:bind1, :bind2, :bind3, :bind4, :bind5, :bind6, :bind7)", $alltuples);
+            executeBoundSQL("insert into Manager values (:bind1, :bind2, :bind3, :bind4, :bind5, :bind6, :bind7)", $alltuples_man);
             OCICommit($db_conn);
-            echo '<p style="color: green;">Signup successfull</p>';
+            echo '<p style="color: green;">Signup successfull and new shelter added</p>';
         } else {
-            echo '<p style="color: red;">Invalid ID inserted. Please use an ID that is not already in use.</p>';
+            echo '<p style="color: red;"> That shelter already has a manager. Try again with different shelter info</p>';
         }
+
+    
+            // if exists yay
+                // (i added more sample inserts for shelter that is not in manager table yet so you can use those to check this)
+            // if not exists -> add it to shelter first
+
+            // then also make sure that the COMBINATION of sheltername and shelterlocation is unique
+            // if not -> send error message and do not add
+            // else continue
+           
+    }else {
+        echo '<p style="color: red;">Invalid ID inserted. Please use an ID that is not already in use.</p>';
     }
+
+
+}
 
     // ECE TODO: add logic to keep track of shelter name of the manager who logged in works at
     function handleInsertVetRequest() {
