@@ -89,7 +89,7 @@ $result5 = executePlainSQL($sql5);
 </table>
 
 
-<h2>List of Overweight Birds</h2>
+<h2>List of Overweight Birds in this Shelter</h2>
 
 <?php
 connectToDB();
@@ -103,7 +103,8 @@ $sql6 = "SELECT b.animalID,a.weight,a.breed
 				WHERE a.shelterName = '$currShelterName' AND a.shelterLocation = '$currShelterLoc'
 				GROUP BY a.breed,b.animalID,a.weight
 				HAVING a.weight > (SELECT AVG(m.weight) FROM RegisteredAnimal m
-				INNER JOIN Birds n ON m.animalID = n.animalID)";
+									INNER JOIN Birds n ON m.animalID = n.animalID
+									WHERE m.shelterName = '$currShelterName' AND m.shelterLocation = '$currShelterLoc')";
 
 $result6 = executePlainSQL($sql6);
 ?>

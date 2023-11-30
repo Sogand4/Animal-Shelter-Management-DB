@@ -90,7 +90,7 @@ WHERE a.shelterName = '$currShelterName' AND a.shelterLocation = '$currShelterLo
 	</table>
 
 
-	<h2>List of Overweight Dogs</h2>
+	<h2>List of Overweight Dogs in this Shelter</h2>
 
 	<?php
 	connectToDB();
@@ -104,7 +104,8 @@ INNER JOIN RegisteredAnimal a ON d.animalID = a.animalID
 WHERE a.shelterName = '$currShelterName' AND a.shelterLocation = '$currShelterLoc'
 GROUP BY a.breed,a.weight,d.animalID
 HAVING a.weight > (SELECT AVG(m.weight) FROM RegisteredAnimal m
-	   INNER JOIN Dogs n ON m.animalID = n.animalID)";
+	   INNER JOIN Dogs n ON m.animalID = n.animalID
+	   WHERE m.shelterName = '$currShelterName' AND m.shelterLocation = '$currShelterLoc')";
 
 	$result4 = executePlainSQL($sql4);
 	?>

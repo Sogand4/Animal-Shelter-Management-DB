@@ -89,7 +89,7 @@ session_start();
 			</tbody>
 		</table>
 
-		<h2>List of Overweight Cats</h2>
+		<h2>List of Overweight Cats in this Shelter</h2>
 
 		<?php
 		connectToDB();
@@ -103,7 +103,8 @@ session_start();
                 WHERE a.shelterName = '$currShelterName' AND a.shelterLocation = '$currShelterLoc'
 				GROUP BY a.breed,c.animalID,a.weight
 				HAVING a.weight > (SELECT AVG(b.weight) FROM RegisteredAnimal b
-				                   INNER JOIN Cats d ON b.animalID = d.animalID)";
+				                   INNER JOIN Cats d ON b.animalID = d.animalID
+								   WHERE b.shelterName = '$currShelterName' AND b.shelterLocation = '$currShelterLoc')";
 
 		$result2 = executePlainSQL($sql2);
 		?>

@@ -435,6 +435,11 @@ function handleSelectAnimalRequest()
             $tuple
         );
 
+        // For debugging
+        //echo "SELECT * FROM RegisteredAnimal a
+        //WHERE  (a.animalID = $animalID) $operator1 (a.name = $name) $operator2  (a.adopted = $adopted) $operator3 (a.description = $description) $operator4
+        //(a.age = $age) $operator5 (a.weight = $weight) $operator6  (a.breed = $breed) $operator7 (a.shelterLocation = $shelterLocation) $operator8 (a.shelterName = $shelterName) ";
+
         $selectAnimalRequestResult = executeBoundSQL("SELECT * FROM RegisteredAnimal a
             WHERE  (a.animalID = :bind1) $operator1 (a.name = :bind2) $operator2  (a.adopted = :bind3) $operator3 (a.description = :bind4) $operator4
             (a.age = :bind5) $operator5 (a.weight = :bind6) $operator6  (a.breed = :bind7) $operator7 (a.shelterLocation = :bind8) $operator8 (a.shelterName = :bind9) ", $alltuples);

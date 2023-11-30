@@ -1152,10 +1152,10 @@ INSERT INTO RegisteredAnimal (animalID,  name, adopted, description, age, weight
 VALUES 	('C002', 'Bonbon', 1, 'Loves to cuddle and eat.', 3, 15, 'Bengal', '322 Dundas St W, Toronto,Ontario', 'Loving Care Animal Shelter');
 
 INSERT INTO RegisteredAnimal (animalID,  name, adopted, description, age, weight, breed,  shelterLocation, shelterName)
-VALUES ('C003', 'Bambi', 0, 'Bambi loves to be pet.', 1, 8, 'Calico', '10776 King George Boulevard, Surrey, British Columbia','Paws and Claws Animal Shelter');
+VALUES ('C003', 'Bambi', 0, 'Bambi loves to be pet.', 1, 13, 'Calico', '10776 King George Boulevard, Surrey, British Columbia','Paws and Claws Animal Shelter');
 
 INSERT INTO RegisteredAnimal (animalID,  name, adopted, description, age, weight, breed,  shelterLocation, shelterName)
-VALUES ('C004', 'Daisy', 1, 'Loves to eat. Always hungry' , 1, 15, 'Ragdoll', '234 Willow Lane, Supportville, USA', 'The Animal Haven');
+VALUES ('C004', 'Daisy', 1, 'Loves to eat. Always hungry' , 5, 15, 'Ragdoll', '234 Willow Lane, Supportville, USA', 'The Animal Haven');
 
 INSERT INTO RegisteredAnimal (animalID,  name, adopted, description, age, weight, breed,  shelterLocation, shelterName)
 VALUES ('C005', 'Kitkat', 1, 'Loves kitkats' , 0, 10, 'Ragdoll', '234 Willow Lane, Supportville, USA', 'The Animal Haven');
@@ -1179,7 +1179,7 @@ INSERT INTO RegisteredAnimal (animalID,  name, adopted, description, age, weight
 VALUES ('D003', 'Luna', 1, 'Luna loves when you pet her.', 1, 8, 'Chinese Crested Dog', '10776 King George Boulevard, Surrey, British Columbia','Paws and Claws Animal Shelter');
 
 INSERT INTO RegisteredAnimal (animalID,  name, adopted, description, age, weight, breed,  shelterLocation, shelterName)
-VALUES ('D004', 'Bear', 1, 'Loves to eat.' , 1, 3, 'Husky', '234 Willow Lane, Supportville, USA', 'The Animal Haven');
+VALUES ('D004', 'Bear', 1, 'Loves to eat.' , 1, 3, 'Husky', '10776 King George Boulevard, Surrey, British Columbia','Paws and Claws Animal Shelter');
 
 INSERT INTO RegisteredAnimal (animalID,  name, adopted, description, age, weight, breed,  shelterLocation, shelterName)
 VALUES ('B000', 'Coco', 1, 'Peaceful bird.', 3, 8, 'Finch','270 Gerrard St E, Toronto, Ontario', 'Lovely Pet Home');
