@@ -418,7 +418,7 @@
 
             executeBoundSQL("insert into Manager values (:bind1, :bind2, :bind3, :bind4, :bind5, :bind6, :bind7)", $alltuples_man);
             OCICommit($db_conn);
-            echo '<p style="color: green;">Signup successfull and new shelter added</p>';
+            echo '<p style="color: green;">Signup successfull and new shelter added.</p>';
         } else {
             echo '<p style="color: red;"> That shelter already has a manager. Try again with different shelter info</p>';
         }
