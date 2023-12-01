@@ -383,52 +383,50 @@ function handleUpdateAnimalRequest()
     }
 }
 
-
-
-
-
 function handleSelectAnimalRequest()
 {
     global $db_conn;
     global $selectAnimalRequestResult;
 
     $animalID = $_POST['animalID'];
-    $name = $_POST['name'];
-    $adopted = $_POST['adopted'];
-    $description = $_POST['description'];
-    $age = $_POST['age'];
-    $weight = $_POST['weight'];
-    $breed = $_POST['breed'];
-    $shelterLocation = $_POST['shelterLocation'];
-    $shelterName = $_POST['shelterName'];
+    $hasFur = $_POST['hasFur'];
+    $social = $_POST['social'];
 
     $operator1 = $_POST['operator1'];
     $operator2 = $_POST['operator2'];
-    $operator3 = $_POST['operator3'];
-    $operator4 = $_POST['operator4'];
-    $operator5 = $_POST['operator5'];
-    $operator6 = $_POST['operator6'];
-    $operator7 = $_POST['operator7'];
-    $operator8 = $_POST['operator8'];
 
+    $strBuilder = "";
+
+    if ($animalID != NULL) {
+        $strBuilder .= "SELECT * FROM Cats NATURAL INNER JOIN registeredAnimal
+        WHERE (animalID = :bind1 ";
+
+        if ($operator1 == 'And' && $operator2 == 'And') {
+            $strBuilder .=  "$operator1 hasFur = :bind2 $operator2 social = :bind3)";
+        } else if ($operator1 == 'And' && $operator2 == 'Or') {
+            $strBuilder .=  "$operator2 social = :bind3) $operator1 (hasFur = :bind2) ";
+        } else if($operator1 == "Or" && $operator2 == "And") {
+            $strBuilder .=  "$operator1 hasFur = :bind2) $operator2 (social = :bind3)";
+        } else if($operator1 == "Or" && $operator2 == "Or") {
+            $strBuilder .=  "$operator1 hasFur = :bind2) $operator2 (social = :bind3)";
+        }
+    }
+    else {
+        $strBuilder .= "SELECT * FROM Cats NATURAL INNER JOIN registeredAnimal
+        WHERE ";
+        $strBuilder .=  "hasFur = :bind2 $operator2 (social = :bind3)";
+    }
 
     //check if the input value are all NULL
     if (
-        $animalID == NULL && $name == NULL && $adopted == NULL && $description == NULL &&
-        $age == NULL && $weight == NULL && $breed == NULL && $shelterLocation == NULL&& $shelterName == NULL
+        $animalID == NULL && $hasFur == NULL && $social == NULL
     ) {
         echo '<p style="color: red;">Cannot select null value.</p>';
     } else {
         $tuple = array(
             ":bind1" => $_POST['animalID'],
-            ":bind2" => $_POST['name'],
-            ":bind3" => $_POST['adopted'],
-            ":bind4" => $_POST['description'],
-            ":bind5" => $_POST['age'],
-            ":bind6" => $_POST['weight'],
-            ":bind7" => $_POST['breed'],
-            ":bind8" => $_POST['shelterLocation'],
-            ":bind9" => $_POST['shelterName'],
+            ":bind2" => $_POST['hasFur'],
+            ":bind3" => $_POST['social']
         );
 
         $alltuples = array(
@@ -436,24 +434,12 @@ function handleSelectAnimalRequest()
         );
 
         // For debugging
-        //echo "SELECT * FROM RegisteredAnimal a
-        //WHERE  (a.animalID = $animalID) $operator1 (a.name = $name) $operator2  (a.adopted = $adopted) $operator3 (a.description = $description) $operator4
-        //(a.age = $age) $operator5 (a.weight = $weight) $operator6  (a.breed = $breed) $operator7 (a.shelterLocation = $shelterLocation) $operator8 (a.shelterName = $shelterName) ";
+        //echo "$strBuilder";
 
-        $selectAnimalRequestResult = executeBoundSQL("SELECT * FROM RegisteredAnimal a
-            WHERE  (a.animalID = :bind1) $operator1 (a.name = :bind2) $operator2  (a.adopted = :bind3) $operator3 (a.description = :bind4) $operator4
-            (a.age = :bind5) $operator5 (a.weight = :bind6) $operator6  (a.breed = :bind7) $operator7 (a.shelterLocation = :bind8) $operator8 (a.shelterName = :bind9) ", $alltuples);
+        $selectAnimalRequestResult = executeBoundSQL($strBuilder, $alltuples);
         echo '<p style="color: green;">Successfully select required animals.</p>';
     }
 }
-
-
-
-
-
-
-
-
 
 function handleFindVolunteerRequest()
 {

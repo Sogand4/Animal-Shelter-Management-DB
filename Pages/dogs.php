@@ -134,7 +134,7 @@ HAVING a.weight > (SELECT AVG(m.weight) FROM RegisteredAnimal m
 	</table>
 
 
-	<h2>List of Dogs get all vaccines</h2>
+	<h2>List of Dogs get all vaccines in this shelter</h2>
 		<form method="POST" action="dogs.php">
 			<input type="hidden" id="dogUnvaccinatedRequest" name="dogUnvaccinatedRequest">
 			<input type="submit" value="View Result" name="insertSubmit">

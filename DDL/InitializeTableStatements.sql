@@ -202,14 +202,14 @@ CREATE TABLE
 CREATE TABLE
     RegisteredAnimal (
         animalID CHAR(4),
-        name VARCHAR(225) NOT NULL,
-        adopted NUMBER(1, 0) NOT NULL,
-        description VARCHAR(225) NOT NULL,
-        age INTEGER NOT NULL,
-        weight INTEGER NOT NULL,
-        breed VARCHAR(225) NOT NULL,
-        shelterLocation VARCHAR(225) NOT NULL,
-        shelterName VARCHAR(225) NOT NULL,
+        name VARCHAR(225),
+        adopted NUMBER(1, 0),
+        description VARCHAR(225),
+        age INTEGER,
+        weight INTEGER,
+        breed VARCHAR(225),
+        shelterLocation VARCHAR(225),
+        shelterName VARCHAR(225),
         PRIMARY KEY (animalID),
         FOREIGN KEY (shelterLocation, shelterName) REFERENCES Shelter(shelterLocation, shelterName)
     );
@@ -703,6 +703,46 @@ VALUES (
     );
 
 INSERT INTO
+    AdoptersInfo (
+        adopterID,
+        nationalID,
+        adopterName,
+        phoneNumber,
+        email,
+        postalCode,
+        houseNumber
+    )
+VALUES (
+        'A008',
+        '7166111038',
+        'Ally Smith',
+        1010101010,
+        'ally@outlook.com',
+        '444555',
+        '13'
+    );
+
+INSERT INTO
+    AdoptersInfo (
+        adopterID,
+        nationalID,
+        adopterName,
+        phoneNumber,
+        email,
+        postalCode,
+        houseNumber
+    )
+VALUES (
+        'A009',
+        '7123450038',
+        'Jones Blake',
+        2020202020,
+        'jones@outlook.com',
+        'V7TDZ4',
+        '23'
+    );
+
+INSERT INTO
     Shelter(
         shelterLocation,
         capacity,
@@ -1173,15 +1213,34 @@ VALUES ('B003', 'Raven', 0, 'Angry bird', 1, 8, 'Grey parrot' ,'10776 King Georg
 INSERT INTO RegisteredAnimal (animalID,  name, adopted, description, age, weight, breed,  shelterLocation, shelterName)
 VALUES ('B004', 'Kiwi', 0, 'Loves to eat. Always hungry', 1, 3, 'Dove', '234 Willow Lane, Supportville, USA', 'The Animal Haven');
 
+INSERT INTO RegisteredAnimal (animalID,  name, adopted, description, age, weight, breed,  shelterLocation, shelterName)
+VALUES ('C008', 'Mr. Cat', 0, 'Fun cat', 3, 4, 'Siamese' ,'10776 King George Boulevard, Surrey, British Columbia','Paws and Claws Animal Shelter');
+
+INSERT INTO RegisteredAnimal (animalID,  name, adopted, description, age, weight, breed,  shelterLocation, shelterName)
+VALUES ('C009', 'Paws', 1, 'Loves to run around', 3, 3, 'Siamese' ,'10776 King George Boulevard, Surrey, British Columbia','Paws and Claws Animal Shelter');
+
+INSERT INTO RegisteredAnimal (animalID,  name, adopted, description, age, weight, breed,  shelterLocation, shelterName)
+VALUES ('C010', 'Whiskers', 1, 'Very active',  5, 5, 'Siamese' ,'10776 King George Boulevard, Surrey, British Columbia','Paws and Claws Animal Shelter');
+
+INSERT INTO RegisteredAnimal (animalID,  name, adopted, description, age, weight, breed,  shelterLocation, shelterName)
+VALUES ('C011', 'Stripes', 0, 'Sleeps all day', 7, 6, 'Ragdoll' ,'10776 King George Boulevard, Surrey, British Columbia','Paws and Claws Animal Shelter');
+
+INSERT INTO RegisteredAnimal (animalID,  name, adopted, description, age, weight, breed,  shelterLocation, shelterName)
+VALUES ('C012', 'Fuzzy', 0, 'Smart cat', 3, 5, 'Ragdoll' ,'10776 King George Boulevard, Surrey, British Columbia','Paws and Claws Animal Shelter');
+
 INSERT INTO Cats (animalID, hasFur, social) VALUES ('C000', 1, 1);
 INSERT INTO Cats (animalID, hasFur, social) VALUES ('C001', 1, 0);
 INSERT INTO Cats (animalID, hasFur, social) VALUES ('C002', 1, 1);
 INSERT INTO Cats (animalID, hasFur, social) VALUES ('C003', 1, 1);
 INSERT INTO Cats (animalID, hasFur, social) VALUES ('C004', 1, 0);
-INSERT INTO Cats (animalID, hasFur, social) VALUES ('C005', 1, 0);
+INSERT INTO Cats (animalID, hasFur, social) VALUES ('C005', 0, 1);
 INSERT INTO Cats (animalID, hasFur, social) VALUES ('C006', 1, 0);
 INSERT INTO Cats (animalID, hasFur, social) VALUES ('C007', 1, 0);
-
+INSERT INTO Cats (animalID, hasFur, social) VALUES ('C008', 1, 0);
+INSERT INTO Cats (animalID, hasFur, social) VALUES ('C009', 0, 1);
+INSERT INTO Cats (animalID, hasFur, social) VALUES ('C010', 1, 1);
+INSERT INTO Cats (animalID, hasFur, social) VALUES ('C011', 1, 1);
+INSERT INTO Cats (animalID, hasFur, social) VALUES ('C012', 1, 1);
 
 
 INSERT INTO Dogs (animalID, medicallyTrained, hasFur) VALUES ('D000', 1, 1);
@@ -1213,6 +1272,23 @@ INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('C0
 INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('C000', 'Canine Parvovirus Vaccine', TO_DATE('2021-02-04', 'YYYY-MM-DD'));
 INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('C000', 'Feline Distemper Vaccine', TO_DATE('2022-09-09', 'YYYY-MM-DD'));
 INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('C000', 'Avian Influenza Vaccine', TO_DATE('2023-02-09', 'YYYY-MM-DD'));
+
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('C008', 'Rabies Vaccine', TO_DATE('2022-01-22', 'YYYY-MM-DD'));
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('C008', 'Bordetella Vaccine', TO_DATE('2022-04-21', 'YYYY-MM-DD'));
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('C008', 'Canine Parvovirus Vaccine', TO_DATE('2020-01-04', 'YYYY-MM-DD'));
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('C008', 'Feline Distemper Vaccine', TO_DATE('2021-07-09', 'YYYY-MM-DD'));
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('C008', 'Avian Influenza Vaccine', TO_DATE('2020-02-09', 'YYYY-MM-DD'));
+
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('C010', 'Rabies Vaccine', TO_DATE('2022-01-26', 'YYYY-MM-DD'));
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('C010', 'Bordetella Vaccine', TO_DATE('2022-03-26', 'YYYY-MM-DD'));
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('C010', 'Canine Parvovirus Vaccine', TO_DATE('2021-12-04', 'YYYY-MM-DD'));
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('C010', 'Feline Distemper Vaccine', TO_DATE('2022-11-19', 'YYYY-MM-DD'));
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('C010', 'Avian Influenza Vaccine', TO_DATE('2023-10-19', 'YYYY-MM-DD'));
+
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('C012', 'Bordetella Vaccine', TO_DATE('2022-05-26', 'YYYY-MM-DD'));
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('C012', 'Canine Parvovirus Vaccine', TO_DATE('2021-10-13', 'YYYY-MM-DD'));
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('C012', 'Feline Distemper Vaccine', TO_DATE('2022-12-09', 'YYYY-MM-DD'));
+INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('C012', 'Avian Influenza Vaccine', TO_DATE('2023-01-20', 'YYYY-MM-DD'));
 
 INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('C002', 'Avian Influenza Vaccine', TO_DATE('2023-09-17', 'YYYY-MM-DD'));
 INSERT INTO GetVaccination(AnimalID, vaccineName, dateOfVaccination) VALUES	('C003', 'Rabies Vaccine', TO_DATE('2022-01-20', 'YYYY-MM-DD'));
@@ -1250,3 +1326,5 @@ INSERT INTO Adopt(adopterID, animalID, dateOfAdoption) VALUES ('A003', 'B000', T
 INSERT INTO Adopt(adopterID, animalID, dateOfAdoption) VALUES ('A005', 'C004', TO_DATE('2023-10-22', 'YYYY-MM-DD'));
 INSERT INTO Adopt(adopterID, animalID, dateOfAdoption) VALUES ('A006', 'C001', TO_DATE('2023-11-06', 'YYYY-MM-DD'));
 INSERT INTO Adopt(adopterID, animalID, dateOfAdoption) VALUES ('A007', 'D003', TO_DATE('2022-06-02', 'YYYY-MM-DD'));
+INSERT INTO Adopt(adopterID, animalID, dateOfAdoption) VALUES ('A008', 'C010', TO_DATE('2023-11-07', 'YYYY-MM-DD'));
+INSERT INTO Adopt(adopterID, animalID, dateOfAdoption) VALUES ('A009', 'C009', TO_DATE('2022-12-04', 'YYYY-MM-DD'));

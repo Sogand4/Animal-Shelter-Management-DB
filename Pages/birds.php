@@ -133,7 +133,7 @@ $result6 = executePlainSQL($sql6);
 </table>
 
 
-<h2>List of Birds get all vaccines</h2>
+<h2>List of Birds get all vaccines in this shelter</h2>
 		<form method="POST" action="birds.php">
 			<input type="hidden" id="birdUnvaccinatedRequest" name="birdUnvaccinatedRequest">
 			<input type="submit" value="View Result" name="insertSubmit">

@@ -68,6 +68,8 @@ session_start();
 					<th>Age</th>
 					<th>Weight</th>
 					<th>Breed</th>
+					<th>Has Fur</th>
+					<th>Social</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -82,6 +84,8 @@ session_start();
 					echo '<td>' . $row['AGE'] . '</td>';
 					echo '<td>' . $row['WEIGHT'] . '</td>';
 					echo '<td>' . $row['BREED'] . '</td>';
+					echo '<td>' . ($row['HASFUR'] ? 'Yes' : 'No') . '</td>';
+					echo '<td>' . ($row['SOCIAL'] ? 'Yes' : 'No') . '</td>';
 					echo '</tr>';
 				}
 				?>
@@ -132,7 +136,7 @@ session_start();
 			</tbody>
 		</table>
 
-		<h2>List of Cats get all vaccines</h2>
+		<h2>List of Cats get all vaccines in this shelter</h2>
 		<form method="POST" action="cats.php">
 			<input type="hidden" id="catUnvaccinatedRequest" name="catUnvaccinatedRequest">
 			<input type="submit" value="View Result" name="insertSubmit">
@@ -166,6 +170,58 @@ session_start();
 		<?php } ?>
 		<hr />
 
+		<h2>Looking for the perfect cat? We can search ALL the shelters for you! Select based on your interest below! (put 1 for if you want fur/social cat, 0 otherwise)</h2>
+		<form method="POST" action="cats.php">
+			<input type="hidden" id="selectAnimalRequest" name="selectAnimalRequest">
+			Cat ID: <input type="text" name="animalID">  
+			<br /><br />
+			<select name="operator1">
+			    <option value="Or"> OR </option>
+				<option value="And"> AND</option>
+			</select>
+			hasFur: <input type="text" name="hasFur"> 
+			<br /><br />
+			<select name="operator2">
+			    <option value="Or"> OR </option>
+				<option value="And"> AND</option>
+			</select>
+			Social: <input type="text" name="social"> 
+			<input type="submit" value="Submit" name="insertSubmit">
+		</form>
+		<br>
+
+		<?php
+		global $selectAnimalRequestResult;
+		if ($selectAnimalRequestResult != NULL) { ?>
+
+			<table border="1">
+				<thead>
+					<tr>
+						<th>Animal ID</th>
+						<th>Has Fur</th>
+						<th>Social</th>
+						<th>Shelter Location</th>
+						<th>Shelter Name</th>
+					</tr>
+				</thead>
+				<tbody>
+
+				<?php
+				while ($row = oci_fetch_assoc($selectAnimalRequestResult)) {
+					echo '<tr>';
+					echo '<td>' . $row['ANIMALID'] . '</td>';
+					echo '<td>' . $row['HASFUR'] . '</td>';
+					echo '<td>' . $row['SOCIAL'] . '</td>';
+					echo '<td>' . $row['SHELTERLOCATION'] . '</td>';
+					echo '<td>' . $row['SHELTERNAME'] . '</td>';
+					echo '</tr>';
+				} ?>
+			    </tbody>
+		    </table>
+		<?php } ?>
+
+
+		<hr />
 
 
 
