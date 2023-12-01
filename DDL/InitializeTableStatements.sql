@@ -671,29 +671,6 @@ VALUES (
         'Paws and Claws Animal Shelter'
     );
 
-INSERT INTO
-    Shelter(
-        shelterLocation,
-        capacity,
-        shelterName
-    )
-VALUES (
-        '416 Meridian Rd SE, Calgary, Alberta',
-        150,
-        'Animal Sanctuary'
-    );
-
-INSERT INTO
-    Shelter(
-        shelterLocation,
-        capacity,
-        shelterName
-    )
-VALUES (
-        '1357 Oakway Lane, Woodland Hills, California',
-        85,
-        'Animals Friends'
-    );
 
 INSERT INTO
     Shelter(

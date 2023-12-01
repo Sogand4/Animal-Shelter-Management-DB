@@ -430,7 +430,6 @@
 
 }
 
-    // ECE TODO: add logic to keep track of shelter name of the manager who logged in works at
     function handleInsertVetRequest() {
         global $db_conn;
 
