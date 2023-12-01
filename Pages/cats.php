@@ -173,19 +173,19 @@ session_start();
 		<h2>Looking for the perfect cat? We can search ALL the shelters for you! Select based on your interest below! (put 1 for if you want fur/social cat, 0 otherwise)</h2>
 		<form method="POST" action="cats.php">
 			<input type="hidden" id="selectAnimalRequest" name="selectAnimalRequest">
-			Cat ID: <input type="text" name="animalID">  
+			Cat ID: <input type="text" name="animalID" pattern="C\d{3}">  
 			<br /><br />
 			<select name="operator1">
 			    <option value="Or"> OR </option>
 				<option value="And"> AND</option>
 			</select>
-			hasFur: <input type="text" name="hasFur"> 
+			hasFur: <input type="text" name="hasFur" pattern="[01]">
 			<br /><br />
 			<select name="operator2">
 			    <option value="Or"> OR </option>
 				<option value="And"> AND</option>
 			</select>
-			Social: <input type="text" name="social"> 
+			Social: <input type="text" name="social" pattern="[01]"> 
 			<input type="submit" value="Submit" name="insertSubmit">
 		</form>
 		<br>
