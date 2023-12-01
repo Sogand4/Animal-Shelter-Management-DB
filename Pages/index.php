@@ -26,7 +26,7 @@
 			<li><a href="birds.php">Birds</a></li>
 			<li><a href="login.php">Logout</a></li>
 			<li>
-                <form method="POST" action="vets.php">
+                <form method="POST" action="index.php">
                 <input type="hidden" id="resetTablesRequest" name="resetTablesRequest">
                 <p><input type="submit" value="Reset" name="reset"></p>
                 </form>

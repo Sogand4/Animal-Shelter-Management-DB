@@ -38,7 +38,9 @@
     <p>If you wish to reset the table press on the reset button on the navigation bar above. If this is the first time you're running this page, you MUST use reset</p>
 
     <h2>Add new Adopter below:</h2>
-        <p>ID's are in the format 'AXXX' where X are numbers. National ID must be 10 characters. Animal ID is 'BXXX', 'CXXX', or 'DXXX' (representing bird, cat or dog)</p>
+        <p>ID's are in the format 'AXXX' where X are numbers. National ID must be 10 characters. Animal ID is 'BXXX', 'CXXX', or 'DXXX' (representing bird, cat or dog).
+            Phone numbers are positive.
+        </p>
         <form method="POST" action="adopters.php">
             <input type="hidden" id="insertAdopterRequest" name="insertAdopterRequest">
             Id: <input type="text" name="adptID" pattern="A\d{3}" title="Invalid entry. Please follow the format above." required> <br /><br />
@@ -55,6 +57,7 @@
         <input type="submit" value="Insert" name="insertSubmit"></p>
     </form>
 
+    <!-- example of update query -->
     <h2>Update Adopter info below:</h2>
         <p>ID entered must match with an already existing ID. ID cannot be changed.</p>
         <form method="POST" action="adopters.php">

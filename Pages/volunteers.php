@@ -36,10 +36,13 @@
     <main>
     <p>If you wish to reset the table press on the reset button on the navigation bar above. If this is the first time you're running this page, you MUST use reset</p>
 
+
+    <!-- example of insert query -->
     <h2>Add new volunteer below:</h2>
         <p>ID's are in the format 'VXXX' where X are numbers.
             Available days are in the format 'XXXXXXX', where each X corresponds to each day of the week.
-            X is represented with T (true) or F (false) values to indicate whether volunteer is available that day</p>
+            X is represented with T (true) or F (false) values to indicate whether volunteer is available that day.
+            Phone numbers must be positive.</p>
         <form method="POST" action="volunteers.php">
             <input type="hidden" id="insertVolunteerRequest" name="insertVolunteerRequest">
             Id: <input type="text" name="volID" pattern="V\d{3}" title="Invalid entry. Please follow the format above." required> <br /><br />
@@ -123,7 +126,7 @@
     </table>
 
     <!-- example of join query -->
-    <h2>Find all volunteers with the following days available:</h2>
+    <h2>Find all volunteers in this shelter with the following days available:</h2>
         <form method="POST" action="volunteers.php">
             <input type="hidden" id="findVolunteerRequest" name="findVolunteerRequest">
             Days Available: <input type="text" name="findVolDays" pattern="[TF]{7}" title="Invalid entry. Please follow the format above." required> <br /><br />
