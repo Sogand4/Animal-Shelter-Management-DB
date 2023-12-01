@@ -99,11 +99,11 @@ session_start();
 				Weight: <input type="number" name="weight" required> 
 				Breed: <input type="text" name="breed" required> <br /><br />
 				<p>Fill in the following blanks if AnimalID Starts with C</p>
-				HasFur (type 1 or 0): <input type="text" name="hasFur" > 
+				HasFur (type 1 or 0): <input type="text" name="hasFurC" > 
 				Social (type 1 or 0): <input type="text" name="social"> <br /><br />
 				<p>Fill in the following blanks if AnimalID Starts with D</p>
 				MedicallyTrained (type 1 or 0): <input type="text" name="medicallyTrained"> 
-				HasFur(type 1 or 0): <input type="text" name="hasFur"> <br /><br />
+				HasFur(type 1 or 0): <input type="text" name="hasFurD"> <br /><br />
 				<p>Fill in the following blanks if AnimalID Starts with B</p>
 				BeakSize: <input type="number" name="beakSize"> 
 				WingSpan: <input type="number" name="wingSpan"> 

@@ -340,7 +340,7 @@ function handleUpdateAnimalRequest()
         if(str_starts_with($_POST['animalID'],"C")){
             $tuple2 = array(
                 ":bind1" => $_POST['animalID'],
-                ":bind2" => $_POST['hasFur'],
+                ":bind2" => $_POST['hasFurC'],
                 ":bind3" => $_POST['social'],
             );
     
@@ -353,7 +353,7 @@ function handleUpdateAnimalRequest()
             $tuple3 = array(
                 ":bind1" => $_POST['animalID'],
                 ":bind2" => $_POST['medicallyTrained'],
-                ":bind3" => $_POST['hasFur'],
+                ":bind3" => $_POST['hasFurD'],
             );
             
             $alltuples3 = array(
