@@ -154,7 +154,7 @@ CREATE TABLE ManagerPerformance (
 CREATE TABLE
     Manager(
         manID char(4),
-        manPassword char(12),
+        manPassword char(12) NOT NULL, 
         shelterLocation VARCHAR(225) NOT NULL,
         shelterName VARCHAR(225) NOT NULL,
         manName char(30) DEFAULT NULL,
