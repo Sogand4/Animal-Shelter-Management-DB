@@ -11,7 +11,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Singup</title>
+    <title>Signup</title>
 </head>
 <body>
 
@@ -87,9 +87,6 @@
                 <th>Password</th>
                 <th>Shelter Location</th>
                 <th>Shelter Name</th>
-                <th>Manager Name</th>
-                <th>kpi</th>
-                <th>since</th>
             </tr>
         </thead>
         <tbody>
@@ -101,9 +98,6 @@
                 echo '<td>' . $row['MANPASSWORD'] . '</td>';
                 echo '<td>' . $row['SHELTERLOCATION'] . '</td>';
                 echo '<td>' . $row['SHELTERNAME'] . '</td>';
-                echo '<td>' . $row['MANNAME'] . '</td>';
-                echo '<td>' . $row['KPI'] . '</td>';
-                echo '<td>' . $row['SINCE'] . '</td>';
                 echo '</tr>';
             }
         ?>

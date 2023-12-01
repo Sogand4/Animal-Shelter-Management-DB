@@ -156,7 +156,7 @@ CREATE TABLE ManagerPerformance (
 CREATE TABLE
     Manager(
         manID char(4),
-        manPassword char(12),
+        manPassword char(12) NOT NULL, 
         shelterLocation VARCHAR(225) NOT NULL,
         shelterName VARCHAR(225) NOT NULL,
         manName char(30) DEFAULT NULL,
@@ -750,29 +750,6 @@ VALUES (
         'Paws and Claws Animal Shelter'
     );
 
-INSERT INTO
-    Shelter(
-        shelterLocation,
-        capacity,
-        shelterName
-    )
-VALUES (
-        '416 Meridian Rd SE, Calgary, Alberta',
-        150,
-        'Animal Sanctuary'
-    );
-
-INSERT INTO
-    Shelter(
-        shelterLocation,
-        capacity,
-        shelterName
-    )
-VALUES (
-        '1357 Oakway Lane, Woodland Hills, California',
-        85,
-        'Animals Friends'
-    );
 
 INSERT INTO
     Shelter(

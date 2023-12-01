@@ -19,6 +19,10 @@
             <li><a href="vets.php">Vets</a></li>
 			<li><a href="inspectors.php">Inspectors</a></li>
 			<li><a href="events_ws.php">Events and Workshops</a></li>
+            <li><a href="animals.php">Animals</a></li>
+			<li><a href="dogs.php">Dogs</a></li>
+			<li><a href="cats.php">Cats</a></li>
+			<li><a href="birds.php">Birds</a></li>
 			<li><a href="login.php">Logout</a></li>
             <li>
                 <form method="POST" action="inspectors.php">
