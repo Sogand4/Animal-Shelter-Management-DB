@@ -11,7 +11,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Singup</title>
+    <title>Signup</title>
 </head>
 <body>
 

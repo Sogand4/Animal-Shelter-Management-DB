@@ -422,15 +422,6 @@
         } else {
             echo '<p style="color: red;"> That shelter already has a manager. Try again with different shelter info</p>';
         }
-
-    
-            // if exists yay
-                // (i added more sample inserts for shelter that is not in manager table yet so you can use those to check this)
-            // if not exists -> add it to shelter first
-
-            // then also make sure that the COMBINATION of sheltername and shelterlocation is unique
-            // if not -> send error message and do not add
-            // else continue
            
     }else {
         echo '<p style="color: red;">Invalid ID inserted. Please use an ID that is not already in use.</p>';
