@@ -208,8 +208,8 @@ CREATE TABLE
         age INTEGER,
         weight INTEGER,
         breed VARCHAR(225),
-        shelterLocation VARCHAR(225),
-        shelterName VARCHAR(225),
+        shelterLocation VARCHAR(225) NOT NULL,
+        shelterName VARCHAR(225) NOT NULL,
         PRIMARY KEY (animalID),
         FOREIGN KEY (shelterLocation, shelterName) REFERENCES Shelter(shelterLocation, shelterName)
     );
