@@ -126,10 +126,10 @@
     </table>
 
     <!-- example of join query -->
-    <h2>Find all volunteers in this shelter with the following days available:</h2>
+    <h2>Find all regular or not regular volunteers in this shelter (enter 1 for regular and 0 otherwise)</h2>
         <form method="POST" action="volunteers.php">
             <input type="hidden" id="findVolunteerRequest" name="findVolunteerRequest">
-            Days Available: <input type="text" name="findVolDays" pattern="[TF]{7}" title="Invalid entry. Please follow the format above." required> <br /><br />
+            Regular: <input type="text" name="findVolDays" pattern="[01]" title="Invalid entry. Please follow the format above." required> <br /><br />
         <input type="submit" value="Insert" name="insertSubmit"></p>
     </form>
 

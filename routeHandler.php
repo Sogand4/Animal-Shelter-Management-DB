@@ -441,51 +441,31 @@ function handleSelectAnimalRequest()
     }
 }
 
-function handleFindVolunteerRequest()
-{
-    global $db_conn;
-    global $findVolRequestResult;
+    function handleFindVolunteerRequest() {
+        global $db_conn;
+        global $findVolRequestResult;
 
-    // Only run the find query if the ID exists
-    $volAvailabilities = $_POST['findVolDays'];
+        // Only run the find query if the ID exists
+        $volAvailabilities = $_POST['findVolDays'];
 
-    if ($volAvailabilities != NULL) {
-        $tuple = array(
-            ":bind1" => $_POST['findVolDays']
+
+        $tuple1 = array(
+            ":bind1" => $_POST['findVolDays'],
+            ":bind2" => $_SESSION["shelterName"],
+            ":bind3" => $_SESSION["shelterLocation"]
         );
 
-        $alltuples = array(
-            $tuple
+        $alltuples1 = array(
+            $tuple1
         );
 
-        $numExistingDays = executeBoundSQL("SELECT COUNT(*) AS count FROM AvailableDaysRegularVolunteer WHERE availableDays = :bind1", $alltuples);
-        $rowExistingDays = oci_fetch_assoc($numExistingDays);
-        $countExistingDays = $rowExistingDays['COUNT'];
+        $findVolRequestResult = executeBoundSQL("SELECT v.volunteerID FROM VolunteersAtShelter s
+                            INNER JOIN Volunteer v ON s.volunteerID = v.volunteerID
+                            INNER JOIN AvailableDaysRegularVolunteer a ON v.availableDays = a.availableDays
+                            WHERE s.shelterName = :bind2 AND s.shelterLocation = :bind3 AND a.regularVolunteer = :bind1", $alltuples1);
 
-        if ($countExistingDays == 1) {
-            $tuple1 = array(
-                ":bind1" => $_POST['findVolDays'],
-                ":bind2" => $_SESSION["shelterName"],
-                ":bind3" => $_SESSION["shelterLocation"]
-            );
-
-            $alltuples1 = array(
-                $tuple1
-            );
-
-            $findVolRequestResult = executeBoundSQL("SELECT v.volunteerID FROM VolunteersAtShelter s
-                                INNER JOIN Volunteer v ON s.volunteerID = v.volunteerID
-                                INNER JOIN AvailableDaysRegularVolunteer a ON v.availableDays = a.availableDays
-                                WHERE s.shelterName = :bind2 AND s.shelterLocation = :bind3 AND a.availableDays = :bind1", $alltuples1);
-
-            echo '<p style="color: green;">Successfully recieved all volunteers with given availabilities</p>';
-        } else {
-            echo '<p style="color: red;">No volunteer has those availabilities</p>';
-        }
-    } else {
-        echo '<p style="color: red;">Cannot insert null value.</p>';
+        echo '<p style="color: green;">Successfully recieved all volunteers with given availabilities</p>';
     }
-}
 
     function handleUpdateAdopterRequest() {
     global $db_conn;
