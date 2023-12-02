@@ -59,13 +59,22 @@
 
     <!-- example of update query -->
     <h2>Update Adopter info below:</h2>
-        <p>ID entered must match with an already existing ID. ID cannot be changed.</p>
+        <p>ID entered must match with an already existing ID. ID cannot be changed. Please select and ID and then input the value you will be changing. Emails must be unique and National IDs must be unique.</p>
         <form method="POST" action="adopters.php">
             <input type="hidden" id="updateAdopterRequest" name="updateAdopterRequest">
             Id: <input type="text" name="adptID" pattern="A\d{3}" title="Invalid entry. Please follow the format above." required> <br /><br />
-            Name: <input type="text" name="adptName" maxlength="255"> <br /><br />
-            Email: <input type="text" name="adptEmail" maxlength="225"> <br /><br />
-            Phone Number: <input type="number" name="adptNum"> <br /><br />
+            <br /><br />
+            National Id: <input type="text" name="natID" pattern=".{10}" title="Invalid entry. Please follow the format above.">
+            <input type="submit" value="Update" name="updateSubmit"></p>
+            Name: <input type="text" name="adptName" maxlength="255">
+            <input type="submit" value="Update" name="updateSubmit"></p>
+            Phone Number: <input type="number" name="adptNum">
+            <input type="submit" value="Update" name="updateSubmit"></p>
+            Email: <input type="text" name="adptEmail" maxlength="225">
+            <input type="submit" value="Update" name="updateSubmit"></p>
+            House number: <input type="text" name="adptHouseNum" maxlength="225">
+            <input type="submit" value="Update" name="updateSubmit"></p>
+            Postal Code: <input type="text" name="adptPostalCode" maxlength="225">
         <input type="submit" value="Update" name="updateSubmit"></p>
     </form>
 

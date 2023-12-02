@@ -488,14 +488,14 @@ function handleFindVolunteerRequest()
 }
 
     function handleUpdateAdopterRequest() {
-        global $db_conn;
+    global $db_conn;
 
-        // Phone number must be >= 0
-        $num = $_POST['adptNum'];
-        if ($num < 0 && $num != null) {
-            echo '<p style="color: red;">Please enter a positive phone number.</p>';
-            return;
-        }
+    // Phone number must be >= 0
+    $num = $_POST['adptNum'];
+    if ($num < 0 && $num != null) {
+        echo '<p style="color: red;">Please enter a positive phone number.</p>';
+        return;
+    }
 
     // Only run the update adopter query if the ID exists and unique keys are not being used
     $tuple = array(
@@ -510,36 +510,103 @@ function handleFindVolunteerRequest()
     $rowExisting = oci_fetch_assoc($numExisting);
     $countExisting1 = $rowExisting['COUNT'];
 
-    $tuple = array(
-        ":bind1" => $_POST['adptEmail']
-    );
+    $countExisting2 = 0;
+    if ($_POST['adptEmail'] != NULL) {
+        $tuple = array(
+            ":bind1" => $_POST['adptEmail']
+        );
 
-    $alltuples3 = array(
-        $tuple
-    );
+        $alltuples3 = array(
+            $tuple
+        );
 
-    $numExisting = executeBoundSQL("SELECT COUNT(*) AS count FROM AdoptersInfo WHERE email = :bind1", $alltuples3);
-    $rowExisting = oci_fetch_assoc($numExisting);
-    $countExisting2 = $rowExisting['COUNT'];
+        $numExisting = executeBoundSQL("SELECT COUNT(*) AS count FROM AdoptersInfo WHERE email = :bind1", $alltuples3);
+        $rowExisting = oci_fetch_assoc($numExisting);
+        $countExisting2 = $rowExisting['COUNT'];
+    }
 
-    if ($countExisting1 == 1 && $countExisting2 == 0) {
+    $countExisting3 = 0;
+    if ($_POST['natID'] != NULL) {
+        $tuple = array(
+            ":bind1" => $_POST['natID']
+        );
+    
+        $alltuples4 = array(
+            $tuple
+        );
+    
+        $numExisting = executeBoundSQL("SELECT COUNT(*) AS count FROM AdoptersInfo WHERE nationalID = :bind1", $alltuples4);
+        $rowExisting = oci_fetch_assoc($numExisting);
+        $countExisting3 = $rowExisting['COUNT'];
+    }
+
+    if ($countExisting1 == 1 && $countExisting2 == 0 && $countExisting3 == 0) {
+        // Create FK if it does not already exist
+        $postalCode = $_POST['adptPostalCode'];
+        if ($postalCode != NULL) {
+            $tuple = array(
+                ":bind1" => $_POST['adptPostalCode']
+            );
+
+            $alltuples = array(
+                $tuple
+            );
+
+            $numExisting = executeBoundSQL("SELECT COUNT(*) AS count FROM AdoptersLocation WHERE postalCode = :bind1", $alltuples);
+            $rowExisting = oci_fetch_assoc($numExisting);
+            $countExisting = $rowExisting['COUNT'];
+
+            if ($countExisting == 0) {
+                $tuple = array(
+                    ":bind1" => $_POST['adptPostalCode']
+                );
+
+                $alltuples = array(
+                    $tuple
+                );
+
+                executeBoundSQL("insert into AdoptersLocation values (:bind1, NULL, NULL, NULL)", $alltuples);
+            }
+        }
+
+        // Update correct value:
+        $valToBind = NULL;
+        $valString = "";
+        if ($_POST['adptName'] != NULL) {
+            $valToBind = $_POST['adptName'];
+            $valString = "adopterName";
+        } else if ($_POST['adptEmail'] != NULL) {
+            $valToBind = $_POST['adptEmail'];
+            $valString = "email";
+        } else if ($_POST['adptNum'] != NULL) {
+            $valToBind = $_POST['adptNum'];
+            $valString = "phoneNumber";
+        } else if ($_POST['natID'] != NULL) {
+            $valToBind = $_POST['natID'];
+            $valString = "nationalID";
+        } else if ($_POST['adptHouseNum'] != NULL) {
+            $valToBind = $_POST['adptHouseNum'];
+            $valString = "houseNumber";
+        } else if ($_POST['adptPostalCode'] != NULL) {
+            $valToBind = $_POST['adptPostalCode'];
+            $valString = "postalCode";
+        }
+    
         // Add new adopter
         $tuple = array(
             ":bind1" => $_POST['adptID'],
-            ":bind2" => $_POST['adptName'],
-            ":bind3" => $_POST['adptEmail'],
-            ":bind4" => $_POST['adptNum']
+            ":bind2" => $valToBind
         );
 
         $alltuples = array(
             $tuple
         );
 
-            executeBoundSQL("UPDATE AdoptersInfo SET adopterName = :bind2, email = :bind3, phoneNumber = :bind4 WHERE adopterID = :bind1", $alltuples);
+            executeBoundSQL("UPDATE AdoptersInfo SET $valString = :bind2 WHERE adopterID = :bind1", $alltuples);
             OCICommit($db_conn);
             echo '<p style="color: green;">Successfully updated adopter</p>';
         } else {
-            echo '<p style="color: red;">Invalid info inserted. Please use an already existing adopter ID and a unique email.</p>';
+            echo '<p style="color: red;">Invalid info inserted. Please use an already existing adopter ID and a unique email/national ID.</p>';
         }
     }
     
