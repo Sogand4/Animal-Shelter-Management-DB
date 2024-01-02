@@ -12,3 +12,5 @@ Examples of some queries demonstrated in the code:
   - select
   - group by
   - aggregations
+  - division
+  - projection
