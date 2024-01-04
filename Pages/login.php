@@ -60,10 +60,12 @@
 
     </div>
 
-	<h2> For testing, please use the following:
-		<br></br>Manager ID: M005
-		<br></br>Password: pass5
-	</h2>
+	<div style="text-align:center"> 
+		<h2> For testing, please use the following:
+			<br></br>Manager ID: M005
+			<br></br>Password: pass5
+		</h2>
+	</div> 
 
 </body>
 </html>
